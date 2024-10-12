@@ -1,0 +1,38 @@
+# Go
+*.exe
+*.exe~
+*.out
+vendor/
+
+# Logs
+*.log
+*.log.*
+logs/
+log/
+
+# Environment
+.env
+.env.*
+
+# OS generated
+.DS_Store
+*.bak
+Thumbs.db
+*.swp
+
+# Docker
+*.pid
+*.log
+.dockerignore
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Flyway migration files (optional)
+flyway/reports/
+
+# Build artifacts
+/dist/
+/build/
