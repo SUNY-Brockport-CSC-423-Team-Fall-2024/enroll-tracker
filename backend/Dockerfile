@@ -6,9 +6,9 @@ COPY go.mod go.sum ./
 
 RUN go mod download
 
-COPY ./src .
+COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /enroll-tracker-api
+RUN CGO_ENABLED=0 GOOS=linux go build -o /enroll-tracker-api ./cmd/app
 
 CMD ["/enroll-tracker-api"]
 

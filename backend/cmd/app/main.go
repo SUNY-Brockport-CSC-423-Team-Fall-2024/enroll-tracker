@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -10,25 +9,10 @@ import (
 	"syscall"
 )
 
-type Response struct {
-	Data    string `json:"data"`
-	HTTPMux string `json:"http_mux"`
-}
-
 func main() {
 	stdMux := http.NewServeMux()
-	stdMux.HandleFunc("/api/v1/healthz", func(w http.ResponseWriter, r *http.Request) {
-		resp := Response{Data: "healthz", HTTPMux: "net/http"}
-		if err := json.NewEncoder(w).Encode(resp); err != nil {
-			fmt.Printf(err.Error())
-		}
-	})
-
-	stdMux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		resp := Response{Data: "hello world!", HTTPMux: "net/http"}
-		if err := json.NewEncoder(w).Encode(resp); err != nil {
-			fmt.Printf(err.Error())
-		}
+	stdMux.HandleFunc("/api/healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
 	})
 
 	l, ok := os.LookupEnv("API_CONTAINER_PORT")

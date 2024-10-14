@@ -9,8 +9,7 @@ CREATE TABLE Major (
 CREATE TABLE UserAuthentication (
     id SERIAL PRIMARY KEY,
     username VARCHAR(60) UNIQUE NOT NULL,
-    password_hash BYTEA NOT NULL,
-    salt BYTEA NOT NULL,
+    password_hash TEXT NOT NULL,
     last_password_reset TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
