@@ -1,12 +1,12 @@
 services:
   frontend:
     container_name: frontend
-    build: ./enroll-tracker-frontend
+    build: ./frontend
     ports:
       - "3000:3000"
   api:
     container_name: api
-    build: ./enroll-tracker-backend
+    build: ./backend
     ports:
       - "${API_HOST_PORT}:${API_CONTAINER_PORT}"
     environment:
@@ -26,7 +26,7 @@ services:
     image: flyway/flyway:latest
     command: -locations=filesystem:/flyway/sql -connectRetries=60 migrate
     volumes:
-      - $PWD/enroll-tracker-backend/db:/flyway/sql
+      - $PWD/backend/internal/db:/flyway/sql
     environment:
       - FLYWAY_USER=${POSTGRES_USER}
       - FLYWAY_PASSWORD=${POSTGRES_PASSWORD}
