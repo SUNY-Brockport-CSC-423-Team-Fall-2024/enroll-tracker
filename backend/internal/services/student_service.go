@@ -20,10 +20,10 @@ func (s *StudentService) CreateStudent(username string, password string, firstNa
 	//create student
 	var student models.Student
 
-    //Validate Username & Password
-    validUsername := utils.ValidUsername(username)
-    validPassword := utils.ValidPassword(password)
-    if !validUsername || !validPassword {
+	//Validate Username & Password
+	validUsername := utils.ValidUsername(username)
+	validPassword := utils.ValidPassword(password)
+	if !validUsername || !validPassword {
 		return student, errors.New(`Invalid username or password`)
 	}
 
@@ -40,12 +40,12 @@ func (s *StudentService) CreateStudent(username string, password string, firstNa
 }
 
 func (s *StudentService) GetStudent(username string) (models.Student, error) {
-    var student models.Student
+	var student models.Student
 
-    //Validate username
-    if !utils.ValidUsername(username) {
-        return student, errors.New("Invalid username")
-    }
+	//Validate username
+	if !utils.ValidUsername(username) {
+		return student, errors.New("Invalid username")
+	}
 
 	//Get student
 	student, err := s.repository.GetStudent(username)
@@ -54,27 +54,27 @@ func (s *StudentService) GetStudent(username string) (models.Student, error) {
 }
 
 func (s *StudentService) UpdateStudent(studentUpdates models.StudentUpdate) (models.Student, error) {
-    var student models.Student
-        
-    //Validate updates
-    if !utils.ValidUsername(studentUpdates.Username) {
-        return student, errors.New("Invalid username")
-    }
-    if studentUpdates.FirstName != nil && !utils.ValidName(*studentUpdates.FirstName) {
-        return student, errors.New("Invalid first name")
-    }
-    if studentUpdates.LastName != nil && !utils.ValidName(*studentUpdates.LastName) {
-        return student, errors.New("Invalid last name")
-    }
-    if studentUpdates.PhoneNumber != nil && !utils.ValidPhoneNumber(*studentUpdates.PhoneNumber) {
-        return student, errors.New("Invalid phone number")
-    }
-    if studentUpdates.Email != nil && !utils.ValidEmail(*studentUpdates.Email) {
-        return student, errors.New("Invalid email")
-    }
+	var student models.Student
 
-    //Make sure there is at least one update. If not return
-    student, err := s.repository.UpdateStudent(studentUpdates)
+	//Validate updates
+	if !utils.ValidUsername(studentUpdates.Username) {
+		return student, errors.New("Invalid username")
+	}
+	if studentUpdates.FirstName != nil && !utils.ValidName(*studentUpdates.FirstName) {
+		return student, errors.New("Invalid first name")
+	}
+	if studentUpdates.LastName != nil && !utils.ValidName(*studentUpdates.LastName) {
+		return student, errors.New("Invalid last name")
+	}
+	if studentUpdates.PhoneNumber != nil && !utils.ValidPhoneNumber(*studentUpdates.PhoneNumber) {
+		return student, errors.New("Invalid phone number")
+	}
+	if studentUpdates.Email != nil && !utils.ValidEmail(*studentUpdates.Email) {
+		return student, errors.New("Invalid email")
+	}
 
-    return student, err
+	//Make sure there is at least one update. If not return
+	student, err := s.repository.UpdateStudent(studentUpdates)
+
+	return student, err
 }

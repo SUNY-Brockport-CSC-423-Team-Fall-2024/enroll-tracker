@@ -51,15 +51,15 @@ func (r *PostgresStudentRepository) GetStudent(username string) (models.Student,
 	return student, err
 }
 
-func (r *PostgresStudentRepository) UpdateStudent(studentUpdates models.StudentUpdate) (models.Student, error){
-    var student models.Student
+func (r *PostgresStudentRepository) UpdateStudent(studentUpdates models.StudentUpdate) (models.Student, error) {
+	var student models.Student
 
-    //create query
-    query := fmt.Sprintf(`SELECT * FROM public.update_student($1, $2, $3, $4, $5, $6, $7)`)
+	//create query
+	query := fmt.Sprintf(`SELECT * FROM public.update_student($1, $2, $3, $4, $5, $6, $7)`)
 
-    row := r.db.QueryRow(query, studentUpdates.Username, studentUpdates.FirstName, studentUpdates.LastName, studentUpdates.PhoneNumber, studentUpdates.Email, studentUpdates.LastLogin, studentUpdates.MajorID)
+	row := r.db.QueryRow(query, studentUpdates.Username, studentUpdates.FirstName, studentUpdates.LastName, studentUpdates.PhoneNumber, studentUpdates.Email, studentUpdates.LastLogin, studentUpdates.MajorID)
 
 	err := row.Scan(&student.ID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.LastLogin, &student.CreatedAt, &student.UpdatedAt)
 
-    return student, err
+	return student, err
 }

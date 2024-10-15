@@ -55,9 +55,9 @@ func GetStudentHandler(s *services.StudentService) http.HandlerFunc {
 			return
 		}
 
-        w.Header().Set("Content-Type", "application/json")
-		
-        if err := json.NewEncoder(w).Encode(student); err != nil {
+		w.Header().Set("Content-Type", "application/json")
+
+		if err := json.NewEncoder(w).Encode(student); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -67,25 +67,25 @@ func GetStudentHandler(s *services.StudentService) http.HandlerFunc {
 }
 
 func UpdateStudentHandler(studentService *services.StudentService) http.HandlerFunc {
-    return func(w http.ResponseWriter, r *http.Request) {
-        var studentUpdate models.StudentUpdate
+	return func(w http.ResponseWriter, r *http.Request) {
+		var studentUpdate models.StudentUpdate
 
-        if err := json.NewDecoder(r.Body).Decode(&studentUpdate); err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-            return
-        }
+		if err := json.NewDecoder(r.Body).Decode(&studentUpdate); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-        student, err := studentService.UpdateStudent(studentUpdate)
-        if err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-            return
-        }
+		student, err := studentService.UpdateStudent(studentUpdate)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-        if err := json.NewEncoder(w).Encode(&student); err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-            return
-        }
+		if err := json.NewEncoder(w).Encode(&student); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-        w.WriteHeader(http.StatusOK)
-    }
+		w.WriteHeader(http.StatusOK)
+	}
 }

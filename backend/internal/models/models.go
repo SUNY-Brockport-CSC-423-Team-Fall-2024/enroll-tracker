@@ -15,13 +15,13 @@ type StudentCreation struct {
 }
 
 type StudentUpdate struct {
-	Username    string    `json:"username,omitempty"`
+	Username    string     `json:"username,omitempty"`
 	FirstName   *string    `json:"first_name,omitempty"`
 	LastName    *string    `json:"last_name,omitempty"`
 	PhoneNumber *string    `json:"phone_number,omitempty"`
 	Email       *string    `json:"email,omitempty"`
 	LastLogin   *time.Time `json:"last_login,omitempty"`
-    MajorID     *int    `json:"major_id,omitempty"`
+	MajorID     *int       `json:"major_id,omitempty"`
 }
 
 type Student struct {
