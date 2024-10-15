@@ -5,26 +5,18 @@ import (
 	"enroll-tracker/internal/repositories"
 	"enroll-tracker/pkg/utils"
 	"errors"
-	"regexp"
 )
 
 type UserAuthenticationService struct {
 	repository repositories.UserAuthenticationRepository
 }
 
-func NewUserAuthenticationService(repo repositories.UserAuthenticationRepository) *UserAuthenticationService {
+func CreateUserAuthenticationService(repo repositories.UserAuthenticationRepository) *UserAuthenticationService {
 	return &UserAuthenticationService{repository: repo}
 }
 
 func (s *UserAuthenticationService) CreateNewUserAuthentication(username string, password string) (models.UserAuthentication, error) {
 	var userAuth models.UserAuthentication
-
-	//Validate Username & Password
-	usernameRe := regexp.MustCompile(`^[a-z,A-Z,0-9]{8,50}$`)
-	passwordRe := regexp.MustCompile(`^[a-z,A-Z,0-9,!,@,*,$,#]$`)
-	if !usernameRe.MatchString(username) || !passwordRe.MatchString(password) {
-		return userAuth, errors.New(`Invalid username or password`)
-	}
 
 	//Check user auth doesn't already exist
 	ua, err := s.repository.GetUserAuthentication(username)
