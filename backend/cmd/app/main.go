@@ -23,17 +23,24 @@ func main() {
 
 	uaRepo := repositories.CreatePostgresUserAuthenticationRepository(db)
 	studentRepo := repositories.CreatePostgresStudentRepository(db)
+	userSessionRepo := repositories.CreatePostgresUserSessionRepository(db)
 	userAuthService := services.CreateUserAuthenticationService(uaRepo)
-	studentService := services.CreateNewStudentService(studentRepo, userAuthService)
+	studentService := services.CreateStudentService(studentRepo, userAuthService)
+	userSessionService := services.CreateUserSessionService(userSessionRepo)
 
 	stdMux := http.NewServeMux()
 	stdMux.HandleFunc("/api/healthz", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Healthy!")
 		w.WriteHeader(200)
 	})
+
+	//Student routes
 	stdMux.HandleFunc("/api/students/create-student", handlers.CreateStudentHandler(studentService))
 	stdMux.HandleFunc("/api/students/get-student", handlers.GetStudentHandler(studentService))
 	stdMux.HandleFunc("/api/students/update-student", handlers.UpdateStudentHandler(studentService))
+
+	//Auth routes
+	stdMux.HandleFunc("/auth/login", handlers.LoginHandler(userSessionService, userAuthService))
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{}))
 	loggingMiddleware := middleware.LoggingMiddleware(logger)
