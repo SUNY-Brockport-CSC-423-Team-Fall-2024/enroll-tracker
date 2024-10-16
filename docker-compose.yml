@@ -15,6 +15,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - DB_NAME=${DB_NAME}
+      - ENROLL_TRACKER_RSA_PRIVATE_KEY=${ENROLL_TRACKER_RSA_PRIVATE_KEY}
     depends_on:
       db:
         condition: service_healthy
