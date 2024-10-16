@@ -12,7 +12,7 @@ type StudentService struct {
 	userAuthenticationService *UserAuthenticationService
 }
 
-func CreateNewStudentService(repo repositories.StudentRepository, uaService *UserAuthenticationService) *StudentService {
+func CreateStudentService(repo repositories.StudentRepository, uaService *UserAuthenticationService) *StudentService {
 	return &StudentService{repository: repo, userAuthenticationService: uaService}
 }
 

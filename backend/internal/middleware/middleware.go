@@ -18,7 +18,7 @@ func LoggingMiddleware(logger *slog.Logger) func(http.Handler) http.Handler {
 					w.WriteHeader(http.StatusInternalServerError)
 					logger.Error("error occured",
 						"err", err,
-						"trace", debug.Stack(),
+						"trace", string(debug.Stack()),
 					)
 				}
 			}()

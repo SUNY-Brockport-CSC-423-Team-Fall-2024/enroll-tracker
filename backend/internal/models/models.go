@@ -3,6 +3,8 @@ package models
 import (
 	"net/http"
 	"time"
+
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type StudentCreation struct {
@@ -41,6 +43,20 @@ type UserAuthentication struct {
 	ID           int    `json:"id"`
 	Username     string `json:"username"`
 	PasswordHash string `json:"password_hash"`
+}
+
+type UserSession struct {
+	ID             int       `json:"id"`
+	UserID         int       `json:"user_id"`
+	SessID         string    `json:"sess_id"`
+	IssuedAt       time.Time `json:"issued_at"`
+	ExpirationTime time.Time `json:"expiration_time"`
+	NotBefore      time.Time `json:"not_before"`
+}
+
+type CustomClaims struct {
+	jwt.RegisteredClaims
+	SessID string `json:"sess_id,omitempty"`
 }
 
 // Minimal wrapper for http.ResponseWriter that allows status code to be captured for logging.

@@ -37,3 +37,11 @@ func (s *UserAuthenticationService) CreateNewUserAuthentication(username string,
 	userAuth, err = s.repository.CreateUserAuthentication(username, passwordHash)
 	return userAuth, err
 }
+
+func (s *UserAuthenticationService) GetUserAuthentication(username string) (models.UserAuthentication, error) {
+	userAuth, err := s.repository.GetUserAuthentication(username)
+	if err != nil {
+		return userAuth, err
+	}
+	return userAuth, nil
+}

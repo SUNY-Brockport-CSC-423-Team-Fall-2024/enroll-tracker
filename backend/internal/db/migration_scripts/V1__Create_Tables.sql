@@ -13,6 +13,17 @@ CREATE TABLE UserAuthentication (
     last_password_reset TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE UserSession (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    sess_id TEXT NOT NULL,
+    issued_at TIMESTAMP NOT NULL,
+    expiration_time TIMESTAMP NOT NULL,
+    not_before TIMESTAMP NOT NULL,
+
+    FOREIGN KEY (user_id) REFERENCES UserAuthentication(id)
+);
+
 CREATE TABLE Student (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,

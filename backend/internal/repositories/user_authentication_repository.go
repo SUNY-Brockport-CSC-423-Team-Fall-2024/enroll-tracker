@@ -33,9 +33,9 @@ func (r *PostgresUserAuthenticationRepository) CreateUserAuthentication(username
 func (r *PostgresUserAuthenticationRepository) GetUserAuthentication(username string) (models.UserAuthentication, error) {
 	var userAuth models.UserAuthentication
 
-	query := fmt.Sprintf(`SELECT username, password_hash FROM public.userauthentication WHERE username=$1`)
+	query := fmt.Sprintf(`SELECT id, username, password_hash FROM public.userauthentication WHERE username=$1`)
 
-	err := r.db.QueryRow(query, username).Scan(&userAuth.Username, &userAuth.PasswordHash)
+	err := r.db.QueryRow(query, username).Scan(&userAuth.ID, &userAuth.Username, &userAuth.PasswordHash)
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
