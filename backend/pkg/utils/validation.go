@@ -11,7 +11,7 @@ func ValidUsername(username string) bool {
 }
 
 func ValidPassword(password string) bool {
-	passwordRe := regexp.MustCompile(`^[a-z,A-Z,0-9]{8,30}$`)
+	passwordRe := regexp.MustCompile(`^[a-zA-Z0-9!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?~-]{8,30}$`)
 	if !passwordRe.MatchString(password) {
 		return false
 	}

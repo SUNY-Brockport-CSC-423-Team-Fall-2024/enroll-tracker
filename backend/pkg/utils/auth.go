@@ -57,7 +57,7 @@ func HashPassword(password string, params Argon2IdParams) (string, error) {
 	encodedPasswordHash := base64.RawStdEncoding.EncodeToString(hash)
 	encodedSalt := base64.RawStdEncoding.EncodeToString(salt)
 
-	encodedPassInfo := fmt.Sprintf("$argon2id$v=%d$m=%d,t=%d,p=%d$%s$%s", CurArgon2IdParams.Version, CurArgon2IdParams.Memory, CurArgon2IdParams.Iterations, CurArgon2IdParams.Threads, encodedSalt, encodedPasswordHash)
+	encodedPassInfo := fmt.Sprintf("$argon2id$v=%d$m=%d,t=%d,p=%d,kl=%d$%s$%s", CurArgon2IdParams.Version, CurArgon2IdParams.Memory, CurArgon2IdParams.Iterations, CurArgon2IdParams.Threads, CurArgon2IdParams.KeyLength, encodedSalt, encodedPasswordHash)
 
 	return encodedPassInfo, nil
 }
@@ -78,7 +78,7 @@ func VerifyPassword(password string, encodedPasswordHash string) (bool, error) {
 	}
 
 	//read memory, time, threads
-	_, err = fmt.Sscanf(parts[3], "m=%d,t=%d,p=%d", &argonParams.Memory, &argonParams.Iterations, &argonParams.Threads)
+	_, err = fmt.Sscanf(parts[3], "m=%d,t=%d,p=%d,kl=%d", &argonParams.Memory, &argonParams.Iterations, &argonParams.Threads, &argonParams.KeyLength)
 	if err != nil {
 		return false, err
 	}
