@@ -28,26 +28,13 @@ func CreateStudentHandler(s *services.StudentService) http.HandlerFunc {
 
 func GetStudentHandler(s *services.StudentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		defer r.Body.Close()
-
-		var kv map[string]interface{}
-
-		if err := json.NewDecoder(r.Body).Decode(&kv); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		rawUsername, ok := kv["username"]
-		if !ok {
-			http.Error(w, "Username not supplied", http.StatusBadRequest)
-			return
-		}
-
-		username, ok := rawUsername.(string)
-		if !ok {
-			http.Error(w, "Username invalid type", http.StatusBadRequest)
-			return
-		}
+        //Get username
+        username := r.PathValue("username")
+        
+        if username == "" {
+            http.Error(w, "Username not provided", http.StatusBadRequest)
+            return
+        }
 
 		student, err := s.GetStudent(username)
 		if err != nil {
@@ -69,13 +56,19 @@ func GetStudentHandler(s *services.StudentService) http.HandlerFunc {
 func UpdateStudentHandler(studentService *services.StudentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var studentUpdate models.StudentUpdate
+        username := r.PathValue("username")
+
+        if username == "" {
+            http.Error(w, "Username not provided", http.StatusBadRequest)
+            return
+        }
 
 		if err := json.NewDecoder(r.Body).Decode(&studentUpdate); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		student, err := studentService.UpdateStudent(studentUpdate)
+		student, err := studentService.UpdateStudent(username, studentUpdate)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

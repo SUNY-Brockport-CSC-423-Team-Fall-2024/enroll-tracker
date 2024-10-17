@@ -62,3 +62,15 @@ func LoginHandler(userSessionService *services.UserSessionService, userAuthServi
 		w.WriteHeader(200)
 	}
 }
+
+func RefreshTokenHandler(userSessionService *services.UserSessionService) http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+         
+    }
+}
+
+func LogoutHandler(userSessionService *services.UserSessionService) http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+         
+    }
+}

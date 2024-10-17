@@ -53,11 +53,11 @@ func (s *StudentService) GetStudent(username string) (models.Student, error) {
 	return student, err
 }
 
-func (s *StudentService) UpdateStudent(studentUpdates models.StudentUpdate) (models.Student, error) {
+func (s *StudentService) UpdateStudent(username string, studentUpdates models.StudentUpdate) (models.Student, error) {
 	var student models.Student
 
 	//Validate updates
-	if !utils.ValidUsername(studentUpdates.Username) {
+	if !utils.ValidUsername(username) {
 		return student, errors.New("Invalid username")
 	}
 	if studentUpdates.FirstName != nil && !utils.ValidName(*studentUpdates.FirstName) {
@@ -74,7 +74,7 @@ func (s *StudentService) UpdateStudent(studentUpdates models.StudentUpdate) (mod
 	}
 
 	//Make sure there is at least one update. If not return
-	student, err := s.repository.UpdateStudent(studentUpdates)
+	student, err := s.repository.UpdateStudent(username, studentUpdates)
 
 	return student, err
 }
