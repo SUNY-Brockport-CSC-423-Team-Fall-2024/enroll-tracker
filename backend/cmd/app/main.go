@@ -35,12 +35,14 @@ func main() {
 	})
 
 	//Student routes
-	stdMux.HandleFunc("/api/students/create-student", handlers.CreateStudentHandler(studentService))
-	stdMux.HandleFunc("/api/students/get-student", handlers.GetStudentHandler(studentService))
-	stdMux.HandleFunc("/api/students/update-student", handlers.UpdateStudentHandler(studentService))
+    stdMux.HandleFunc("POST /api/students", handlers.CreateStudentHandler(studentService))
+	stdMux.HandleFunc("GET /api/students/{username}", handlers.GetStudentHandler(studentService))
+	stdMux.HandleFunc("PUT /api/students/{username}", handlers.UpdateStudentHandler(studentService))
 
 	//Auth routes
-	stdMux.HandleFunc("/auth/login", handlers.LoginHandler(userSessionService, userAuthService))
+	stdMux.HandleFunc("POST /auth/login", handlers.LoginHandler(userSessionService, userAuthService))
+    stdMux.HandleFunc("POST /auth/token-refresh", handlers.RefreshTokenHandler(userSessionService))
+    stdMux.HandleFunc("POST /auth/logout", handlers.LogoutHandler(userSessionService))
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{}))
 	loggingMiddleware := middleware.LoggingMiddleware(logger)
