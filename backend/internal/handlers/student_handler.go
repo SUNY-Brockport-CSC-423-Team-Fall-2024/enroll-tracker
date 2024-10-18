@@ -28,13 +28,13 @@ func CreateStudentHandler(s *services.StudentService) http.HandlerFunc {
 
 func GetStudentHandler(s *services.StudentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-        //Get username
-        username := r.PathValue("username")
-        
-        if username == "" {
-            http.Error(w, "Username not provided", http.StatusBadRequest)
-            return
-        }
+		//Get username
+		username := r.PathValue("username")
+
+		if username == "" {
+			http.Error(w, "Username not provided", http.StatusBadRequest)
+			return
+		}
 
 		student, err := s.GetStudent(username)
 		if err != nil {
@@ -43,7 +43,6 @@ func GetStudentHandler(s *services.StudentService) http.HandlerFunc {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-
 		if err := json.NewEncoder(w).Encode(student); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -56,12 +55,12 @@ func GetStudentHandler(s *services.StudentService) http.HandlerFunc {
 func UpdateStudentHandler(studentService *services.StudentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var studentUpdate models.StudentUpdate
-        username := r.PathValue("username")
+		username := r.PathValue("username")
 
-        if username == "" {
-            http.Error(w, "Username not provided", http.StatusBadRequest)
-            return
-        }
+		if username == "" {
+			http.Error(w, "Username not provided", http.StatusBadRequest)
+			return
+		}
 
 		if err := json.NewDecoder(r.Body).Decode(&studentUpdate); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

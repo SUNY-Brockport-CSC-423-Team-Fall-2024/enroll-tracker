@@ -3,13 +3,15 @@ package repositories
 import (
 	"database/sql"
 	"enroll-tracker/internal/models"
-	"fmt"
+	"errors"
 	"time"
 )
 
 type UserSessionRepository interface {
-	CreateUserSession(user_id int, sess_id string, issued_at time.Time, expiration_time time.Time, not_before time.Time) (models.UserSession, error)
-	GetUserSession(sess_id string) (models.UserSession, error)
+	CreateUserSession(userID int, username string, refreshToken string, refreshTokenID string, issuedAt time.Time, expiresAt time.Time) (models.UserSession, error)
+	GetUserSession(refreshTokenID string) (models.UserSession, error)
+	GetUserRole(username string) (string, error)
+	RevokeUserSession(refreshTokenID string) error
 }
 
 type PostgresUserSessionRepository struct {
@@ -20,26 +22,57 @@ func CreatePostgresUserSessionRepository(db *sql.DB) *PostgresUserSessionReposit
 	return &PostgresUserSessionRepository{db: db}
 }
 
-func (r *PostgresUserSessionRepository) CreateUserSession(user_id int, sess_id string, issued_at time.Time, expiration_time time.Time, not_before time.Time) (models.UserSession, error) {
+func (r *PostgresUserSessionRepository) CreateUserSession(userID int, username string, refreshToken string, refreshTokenID string, issuedAt time.Time, expiresAt time.Time) (models.UserSession, error) {
 	var userSession models.UserSession
 
-	query := fmt.Sprintf(`SELECT * FROM public.create_user_session($1,$2,$3,$4,$5)`)
+	query := `SELECT * FROM public.create_user_session($1,$2,$3,$4,$5,$6)`
 
-	row := r.db.QueryRow(query, user_id, sess_id, issued_at, expiration_time, not_before)
+	row := r.db.QueryRow(query, userID, username, refreshToken, refreshTokenID, issuedAt, expiresAt)
 
-	err := row.Scan(&userSession.ID, &userSession.UserID, &userSession.SessID, &userSession.IssuedAt, &userSession.ExpirationTime, &userSession.NotBefore)
+	err := row.Scan(&userSession.ID, &userSession.UserID, &userSession.Username, &userSession.RefreshToken, &userSession.RefreshTokenID, &userSession.IssuedAt, &userSession.ExpiresAt, &userSession.Revoked)
 
 	return userSession, err
 }
 
-func (r *PostgresUserSessionRepository) GetUserSession(sess_id string) (models.UserSession, error) {
+func (r *PostgresUserSessionRepository) GetUserSession(refreshTokenID string) (models.UserSession, error) {
 	var userSession models.UserSession
 
 	query := `SELECT * FROM public.get_user_session($1)`
 
-	row := r.db.QueryRow(query, sess_id)
+	row := r.db.QueryRow(query, refreshTokenID)
 
-	err := row.Scan(&userSession.ID, &userSession.UserID, &userSession.SessID, &userSession.IssuedAt, &userSession.ExpirationTime, &userSession.NotBefore)
+	err := row.Scan(&userSession.ID, &userSession.UserID, &userSession.Username, &userSession.RefreshToken, &userSession.RefreshTokenID, &userSession.IssuedAt, &userSession.ExpiresAt, &userSession.Revoked)
 
 	return userSession, err
+}
+
+func (r *PostgresUserSessionRepository) GetUserRole(username string) (string, error) {
+	var role string
+
+	query := `SELECT * FROM public.get_user_role($1)`
+
+	row := r.db.QueryRow(query, username)
+
+	err := row.Scan(&role)
+
+	return role, err
+}
+
+func (r *PostgresUserSessionRepository) RevokeUserSession(refreshTokenID string) error {
+	query := `SELECT * FROM public.revoke_user_session($1)`
+
+	result, err := r.db.Exec(query, refreshTokenID)
+	if err != nil {
+		return err
+	}
+
+	numRows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if numRows != 1 {
+		return errors.New("Unable to revoke user session")
+	}
+
+	return nil
 }

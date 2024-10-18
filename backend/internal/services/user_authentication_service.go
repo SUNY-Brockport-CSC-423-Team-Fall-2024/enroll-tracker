@@ -28,7 +28,7 @@ func (s *UserAuthenticationService) CreateNewUserAuthentication(username string,
 	}
 
 	//Hash password
-	passwordHash, err := utils.HashPassword(password, utils.CurArgon2IdParams)
+	passwordHash, err := utils.HashText(password, utils.CurArgon2IdParams)
 	if err != nil {
 		return userAuth, errors.New(`Error generating password`)
 	}
