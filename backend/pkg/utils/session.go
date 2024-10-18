@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"enroll-tracker/internal/models"
 	"errors"
 	"os"
@@ -10,11 +12,11 @@ import (
 	"github.com/google/uuid"
 )
 
-func CreateSessionID() string {
+func CreateUUID() string {
 	return uuid.NewString()
 }
 
-func CreateJWT(sessId string, username string, expiresAt time.Time, issuedAt time.Time, notBefore time.Time) (string, error) {
+func CreateJWT(username string, role string, expiresAt time.Time, issuedAt time.Time, notBefore time.Time) (string, error) {
 	signingKey, ok := os.LookupEnv("ENROLL_TRACKER_RSA_PRIVATE_KEY")
 	if !ok {
 		return "", errors.New("Can't sign JWT")
@@ -29,7 +31,7 @@ func CreateJWT(sessId string, username string, expiresAt time.Time, issuedAt tim
 			Subject:   username,
 			Audience:  jwt.ClaimStrings{"enroll-tracker-client"},
 		},
-		SessID: sessId,
+		Role: role,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, &claims)
@@ -60,4 +62,17 @@ func VerifyJWT(tokenString string) (*models.CustomClaims, error) {
 	}
 
 	return &claims, nil
+}
+
+func CreateRefreshToken(length int) (string, error) {
+	bytes := make([]byte, length)
+
+	_, err := rand.Reader.Read(bytes)
+	if err != nil {
+		return "", errors.New("Unable to create refresh token")
+	}
+
+	refreshToken := base64.RawStdEncoding.EncodeToString(bytes)
+
+	return refreshToken, nil
 }

@@ -21,6 +21,10 @@ var (
 	} //Recommendations from OWASP
 )
 
+const (
+	RefreshTokenLength = 256
+)
+
 type Argon2IdParams struct {
 	Version    uint8
 	Memory     uint32
@@ -39,14 +43,14 @@ func generateSalt(len uint32) ([]byte, error) {
 	return salt, nil
 }
 
-func HashPassword(password string, params Argon2IdParams) (string, error) {
+func HashText(text string, params Argon2IdParams) (string, error) {
 	salt, err := generateSalt(10)
 
 	if err != nil {
 		return "", errors.New(`Error generating salt`)
 	}
 
-	hash := argon2.IDKey([]byte(password),
+	hash := argon2.IDKey([]byte(text),
 		salt,
 		CurArgon2IdParams.Iterations,
 		CurArgon2IdParams.Memory,
@@ -54,27 +58,27 @@ func HashPassword(password string, params Argon2IdParams) (string, error) {
 		CurArgon2IdParams.KeyLength,
 	)
 
-	encodedPasswordHash := base64.RawStdEncoding.EncodeToString(hash)
+	encodedTextHash := base64.RawStdEncoding.EncodeToString(hash)
 	encodedSalt := base64.RawStdEncoding.EncodeToString(salt)
 
-	encodedPassInfo := fmt.Sprintf("$argon2id$v=%d$m=%d,t=%d,p=%d,kl=%d$%s$%s", CurArgon2IdParams.Version, CurArgon2IdParams.Memory, CurArgon2IdParams.Iterations, CurArgon2IdParams.Threads, CurArgon2IdParams.KeyLength, encodedSalt, encodedPasswordHash)
+	encodedTextInfo := fmt.Sprintf("$argon2id$v=%d$m=%d,t=%d,p=%d,kl=%d$%s$%s", CurArgon2IdParams.Version, CurArgon2IdParams.Memory, CurArgon2IdParams.Iterations, CurArgon2IdParams.Threads, CurArgon2IdParams.KeyLength, encodedSalt, encodedTextHash)
 
-	return encodedPassInfo, nil
+	return encodedTextInfo, nil
 }
 
-func VerifyPassword(password string, encodedPasswordHash string) (bool, error) {
+func VerifyHashedText(text string, encodedTextHash string) (bool, error) {
 	//decode argon2 params, salt, and digest before hashing password
-	parts := strings.Split(encodedPasswordHash, "$")
+	parts := strings.Split(encodedTextHash, "$")
 	var argonParams Argon2IdParams
 
 	if len(parts) != 6 {
-		return false, errors.New("Invalid encoded password hash")
+		return false, errors.New("Invalid encoded text hash")
 	}
 
 	//read version
 	_, err := fmt.Sscanf(parts[2], "v=%d", &argonParams.Version)
 	if err != nil {
-		return false, errors.New("Invalid version in encoded password hash")
+		return false, errors.New("Invalid version in encoded text hash")
 	}
 
 	//read memory, time, threads
@@ -96,7 +100,7 @@ func VerifyPassword(password string, encodedPasswordHash string) (bool, error) {
 	}
 
 	//hash provided password with argon2id params used when password was set
-	newHash := argon2.IDKey([]byte(password),
+	newHash := argon2.IDKey([]byte(text),
 		salt,
 		argonParams.Iterations,
 		argonParams.Memory,

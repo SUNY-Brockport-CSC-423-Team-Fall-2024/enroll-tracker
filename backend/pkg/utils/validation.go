@@ -41,3 +41,10 @@ func ValidName(name string) bool {
 	}
 	return true
 }
+
+func IsString(text interface{}) bool {
+	if _, ok := text.(string); !ok {
+		return false
+	}
+	return true
+}
