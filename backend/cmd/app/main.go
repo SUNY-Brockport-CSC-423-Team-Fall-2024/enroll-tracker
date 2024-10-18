@@ -3,6 +3,7 @@ package main
 import (
 	"enroll-tracker/internal/handlers"
 	"enroll-tracker/internal/middleware"
+	"enroll-tracker/internal/redis"
 	"enroll-tracker/internal/repositories"
 	"enroll-tracker/internal/services"
 	"fmt"
@@ -21,12 +22,21 @@ func main() {
 	}
 	defer db.Close()
 
+	redis, err := redis.CreateNewRedisClient()
+	if err != nil {
+		panic(err.Error())
+	}
+	defer redis.Close()
+
 	uaRepo := repositories.CreatePostgresUserAuthenticationRepository(db)
 	studentRepo := repositories.CreatePostgresStudentRepository(db)
 	userSessionRepo := repositories.CreatePostgresUserSessionRepository(db)
+	redisRepo := repositories.CreateRedisRepository(redis)
+
 	userAuthService := services.CreateUserAuthenticationService(uaRepo)
 	studentService := services.CreateStudentService(studentRepo, userAuthService)
 	userSessionService := services.CreateUserSessionService(userSessionRepo)
+	redisSession := services.CreateRedisService(redisRepo)
 
 	stdMux := http.NewServeMux()
 	stdMux.HandleFunc("/api/healthz", func(w http.ResponseWriter, r *http.Request) {
@@ -35,14 +45,14 @@ func main() {
 	})
 
 	//Student routes
-    stdMux.HandleFunc("POST /api/students", handlers.CreateStudentHandler(studentService))
+	stdMux.HandleFunc("POST /api/students", handlers.CreateStudentHandler(studentService))
 	stdMux.HandleFunc("GET /api/students/{username}", handlers.GetStudentHandler(studentService))
 	stdMux.HandleFunc("PUT /api/students/{username}", handlers.UpdateStudentHandler(studentService))
 
 	//Auth routes
 	stdMux.HandleFunc("POST /auth/login", handlers.LoginHandler(userSessionService, userAuthService))
-    stdMux.HandleFunc("POST /auth/token-refresh", handlers.RefreshTokenHandler(userSessionService))
-    stdMux.HandleFunc("POST /auth/logout", handlers.LogoutHandler(userSessionService))
+	stdMux.HandleFunc("POST /auth/token-refresh", handlers.RefreshTokenHandler(userSessionService, redisSession))
+	stdMux.HandleFunc("POST /auth/logout", handlers.LogoutHandler(userSessionService, redisSession))
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{}))
 	loggingMiddleware := middleware.LoggingMiddleware(logger)
