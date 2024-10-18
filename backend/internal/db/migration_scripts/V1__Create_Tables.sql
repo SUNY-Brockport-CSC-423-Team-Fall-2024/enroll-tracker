@@ -16,10 +16,12 @@ CREATE TABLE UserAuthentication (
 CREATE TABLE UserSession (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
-    sess_id TEXT NOT NULL,
+    username VARCHAR(60) NOT NULL, -- Not a 100% necessity becasue we have user_id. However, we use this to reduce db calls to refresh token
+    refresh_token TEXT NOT NULL,
+    refresh_token_id TEXT NOT NULL,
     issued_at TIMESTAMP NOT NULL,
-    expiration_time TIMESTAMP NOT NULL,
-    not_before TIMESTAMP NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    revoked BOOLEAN DEFAULT FALSE,
 
     FOREIGN KEY (user_id) REFERENCES UserAuthentication(id)
 );

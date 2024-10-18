@@ -47,15 +47,25 @@ type UserAuthentication struct {
 type UserSession struct {
 	ID             int       `json:"id"`
 	UserID         int       `json:"user_id"`
-	SessID         string    `json:"sess_id"`
+	Username       string    `json:"username"`
+	RefreshToken   string    `json:"refresh_token"`
+	RefreshTokenID string    `json:"refresh_token_id"`
 	IssuedAt       time.Time `json:"issued_at"`
-	ExpirationTime time.Time `json:"expiration_time"`
-	NotBefore      time.Time `json:"not_before"`
+	CreatedAt      time.Time `json:"created_at"`
+	ExpiresAt      time.Time `json:"expires_at"`
+	Revoked        bool      `json:"revoked"`
 }
 
 type CustomClaims struct {
 	jwt.RegisteredClaims
-	SessID string `json:"sess_id,omitempty"`
+	Role string `json:"role"`
+}
+
+type TokenResponse struct {
+	AccessToken    string    `json:"access_token"`
+	RefreshToken   string    `json:"refresh_token"`
+	RefreshTokenID string    `json:"refresh_token_id"`
+	ExpiresIn      time.Time `json:"expires_in"`
 }
 
 // Minimal wrapper for http.ResponseWriter that allows status code to be captured for logging.
