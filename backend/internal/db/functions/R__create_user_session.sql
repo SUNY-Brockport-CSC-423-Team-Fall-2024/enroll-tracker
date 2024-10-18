@@ -1,28 +1,33 @@
 CREATE OR REPLACE FUNCTION create_user_session(
     i_user_id   int,
-    i_sess_id   text,
-    i_iat timestamp,
-    i_expiration_time timestamp,
-    i_not_before timestamp,
+    i_username varchar,
+    i_refresh_token   text,
+    i_refresh_token_id text,
+    i_issued_at timestamp,
+    i_expires_at timestamp,
     OUT o_id int,
     OUT o_user_id int,
-    OUT o_sess_id text,
+    OUT o_username varchar,
+    OUT o_refresh_token text,
+    OUT o_refresh_token_id text,
     OUT o_issued_at timestamp,
-    OUT o_expiration_time timestamp,
-    OUT o_not_before timestamp
+    OUT o_expires_at timestamp,
+    OUT o_revoked boolean
 )
 AS $$
 BEGIN
-    INSERT INTO UserSession (user_id, sess_id, issued_at, expiration_time, not_before)
-    VALUES (i_user_id, i_sess_id, i_iat, i_expiration_time, i_not_before)
+    INSERT INTO UserSession (user_id, username, refresh_token, refresh_token_id, issued_at, expires_at)
+    VALUES (i_user_id, i_username, i_refresh_token, i_refresh_token_id, i_issued_at, i_expires_at)
     RETURNING *
     INTO
         o_id,
         o_user_id,
-        o_sess_id,
+        o_username,
+        o_refresh_token,
+        o_refresh_token_id,
         o_issued_at,
-        o_expiration_time,
-        o_not_before;
+        o_expires_at,
+        o_revoked;
 END;
 $$
 LANGUAGE plpgsql;
