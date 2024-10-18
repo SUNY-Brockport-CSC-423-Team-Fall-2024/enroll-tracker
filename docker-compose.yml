@@ -16,6 +16,8 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - DB_NAME=${DB_NAME}
       - ENROLL_TRACKER_RSA_PRIVATE_KEY=${ENROLL_TRACKER_RSA_PRIVATE_KEY}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_HOST_PORT=${REDIS_HOST_PORT}
     depends_on:
       db:
         condition: service_healthy
@@ -34,6 +36,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    depends_on:
+      - redis
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "${REDIS_HOST_PORT}:${REDIS_CONTAINER_PORT}"
+    command: redis-server --requirepass ${REDIS_PASSWORD}
   flyway:
     container_name: flyway
     image: flyway/flyway:latest
