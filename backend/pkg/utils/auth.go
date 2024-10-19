@@ -25,6 +25,16 @@ const (
 	RefreshTokenLength = 256
 )
 
+var Roles = struct {
+	STUDENT string
+	TEACHER string
+	ADMIN   string
+}{
+	STUDENT: "student",
+	TEACHER: "teacher",
+	ADMIN:   "admin",
+}
+
 type Argon2IdParams struct {
 	Version    uint8
 	Memory     uint32
