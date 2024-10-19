@@ -68,6 +68,15 @@ type TokenResponse struct {
 	ExpiresIn      time.Time `json:"expires_in"`
 }
 
+type RouteAuth struct {
+	MethodRoles []MethodRoles
+}
+
+type MethodRoles struct {
+	Roles       []string `json:"role"`
+	HTTPMethods []string `json:"http_methods"`
+}
+
 // Minimal wrapper for http.ResponseWriter that allows status code to be captured for logging.
 type ResponseWriter struct {
 	http.ResponseWriter
