@@ -134,7 +134,7 @@ func RefreshTokenHandler(userSessionService *services.UserSessionService, redisS
 		//Blacklist old access token in redis cache until it expires
 		ttl := claims.ExpiresAt.Time.Sub(time.Now().UTC()).Seconds()
 		if ttl > 0 {
-			err := redisService.Set(ctx, accessToken, true, time.Duration(ttl)*time.Second)
+			err := redisService.Set(ctx, accessToken, 1, time.Duration(ttl)*time.Second)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
@@ -228,7 +228,7 @@ func LogoutHandler(userSessionService *services.UserSessionService, redisService
 		//Blacklist old access token in redis cache until it expires
 		ttl := claims.ExpiresAt.Time.Sub(time.Now().UTC()).Seconds()
 		if ttl > 0 {
-			err := redisService.Set(ctx, accessToken, true, time.Duration(ttl)*time.Second)
+			err := redisService.Set(ctx, accessToken, 1, time.Duration(ttl)*time.Second)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
