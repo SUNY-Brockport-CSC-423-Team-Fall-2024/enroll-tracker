@@ -28,9 +28,14 @@ func (r *RedisRepository) Set(ctx context.Context, key string, value interface{}
 	return nil
 }
 
+// Gets a value from the Redis cache using the key in O(1) time.
+// If the key doesn't exist nil, nil are returned
 func (r *RedisRepository) Get(ctx context.Context, key string) (interface{}, error) {
 	value, err := r.redis.Get(ctx, key).Result()
 	if err != nil {
+		if err.Error() == redis.Nil.Error() {
+			return nil, nil
+		}
 		return nil, err
 	}
 	return value, nil
