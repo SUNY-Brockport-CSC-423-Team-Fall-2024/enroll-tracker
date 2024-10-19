@@ -6,6 +6,7 @@ import (
 	"enroll-tracker/internal/models"
 	"errors"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -75,4 +76,8 @@ func CreateRefreshToken(length int) (string, error) {
 	refreshToken := base64.RawStdEncoding.EncodeToString(bytes)
 
 	return refreshToken, nil
+}
+
+func ExtractAccessTokenFromAuthHeader(bearerToken string) string {
+	return strings.TrimSpace(strings.TrimPrefix(bearerToken, "Bearer"))
 }
