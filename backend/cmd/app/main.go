@@ -54,9 +54,15 @@ func main() {
 	stdMux.HandleFunc("POST /auth/token-refresh", handlers.RefreshTokenHandler(userSessionService, redisSession))
 	stdMux.HandleFunc("POST /auth/logout", handlers.LogoutHandler(userSessionService, redisSession))
 
+	//Crete auth middleware
+	authMiddleware := middleware.AuthMiddleware(redisSession)
+
+	//Create logging middleware
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{}))
 	loggingMiddleware := middleware.LoggingMiddleware(logger)
-	loggedRouter := loggingMiddleware(stdMux)
+
+	//Create router with logging and auth middlewares
+	loggedRouter := loggingMiddleware(authMiddleware(stdMux))
 
 	l, ok := os.LookupEnv("API_CONTAINER_PORT")
 
