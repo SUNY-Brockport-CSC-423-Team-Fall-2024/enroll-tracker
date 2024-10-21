@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION get_student (
-    username varchar,
+    i_username varchar,
     OUT o_id int,
     OUT o_first_name varchar,
     OUT o_last_name varchar,
@@ -38,11 +38,11 @@ BEGIN
     FROM Student
     INNER JOIN 
         UserAuthentication ON Student.auth_id = UserAuthentication.id
-    WHERE UserAuthentication.username = get_student.username;
+    WHERE UserAuthentication.username = i_username;
     
     EXCEPTION
         WHEN NO_DATA_FOUND THEN
-            RAISE EXCEPTION 'No student found for username %s', get_student.username;
+            RAISE EXCEPTION 'No student found for username %s', i_username;
 END;
 $$
 LANGUAGE plpgsql;

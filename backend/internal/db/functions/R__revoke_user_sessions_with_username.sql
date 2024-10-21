@@ -1,5 +1,5 @@
-CREATE OR REPLACE FUNCTION revoke_user_session (
-    i_refresh_token_id text
+CREATE OR REPLACE FUNCTION revoke_user_sessions_with_username (
+    i_username text
 )
 RETURNS void
 AS $$
@@ -8,7 +8,7 @@ BEGIN
         SET
             revoked = true
         WHERE 
-            refresh_token_id = i_refresh_token_id;
+            username = i_username;
 END;
 $$
 LANGUAGE plpgsql;

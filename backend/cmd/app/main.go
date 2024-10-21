@@ -28,16 +28,23 @@ func main() {
 	}
 	defer redis.Close()
 
+	//Create repos
 	uaRepo := repositories.CreatePostgresUserAuthenticationRepository(db)
 	studentRepo := repositories.CreatePostgresStudentRepository(db)
+	teacherRepo := repositories.CreatePostgresTeacherRepository(db)
+	administratorRepo := repositories.CreatePostgresAdministratorRepository(db)
 	userSessionRepo := repositories.CreatePostgresUserSessionRepository(db)
 	redisRepo := repositories.CreateRedisRepository(redis)
 
+	//Create services
 	userAuthService := services.CreateUserAuthenticationService(uaRepo)
 	studentService := services.CreateStudentService(studentRepo, userAuthService)
+	teacherService := services.CreateTeacherService(teacherRepo, userAuthService)
+	administratorService := services.CreateAdministratorService(administratorRepo, userAuthService)
 	userSessionService := services.CreateUserSessionService(userSessionRepo)
 	redisSession := services.CreateRedisService(redisRepo)
 
+	//Create http multiplexer
 	stdMux := http.NewServeMux()
 	stdMux.HandleFunc("/api/healthz", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Healthy!")
@@ -49,8 +56,18 @@ func main() {
 	stdMux.HandleFunc("GET /api/students/{username}", handlers.GetStudentHandler(studentService))
 	stdMux.HandleFunc("PUT /api/students/{username}", handlers.UpdateStudentHandler(studentService))
 
+	//Teacher routes
+	stdMux.HandleFunc("POST /api/teachers", handlers.CreateTeacherHandler(teacherService))
+	stdMux.HandleFunc("GET /api/teachers/{username}", handlers.GetTeacherHandler(teacherService))
+	stdMux.HandleFunc("PUT /api/teachers/{username}", handlers.UpdateTeacherHandler(teacherService))
+
+	//Administrator routes
+	stdMux.HandleFunc("POST /api/administrators", handlers.CreateAdministratorHandler(administratorService))
+	stdMux.HandleFunc("GET /api/administrators/{username}", handlers.GetAdministratorHandler(administratorService))
+	stdMux.HandleFunc("PUT /api/administrators/{username}", handlers.UpdateAdministratorHandler(administratorService))
+
 	//Auth routes
-	stdMux.HandleFunc("POST /auth/login", handlers.LoginHandler(userSessionService, userAuthService))
+	stdMux.HandleFunc("/auth/login", handlers.LoginHandler(userSessionService, userAuthService))
 	stdMux.HandleFunc("POST /auth/token-refresh", handlers.RefreshTokenHandler(userSessionService, redisSession))
 	stdMux.HandleFunc("POST /auth/logout", handlers.LogoutHandler(userSessionService, redisSession))
 

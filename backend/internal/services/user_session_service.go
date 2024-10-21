@@ -82,7 +82,7 @@ func (s *UserSessionService) IsUserSessionValid(userSession models.UserSession) 
 
 	//Refresh token is past and not revoked. Revoke and return false
 	if time.Now().Compare(userSession.ExpiresAt) == 1 {
-		_ = s.repository.RevokeUserSession(userSession.RefreshTokenID)
+		_ = s.repository.RevokeUserSessionWithID(userSession.RefreshTokenID)
 		return false
 	}
 
@@ -94,8 +94,20 @@ func (s *UserSessionService) IsUserSessionValid(userSession models.UserSession) 
 // # Returns false, error if there is an error when revoking the user session
 //
 // Return true, nil if the user session was successfully revoked
-func (s *UserSessionService) RevokeUserSession(refreshTokenID string) (bool, error) {
-	if err := s.repository.RevokeUserSession(refreshTokenID); err != nil {
+func (s *UserSessionService) RevokeUserSessionWithID(refreshTokenID string) (bool, error) {
+	if err := s.repository.RevokeUserSessionWithID(refreshTokenID); err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+// Attempts to revoke all user sessions in repo layer
+//
+// # Returns false, error if there is an error when revoking the user sessions
+//
+// Return true, nil if the user sessions were successfully revoked
+func (s *UserSessionService) RevokeUserSessionWithUsername(username string) (bool, error) {
+	if err := s.repository.RevokeUserSessionWithUsername(username); err != nil {
 		return false, err
 	}
 	return true, nil

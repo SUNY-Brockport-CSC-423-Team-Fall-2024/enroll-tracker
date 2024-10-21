@@ -13,49 +13,36 @@ BEGIN
     WHERE username = i_username;
 
     -- Check if the user exists in the Student table
-    BEGIN
-        SELECT 1
+        SELECT 'student'
         INTO o_role
         FROM Student
         WHERE Student.auth_id = user_id;
-        o_role := 'student';
-        RETURN;
-    EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-            -- Continue to the next role check
-            NULL;
-    END;
+        
+        IF FOUND THEN
+            RETURN;
+        END IF;
 
     -- Check if the user exists in the Teacher table
-    BEGIN
-        SELECT 1
+        SELECT 'teacher'
         INTO o_role
         FROM Teacher
         WHERE Teacher.auth_id = user_id;
         
-        o_role := 'teacher';
-        RETURN;
-    EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-            -- Continue to the next role check
-            NULL;
-    END;
+        IF FOUND THEN
+            RETURN;
+        END IF;
 
     -- Check if the user exists in the Administrator table
-    BEGIN
-        SELECT 1
+        SELECT 'admin'
         INTO o_role
         FROM Administrator
         WHERE Administrator.auth_id = user_id;
         
-        o_role := 'admin';
-        RETURN;
-    EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-            -- If no role is found, raise an exception
-            RAISE EXCEPTION 'No role found for user with username %s', i_username;
-    END;
-
+        IF FOUND THEN
+            RETURN;
+        END IF;
+    
+    RAISE EXCEPTION 'No role found for user with username %', i_username;
 END;
 $$
 LANGUAGE plpgsql;

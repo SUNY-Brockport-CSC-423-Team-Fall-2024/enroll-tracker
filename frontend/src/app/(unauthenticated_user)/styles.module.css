@@ -1,54 +1,54 @@
 .all_content {
-    display: flex;
-    flex-direction: column;
-    justify-content: between;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: between;
+  gap: 20px;
 }
 
 .main_content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: between;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: between;
+  gap: 20px;
 }
 
 .login_box {
-    display: flex;
-    flex-direction: column;
-    justify-content: between;
-    align-items: center;
-    max-width: 400px;
-    min-width: 200px;
-    background: var(--box-background);
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: between;
+  align-items: center;
+  max-width: 400px;
+  min-width: 200px;
+  background: var(--box-background);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: var(--box-shadow);
 }
 
 .login_box h2 {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .login_form {
-    display: flex;
-    flex-direction: column;
-    justify-content: between;
-    gap: 15px;
-    align-items: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: between;
+  gap: 15px;
+  align-items: left;
 }
 
 .login_form_field {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 #login_submit {
-    background: var(--button-background);
-    color: white;
-    border: 0px;
-    border-radius: 50px;
-    padding: 10px;
-    font-weight: bold;
+  background: var(--button-background);
+  color: white;
+  border: 0px;
+  border-radius: 50px;
+  padding: 10px;
+  font-weight: bold;
 }

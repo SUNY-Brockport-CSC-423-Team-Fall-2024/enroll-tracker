@@ -11,7 +11,8 @@ type UserSessionRepository interface {
 	CreateUserSession(userID int, username string, refreshToken string, refreshTokenID string, issuedAt time.Time, expiresAt time.Time) (models.UserSession, error)
 	GetUserSession(refreshTokenID string) (models.UserSession, error)
 	GetUserRole(username string) (string, error)
-	RevokeUserSession(refreshTokenID string) error
+	RevokeUserSessionWithID(refreshTokenID string) error
+	RevokeUserSessionWithUsername(username string) error
 }
 
 type PostgresUserSessionRepository struct {
@@ -58,8 +59,8 @@ func (r *PostgresUserSessionRepository) GetUserRole(username string) (string, er
 	return role, err
 }
 
-func (r *PostgresUserSessionRepository) RevokeUserSession(refreshTokenID string) error {
-	query := `SELECT * FROM public.revoke_user_session($1)`
+func (r *PostgresUserSessionRepository) RevokeUserSessionWithID(refreshTokenID string) error {
+	query := `SELECT * FROM public.revoke_user_session_with_id($1)`
 
 	result, err := r.db.Exec(query, refreshTokenID)
 	if err != nil {
@@ -72,6 +73,17 @@ func (r *PostgresUserSessionRepository) RevokeUserSession(refreshTokenID string)
 	}
 	if numRows != 1 {
 		return errors.New("Unable to revoke user session")
+	}
+
+	return nil
+}
+
+func (r *PostgresUserSessionRepository) RevokeUserSessionWithUsername(username string) error {
+	query := `SELECT * FROM public.revoke_user_sessions_with_username($1)`
+
+	_, err := r.db.Exec(query, username)
+	if err != nil {
+		return err
 	}
 
 	return nil

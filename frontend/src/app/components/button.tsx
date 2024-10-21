@@ -1,16 +1,16 @@
-import styles from './styles.module.css'
+import styles from "./styles.module.css";
 
 interface ButtonWithCallbackProps {
-    btnTitle: string,
-    onClick: (...args: any[]) => any;    
+  btnTitle: string;
+  onClick: (...args: any[]) => any;
 }
 
-const Button: React.FC<ButtonWithCallbackProps> = ({onClick, btnTitle}) => {
-   return (
+const Button: React.FC<ButtonWithCallbackProps> = ({ onClick, btnTitle }) => {
+  return (
     <div className={styles.button} onClick={onClick}>
-       <p>{btnTitle}</p> 
+      <p>{btnTitle}</p>
     </div>
-   ) 
-}
+  );
+};
 
 export default Button;

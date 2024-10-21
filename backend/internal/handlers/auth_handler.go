@@ -13,8 +13,18 @@ import (
 
 func LoginHandler(userSessionService *services.UserSessionService, userAuthService *services.UserAuthenticationService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var kv map[string]interface{}
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
+
+		//Get request body
+		var kv map[string]interface{}
 		if err := json.NewDecoder(r.Body).Decode(&kv); err != nil {
 			http.Error(w, "Login failed: Invalid username or password", http.StatusBadRequest)
 			return
@@ -47,6 +57,13 @@ func LoginHandler(userSessionService *services.UserSessionService, userAuthServi
 			return
 		}
 
+		//Revoke user user sessions
+		_, err = userSessionService.RevokeUserSessionWithUsername(userAuth.Username)
+		if err != nil {
+			http.Error(w, "Login failed: Invalid username and password", http.StatusUnauthorized)
+			return
+		}
+
 		//Create token resposne object
 		var tokenResponse models.TokenResponse
 
@@ -72,15 +89,11 @@ func LoginHandler(userSessionService *services.UserSessionService, userAuthServi
 
 func RefreshTokenHandler(userSessionService *services.UserSessionService, redisService *services.RedisService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		var kv map[string]interface{}
-		ctx := context.Background()
-		bearerToken := r.Header.Get("Authorization")
-
-		//Make sure authorization header was included
-		if bearerToken == "" {
-			http.Error(w, "Unable to refresh token", http.StatusBadRequest)
-			return
-		}
 
 		//Get request body
 		if err := json.NewDecoder(r.Body).Decode(&kv); err != nil {
@@ -98,14 +111,6 @@ func RefreshTokenHandler(userSessionService *services.UserSessionService, redisS
 		refreshToken, refreshTokenOk := rt.(string)
 		refreshTokenID, refreshTokenIDOk := rtid.(string)
 		if !refreshTokenOk || !refreshTokenIDOk {
-			http.Error(w, "Unable to refresh token", http.StatusBadRequest)
-			return
-		}
-
-		//Verify access token
-		accessToken := strings.TrimSpace(strings.TrimPrefix(bearerToken, "Bearer"))
-		claims, err := utils.VerifyJWT(accessToken)
-		if err != nil {
 			http.Error(w, "Unable to refresh token", http.StatusBadRequest)
 			return
 		}
@@ -131,18 +136,8 @@ func RefreshTokenHandler(userSessionService *services.UserSessionService, redisS
 			return
 		}
 
-		//Blacklist old access token in redis cache until it expires
-		ttl := claims.ExpiresAt.Time.Sub(time.Now().UTC()).Seconds()
-		if ttl > 0 {
-			err := redisService.Set(ctx, accessToken, 1, time.Duration(ttl)*time.Second)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
-				return
-			}
-		}
-
 		//Refresh token is valid..invalidate old refresh token, create new access token, refresh token, refresh token id
-		ok, err = userSessionService.RevokeUserSession(refreshTokenID)
+		ok, err = userSessionService.RevokeUserSessionWithID(refreshTokenID)
 		if err != nil || !ok {
 			http.Error(w, "Unable to refresh token", http.StatusBadRequest)
 			return
@@ -152,7 +147,7 @@ func RefreshTokenHandler(userSessionService *services.UserSessionService, redisS
 		var tokenResponse models.TokenResponse
 
 		//Create user sess
-		newUserSession, newAccessToken, err := userSessionService.CreateUserSession(userSession.ID, userSession.Username)
+		newUserSession, newAccessToken, err := userSessionService.CreateUserSession(userSession.UserID, userSession.Username)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -173,6 +168,10 @@ func RefreshTokenHandler(userSessionService *services.UserSessionService, redisS
 
 func LogoutHandler(userSessionService *services.UserSessionService, redisService *services.RedisService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		var kv map[string]interface{}
 		ctx := context.Background()
 		bearerToken := r.Header.Get("Authorization")
@@ -207,7 +206,7 @@ func LogoutHandler(userSessionService *services.UserSessionService, redisService
 		accessToken := strings.TrimSpace(strings.TrimPrefix(bearerToken, "Bearer"))
 		claims, err := utils.VerifyJWT(accessToken)
 		if err != nil {
-			http.Error(w, "Unable to successfully logout", http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
@@ -236,7 +235,7 @@ func LogoutHandler(userSessionService *services.UserSessionService, redisService
 		}
 
 		//Revoke user session
-		ok, err = userSessionService.RevokeUserSession(refreshTokenID)
+		ok, err = userSessionService.RevokeUserSessionWithID(refreshTokenID)
 		if err != nil || !ok {
 			http.Error(w, "Unable to successfully logout", http.StatusBadRequest)
 			return

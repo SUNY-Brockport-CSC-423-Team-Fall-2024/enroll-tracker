@@ -16,6 +16,26 @@ type StudentCreation struct {
 	Email       string `json:"email"`
 }
 
+type TeacherCreation struct {
+	Username    string `json:"username"`
+	Password    string `json:"password"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	PhoneNumber string `json:"phone_number"`
+	Email       string `json:"email"`
+	Office      string `json:"office"`
+}
+
+type AdministratorCreation struct {
+	Username    string `json:"username"`
+	Password    string `json:"password"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	PhoneNumber string `json:"phone_number"`
+	Email       string `json:"email"`
+	Office      string `json:"office"`
+}
+
 type StudentUpdate struct {
 	FirstName   *string    `json:"first_name,omitempty"`
 	LastName    *string    `json:"last_name,omitempty"`
@@ -23,6 +43,24 @@ type StudentUpdate struct {
 	Email       *string    `json:"email,omitempty"`
 	LastLogin   *time.Time `json:"last_login,omitempty"`
 	MajorID     *int       `json:"major_id,omitempty"`
+}
+
+type TeacherUpdate struct {
+	FirstName   *string    `json:"first_name,omitempty"`
+	LastName    *string    `json:"last_name,omitempty"`
+	PhoneNumber *string    `json:"phone_number,omitempty"`
+	Email       *string    `json:"email,omitempty"`
+	Office      *string    `json:"office,omitempty"`
+	LastLogin   *time.Time `json:"last_login,omitempty"`
+}
+
+type AdministratorUpdate struct {
+	FirstName   *string    `json:"first_name,omitempty"`
+	LastName    *string    `json:"last_name,omitempty"`
+	PhoneNumber *string    `json:"phone_number,omitempty"`
+	Email       *string    `json:"email,omitempty"`
+	Office      *string    `json:"office,omitempty"`
+	LastLogin   *time.Time `json:"last_login,omitempty"`
 }
 
 type Student struct {
@@ -33,6 +71,32 @@ type Student struct {
 	MajorID     *int       `json:"major_id"`
 	PhoneNumber string     `json:"phone_number"`
 	Email       string     `json:"email"`
+	LastLogin   *time.Time `json:"last_login"`
+	CreatedAt   time.Time  `json:"created_at"`
+	UpdatedAt   time.Time  `json:"updated_at"`
+}
+
+type Teacher struct {
+	ID          int        `json:"id"`
+	FirstName   string     `json:"first_name"`
+	LastName    string     `json:"last_name"`
+	AuthID      int        `json:"auth_id"`
+	PhoneNumber string     `json:"phone_number"`
+	Email       string     `json:"email"`
+	Office      string     `json:"office"`
+	LastLogin   *time.Time `json:"last_login"`
+	CreatedAt   time.Time  `json:"created_at"`
+	UpdatedAt   time.Time  `json:"updated_at"`
+}
+
+type Administrator struct {
+	ID          int        `json:"id"`
+	FirstName   string     `json:"first_name"`
+	LastName    string     `json:"last_name"`
+	AuthID      int        `json:"auth_id"`
+	PhoneNumber string     `json:"phone_number"`
+	Email       string     `json:"email"`
+	Office      string     `json:"office"`
 	LastLogin   *time.Time `json:"last_login"`
 	CreatedAt   time.Time  `json:"created_at"`
 	UpdatedAt   time.Time  `json:"updated_at"`

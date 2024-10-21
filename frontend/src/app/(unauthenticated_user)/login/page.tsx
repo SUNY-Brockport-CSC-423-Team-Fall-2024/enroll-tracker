@@ -1,32 +1,86 @@
-'use client'
+"use client";
 
-import styles from '../styles.module.css'
+import { Dispatch, SetStateAction, useState } from "react";
+import styles from "../styles.module.css";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/providers/auth-provider";
 
 export default function Login() {
+  const router = useRouter();
 
-    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log('hi');
+  const { setIsLoggedIn, getUserRole, setUserRole } = useAuth();
+
+  let [username, setUsername] = useState("");
+  let [password, setPassword] = useState("");
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const resp = await fetch(`/api/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
+
+      if (resp.ok) {
+        await fetch("/api/login-status", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            isLoggedIn: true,
+          }),
+        });
+        setIsLoggedIn(true);
+        setUserRole(await getUserRole());
+        router.push("/dashboard");
+      }
+    } catch (err) {
+      console.error(err);
     }
+  };
 
-    return (
-        <div className={styles.main_content}>
-            <div className={styles.login_box}>
-                <h2>Login</h2>
-                <form onSubmit={handleLogin} className={styles.login_form}>
-                    <div className={styles.login_form_field}>
-                        <label htmlFor="username">Username</label>
-                        <input id="username_input" type="text" name="username" />
-                    </div>
-                    <div className={styles.login_form_field}>
-                        <label htmlFor="password">Password</label>
-                        <input id="password_input" type="password" name="password" />
-                    </div>
-                    <div className={styles.login_form_field}>
-                        <input id={styles.login_submit} type="submit" value="Login" /> 
-                    </div>
-                </form>
-            </div>
-        </div>
-    )
+  const handleTextInputChange = (
+    reactHook: Dispatch<SetStateAction<string>>,
+    e: React.FormEvent<HTMLInputElement>,
+  ) => {
+    reactHook(e.currentTarget.value);
+  };
+
+  return (
+    <div className={styles.main_content}>
+      <div className={styles.login_box}>
+        <h2>Login</h2>
+        <form onSubmit={handleLogin} className={styles.login_form}>
+          <div className={styles.login_form_field}>
+            <label htmlFor="username">Username</label>
+            <input
+              id="username_input"
+              type="text"
+              name="username"
+              onChange={(e) => handleTextInputChange(setUsername, e)}
+            />
+          </div>
+          <div className={styles.login_form_field}>
+            <label htmlFor="password">Password</label>
+            <input
+              id="password_input"
+              type="password"
+              name="password"
+              onChange={(e) => handleTextInputChange(setPassword, e)}
+            />
+          </div>
+          <div className={styles.login_form_field}>
+            <input id={styles.login_submit} type="submit" value="Login" />
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }

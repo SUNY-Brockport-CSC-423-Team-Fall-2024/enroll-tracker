@@ -1,18 +1,31 @@
 .unauth_navbar {
-    width: 100%;
-    padding: 20px;
-    background-color: #1992A2;
-    display: flex;
-    flex-direction: row;
-    color: white;
+  width: 100%;
+  padding: 20px;
+  background-color: #1992a2;
+  display: flex;
+  flex-direction: row;
+  color: white;
+}
+
+.auth_navbar {
+  background-color: var(--navbar-background);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 100%;
+  gap: 20px;
+}
+
+.auth_navlink {
+  color: white;
 }
 
 .button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: var(--button-background);
-    padding: 10px 20px;
-    color: white;
-    border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--button-background);
+  padding: 10px 20px;
+  color: white;
+  border-radius: 50px;
 }

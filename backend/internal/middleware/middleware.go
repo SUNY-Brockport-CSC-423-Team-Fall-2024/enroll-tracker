@@ -34,14 +34,14 @@ var (
 				},
 			},
 		},
-		regexp.MustCompile(`^/auth/token-refresh(\?.*)?$`): {
-			MethodRoles: []models.MethodRoles{
-				{
-					Roles:       []string{utils.Roles.ADMIN, utils.Roles.TEACHER, utils.Roles.STUDENT},
-					HTTPMethods: []string{http.MethodPost},
-				},
-			},
-		},
+		//regexp.MustCompile(`^/auth/token-refresh(\?.*)?$`): {
+		//	MethodRoles: []models.MethodRoles{
+		//		{
+		//			Roles:       []string{utils.Roles.ADMIN, utils.Roles.TEACHER, utils.Roles.STUDENT},
+		//			HTTPMethods: []string{http.MethodPost},
+		//		},
+		//	},
+		//},
 		regexp.MustCompile(`^/auth/logout(\?.*)?$`): {
 			MethodRoles: []models.MethodRoles{
 				{
@@ -119,7 +119,7 @@ func AuthMiddleware(redisService *services.RedisService) func(http.Handler) http
 			//3. Verify JWT access token (signature and expires at time)
 			claims, err := utils.VerifyJWT(accessToken)
 			if err != nil {
-				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				http.Error(w, err.Error(), http.StatusUnauthorized)
 				return
 			}
 			//If the expires at time is equal to now() or is in the past. Request is unauthorized
