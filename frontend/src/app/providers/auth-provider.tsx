@@ -22,13 +22,13 @@ export const useAuth = () => {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<string | undefined>(undefined);
-    
+
   const refreshToken = async () => {
-        const resp = await fetch('/api/token-refresh', {
-            method: "GET"
-        });
-        return resp.ok;
-  }
+    const resp = await fetch("/api/token-refresh", {
+      method: "GET",
+    });
+    return resp.ok;
+  };
   const checkLoginStatus = async (): Promise<boolean> => {
     const resp = await fetch("/api/login-status", {
       method: "GET",
@@ -43,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { role } = await resp.json();
     return role;
   };
-  
+
   useEffect(() => {
     const initializeAuth = async () => {
       try {

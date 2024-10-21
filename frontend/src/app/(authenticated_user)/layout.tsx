@@ -2,10 +2,9 @@ import AuthNavbar from "../components/auth-nav-bar";
 import styles from "./styles.module.css";
 import { cookies } from "next/headers";
 import { JWTCLOCKTOLERANCE, JWTSIGNINGALGORITHM, getJWTPublicTokenPEMFormatted } from "../lib/data";
-import * as jose from 'jose'
+import * as jose from "jose";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-
   let accessToken = cookies().get("access_token");
   let userRole: string | undefined = undefined;
 
@@ -16,16 +15,16 @@ export default async function Layout({ children }: { children: React.ReactNode }
         clockTolerance: JWTCLOCKTOLERANCE,
       });
       if (typeof payload.role === "string") {
-                userRole = payload.role
-            } else {
-                throw new Error('no user role')
-            }
+        userRole = payload.role;
+      } else {
+        throw new Error("no user role");
+      }
     } catch (err) {
-            console.error('can verify user role')
-        }
+      console.error("can verify user role");
     }
+  }
 
-    return (
+  return (
     <div className={styles.auth_content}>
       <AuthNavbar userRole={userRole} />
       {children}

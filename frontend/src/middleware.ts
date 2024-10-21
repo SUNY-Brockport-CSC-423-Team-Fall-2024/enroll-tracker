@@ -19,7 +19,7 @@ async function handleTokenVerification(
   const pemFormattedKey = getJWTPublicTokenPEMFormatted();
 
   if (!accessToken || !signingKey) {
-    return NextResponse.redirect("/login");  
+    return NextResponse.redirect("/login");
   }
 
   try {
@@ -30,19 +30,19 @@ async function handleTokenVerification(
 
     // Check if user has the appropriate role for the route
     if (RouteRoles[roleKey].roles.find((role) => role === payload.role) === undefined) {
-        return NextResponse.redirect(new URL("/dashboard", request.url));  // Simplified relative URL
+      return NextResponse.redirect(new URL("/dashboard", request.url)); // Simplified relative URL
     }
 
     // If token and role are valid, allow access
     return NextResponse.next();
   } catch (err) {
-      request.cookies.delete("access_token");
-      request.cookies.delete("refresh_token");
-      request.cookies.delete("refresh_token_id");
-      request.cookies.set("is_logged_in", "false");
+    request.cookies.delete("access_token");
+    request.cookies.delete("refresh_token");
+    request.cookies.delete("refresh_token_id");
+    request.cookies.set("is_logged_in", "false");
 
     // Token invalid or other errors, redirect to login
-    return NextResponse.redirect(new URL("/login", request.url));  // Simplified relative URL
+    return NextResponse.redirect(new URL("/login", request.url)); // Simplified relative URL
   }
 }
 
