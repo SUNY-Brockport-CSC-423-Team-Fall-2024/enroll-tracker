@@ -52,7 +52,7 @@ services:
     image: flyway/flyway:latest
     command: -locations=filesystem:/flyway/sql -connectRetries=60 migrate
     volumes:
-      - $PWD/backend/internal/db:/flyway/sql
+      - ./backend/internal/db:/flyway/sql
     environment:
       - FLYWAY_USER=${POSTGRES_USER}
       - FLYWAY_PASSWORD=${POSTGRES_PASSWORD}
