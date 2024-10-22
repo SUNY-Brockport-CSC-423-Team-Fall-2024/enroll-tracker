@@ -43,9 +43,13 @@
   flex-direction: column;
 }
 
+.login_form_error_message {
+  min-height: 30px;
+}
+
 .error_message {
   color: red;
-  margin-top: 4px;
+  margin: 0px;
   font-size: 15px;
 }
 

@@ -16,6 +16,7 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrorMessage("");
     try {
       const resp = await fetch(`/api/login`, {
         method: "POST",
@@ -81,9 +82,9 @@ export default function Login() {
               onChange={(e) => handleTextInputChange(setPassword, e)}
             />
           </div>
-
-          {errorMessage && <div className={styles.error_message}>{errorMessage}</div>}
-
+          <div className={styles.login_form_error_message}>
+            {errorMessage && <p className={styles.error_message}>{errorMessage}</p>}
+          </div>
           <div className={styles.login_form_field}>
             <input id={styles.login_submit} type="submit" value="Login" />
           </div>
