@@ -3,8 +3,8 @@
 
 /* Root variables for colors, shadows, font size, and fonts */
 :root {
-  --font-josefin: 'Josefin Sans', sans-serif;
-  --font-kode: 'Kode Mono', monospace;
+  --font-josefin: "Josefin Sans", sans-serif;
+  --font-kode: "Kode Mono", monospace;
 
   --cyan1: rgb(18, 126, 140);
   --cyan2: rgb(25, 146, 162);
@@ -17,7 +17,8 @@
 }
 
 /* Reset margins and padding for body */
-html, body {
+html,
+body {
   margin: 0px;
   padding: 0px;
   height: 100vh;
@@ -32,7 +33,9 @@ body {
 }
 
 /* Headings use Kode Mono */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin: 0;
 }
 
@@ -57,7 +60,7 @@ i {
   padding-inline: 10px 20px;
 }
 
-input[type='text'] {
+input[type="text"] {
   font-family: var(--font-kode);
   font-size: 20px;
   background-color: var(--white1);
@@ -67,7 +70,7 @@ input[type='text'] {
   box-shadow: 0px 3px 3px inset var(--shadow-color);
 }
 
-input[type='password'] {
+input[type="password"] {
   font-family: var(--font-kode);
   font-size: 20px;
   background-color: var(--white1);
