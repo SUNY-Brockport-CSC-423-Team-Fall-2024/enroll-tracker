@@ -1,32 +1,417 @@
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Kode+Mono:wght@400..700&display=swap");
+
+/* Root variables for colors, shadows, font size, and fonts */
 :root {
-  --background: #f9e9dc;
-  --box-shadow: 0px 4px 8px 2px rgb(0, 0, 0, 0.03);
-  --box-background: #fbf7f4;
-  --button-background: #df6c49;
-  --navbar-background: #127e8c;
+  --font-josefin: 'Josefin Sans', sans-serif;
+  --font-kode: 'Kode Mono', monospace;
+
+  --cyan1: rgb(18, 126, 140);
+  --cyan2: rgb(25, 146, 162);
+  --white1: rgb(249, 233, 220);
+  --white2: rgb(251, 247, 244);
+  --red1: rgb(223, 108, 73);
+  --red2: rgb(249, 151, 121);
+  --shadow-color: rgba(0, 0, 0, 0.25);
+  font-size: 25px;
 }
 
-html,
+/* Reset margins and padding for body */
+html, body {
+  margin: 0px;
+  padding: 0px;
+  height: 100vh;
+  background-color: var(--white1);
+}
+
+/* Default font for body: Josefin Sans */
 body {
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
+  font-family: var(--font-josefin);
+  background-color: var(--white1);
+  overflow: hidden;
 }
 
-body {
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
+/* Headings use Kode Mono */
+h1, h2, h3 {
   margin: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+h1 {
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(1.75rem, 3vw, 2rem);
+}
+
+h3 {
+  display: inline;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Icons styling */
+i {
+  font-size: 1.5rem;
+  padding-inline: 10px 20px;
+}
+
+input[type='text'] {
+  font-family: var(--font-kode);
+  font-size: 20px;
+  background-color: var(--white1);
+  border: 0px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 3px 3px inset var(--shadow-color);
+}
+
+input[type='password'] {
+  font-family: var(--font-kode);
+  font-size: 20px;
+  background-color: var(--white1);
+  border: 0px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 3px 3px inset var(--shadow-color);
+}
+
+/* Sidebar navigation styling */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  width: clamp(200px, 20vw, 350px);
+  height: 100vh;
+  background-color: var(--cyan1);
+  color: white;
+}
+
+/* Navigation logo section */
+.sidebar-nav .logo-section {
+  width: 100%;
+  font-family: var(--font-kode);
+  padding: 10px 5px;
+  text-align: center;
+  background-color: var(--tint-color);
+}
+
+.mobile-profile-icon {
+  background-color: var(--white2);
+  border-radius: 5px;
+  padding: 2px 3px 0px 1px;
+  width: 40px;
+  height: 40px;
+  color: white;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 600;
+  transition: 0.5s;
+  display: none;
+}
+
+.burger-bar-dropdown {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  cursor: pointer;
+  color: white;
+  text-align: center;
+  display: none;
+}
+
+.burger-bar-dropdown i {
+  font-size: 2.25rem;
+  padding-top: 2px;
+  width: auto;
+}
+
+/* Navigation menu and settings sections */
+.sidebar-nav .menu-section {
+  width: calc(100% - 50px);
+  margin: 0;
+  padding: 0 25px 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-nav .settings-section {
+  width: calc(100% - 50px);
+  margin: 0;
+  padding: 0 25px 25px;
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+/* Navigation button styles */
+.nav-button {
+  width: 100%;
+  height: 4rem;
+  padding: 15px;
+  margin-top: 25px;
+  background-color: transparent;
+  border: 0;
+  border-radius: 50px;
+  font-family: var(--font-josefin);
+  font-size: 1.5rem;
+  font-weight: 600;
+  gap: 30px;
+  line-height: 25px;
+  color: white;
+  text-align: left;
+  text-shadow: 0 3px 3px var(--text-shadow-color);
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+.nav-button:hover {
+  background-color: var(--cyan2);
+  transition: 0.1s;
+}
+
+.nav-button:active {
+  background-color: var(--cyan2);
+  box-shadow: 0px 0px 7px 2px inset var(--shadow-color);
+  transition: 0.1s ease-out;
+}
+
+.mobile-settings-button {
+  display: none;
+}
+
+/* Main content area styling */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: calc(100% - clamp(200px, 20vw, 350px));
+  background-color: var(--white1);
+}
+
+/* Header area inside main content */
+.main-header {
+  display: flex;
+  width: 100%;
+  height: auto;
+  align-items: center;
+  justify-content: space-between;
+  border: solid var(--red1);
+  border-width: 15px 0 0 0;
+}
+
+/* Title and profile sections inside the header */
+.main-header .header-section {
+  width: auto;
+  text-wrap: nowrap;
+  margin: 25px;
+}
+
+.main-header .profile-icon {
+  align-content: center;
+  color: white;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 600;
+  transition: 0.5s;
+  margin-left: 10px;
+}
+
+.main-header .profile-section:hover {
+  border-radius: 5px;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.main-header .profile-text {
+  padding: 0 15px;
+  text-align: center;
+  line-height: 0.5rem;
+  font-weight: 600;
+  transition: 0.25s ease-out;
+}
+
+.main-header .profile-section {
+  color: white;
+  justify-self: flex-end;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px 15px;
+  transition: 1s ease-out;
+  border-radius: 100px;
+  background-color: var(--red1);
+  margin-right: 25px;
+  height: 70px;
+}
+
+/* Main workspace styling */
+.main-workspace {
+  width: calc(100% - 50px);
+  padding: 25px;
+  overflow-y: scroll;
+  background-color: aqua;
+  height: auto;
+  flex-grow: 1;
+}
+
+@media screen and (max-width: 1505px) {
+  .profile-text {
+    display: none;
+  }
+
+  .nav-button {
+    text-align: center;
+    padding: 15px 15px;
+  }
+
+  .sidebar-nav .menu-section {
+    padding: 0px 0px 25px 0px;
+    width: 100%;
+  }
+
+  .sidebar-nav i {
+    display: none;
+  }
+}
+
+/* Mobile layout adjustments */
+@media screen and (max-width: 680px) {
+  body {
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .sidebar-nav {
+    order: 1;
+    width: 100vw;
+    height: auto;
+    position: fixed;
+  }
+
+  .sidebar-nav i {
+    display: inline;
+  }
+
+  .nav-button {
+    margin: 0;
+  }
+
+  .sidebar-nav .logo-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    width: calc(100% - 10px);
+    max-height: 60px;
+  }
+
+  .sidebar-nav .burger-bar-dropdown,
+  .sidebar-nav .mobile-profile-icon {
+    display: block;
+    margin-inline: 35px;
+  }
+
+  .sidebar-nav .menu-section {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 45px);
+    padding: 0;
+    background-color: var(--text-shadow-color);
+    position: absolute;
+    z-index: 10;
+    opacity: 0;
+    transition:
+      opacity 0.3s ease-out,
+      visibility 0.3s ease-out;
+    border-radius: 0px 0px 15px 15px;
+    align-self: center;
+    margin-top: 70px;
+    visibility: hidden;
+  }
+
+  .sidebar-nav .menu-section.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav-button {
+    margin: 10px;
+    padding: 15px;
+    width: calc(100% - 20px);
+    border-radius: 10px;
+    text-align: left;
+  }
+
+  .nav-button:hover {
+    box-shadow: 0 0 15px var(--tint-color);
+  }
+
+  .logo-section i {
+    display: block;
+  }
+
+  .sidebar-nav .settings-section {
+    display: none;
+  }
+
+  .mobile-settings-button {
+    display: block;
+  }
+
+  .burger-bar-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    cursor: pointer;
+    color: white;
+  }
+
+  .burger-bar-dropdown input[type="checkbox"] {
+    display: none;
+  }
+
+  .burger-bar-dropdown i {
+    font-size: 2.25rem;
+    padding-top: 2px;
+    width: auto;
+  }
+
+  .main-header {
+    align-self: center;
+    justify-items: center;
+    flex-direction: row;
+    max-height: 60px;
+    margin-top: 70px;
+  }
+
+  .main-header .profile-section {
+    margin: 0;
+    padding: 0;
+    display: none;
+  }
+
+  .main-header .header-section {
+    padding: 0;
+    align-self: center;
+    width: 100%;
+    text-align: center;
+  }
+
+  .main-content {
+    order: 2;
+    width: 100vw;
+  }
+
+  .main-workspace {
+    height: calc(100vh - 195px);
+    flex-grow: 1;
+    width: calc(100vw - 50px);
+  }
 }
