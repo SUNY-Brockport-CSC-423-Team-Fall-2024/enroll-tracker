@@ -43,6 +43,12 @@
   flex-direction: column;
 }
 
+.error_message {
+  color: red;
+  margin-top: 4px;
+  font-size: 15px;
+}
+
 #login_submit {
   font-family: var(--font-josefin);
   background: var(--red1);

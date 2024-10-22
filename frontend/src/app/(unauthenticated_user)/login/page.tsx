@@ -12,6 +12,7 @@ export default function Login() {
 
   let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
+  let [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,6 +42,11 @@ export default function Login() {
         setUserRole(await getUserRole());
         router.push("/dashboard");
       }
+      // display error message for failed login
+      else if (resp.status === 400){
+        setErrorMessage('Invalid login credentials. Please try again.');
+      }
+
     } catch (err) {
       console.error(err);
     }
@@ -76,6 +82,13 @@ export default function Login() {
               onChange={(e) => handleTextInputChange(setPassword, e)}
             />
           </div>
+
+        {errorMessage && (
+            <div className={styles.error_message}>
+              {errorMessage}
+            </div>
+          )}
+
           <div className={styles.login_form_field}>
             <input id={styles.login_submit} type="submit" value="Login" />
           </div>
