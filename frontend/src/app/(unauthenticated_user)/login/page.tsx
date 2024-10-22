@@ -43,10 +43,9 @@ export default function Login() {
         router.push("/dashboard");
       }
       // display error message for failed login
-      else if (resp.status === 400){
-        setErrorMessage('Invalid login credentials. Please try again.');
+      else if (resp.status === 400) {
+        setErrorMessage("Invalid login credentials. Please try again.");
       }
-
     } catch (err) {
       console.error(err);
     }
@@ -83,11 +82,7 @@ export default function Login() {
             />
           </div>
 
-        {errorMessage && (
-            <div className={styles.error_message}>
-              {errorMessage}
-            </div>
-          )}
+          {errorMessage && <div className={styles.error_message}>{errorMessage}</div>}
 
           <div className={styles.login_form_field}>
             <input id={styles.login_submit} type="submit" value="Login" />
