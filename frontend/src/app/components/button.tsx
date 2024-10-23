@@ -1,4 +1,3 @@
-import styles from "./styles.module.css";
 
 interface ButtonWithCallbackProps {
   btnTitle: string;
@@ -7,7 +6,7 @@ interface ButtonWithCallbackProps {
 
 const Button: React.FC<ButtonWithCallbackProps> = ({ onClick, btnTitle }) => {
   return (
-    <div className={styles.button} onClick={onClick}>
+    <div onClick={onClick}>
       <p>{btnTitle}</p>
     </div>
   );
