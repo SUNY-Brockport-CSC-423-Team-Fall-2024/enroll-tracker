@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
 
     const { username, password } = data;
 
-    const loginResp = await fetch("http:api:443/auth/login", {
+    const loginResp = await fetch("http://api:443/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
