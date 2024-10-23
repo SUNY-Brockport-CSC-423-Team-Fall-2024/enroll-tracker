@@ -1,0 +1,12 @@
+.settings_root {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.settings_change_password {
+    min-width: 300px;
+    max-width: 600px;
+    overflow: auto;
+}

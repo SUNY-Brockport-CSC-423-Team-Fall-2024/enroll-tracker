@@ -1,6 +1,16 @@
-.auth_content {
+.auth_root {
   display: flex;
-  flex-direction: row;
   height: 100%;
   width: 100%;
+}
+
+.auth_content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.auth_navbar {
+    width: 250px;
+    height: 100%;
 }

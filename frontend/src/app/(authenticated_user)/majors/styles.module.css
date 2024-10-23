@@ -1,0 +1,6 @@
+.majors_root {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}

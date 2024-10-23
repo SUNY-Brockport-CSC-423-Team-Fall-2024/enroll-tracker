@@ -1,9 +1,9 @@
-"use client";
+import styles from './styles.module.css'
 
-export default function Page() {
+export default function Dashboard() {
   return (
-    <div>
-      <h1>Dashboard</h1>
-    </div>
-  );
+        <div className={styles.dashboard_root}>
+            <h1>Dashboard</h1>
+        </div>
+    );
 }
