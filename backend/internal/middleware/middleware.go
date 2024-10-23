@@ -50,7 +50,20 @@ var (
 				},
 			},
 		},
+		regexp.MustCompile(`^/auth/change-password$`): {
+			MethodRoles: []models.MethodRoles{
+				{
+					Roles:       []string{utils.Roles.ADMIN, utils.Roles.TEACHER, utils.Roles.STUDENT},
+					HTTPMethods: []string{http.MethodPost},
+				},
+			},
+		},
 	}
+)
+
+const (
+	AccessTokenKey string = "access_token"
+	ClaimsKey      string = "claims"
 )
 
 // LoggingMiddleware logs the incoming HTTP request, it's duration, and errors if there is a panic()
@@ -170,8 +183,12 @@ func AuthMiddleware(redisService *services.RedisService) func(http.Handler) http
 				break
 			}
 
-			//5. If auth, call next handler. If not return err
-			next.ServeHTTP(w, r)
+			//5. Set context
+			ctx := context.WithValue(r.Context(), "claims", claims)
+			ctx = context.WithValue(ctx, "access_token", accessToken)
+
+			//6. If auth, call next handler. If not return err
+			next.ServeHTTP(w, r.WithContext(ctx))
 		}
 
 		return http.HandlerFunc(fn)
