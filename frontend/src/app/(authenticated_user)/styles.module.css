@@ -1,13 +1,14 @@
 .auth_root {
   display: flex;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
 }
 
 .auth_content {
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding-left: 50px;
 }
 
 .auth_navbar {
