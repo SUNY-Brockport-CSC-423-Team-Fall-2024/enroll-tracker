@@ -28,7 +28,7 @@ export interface IAuthNavLinks {
   allowedRoles: string[];
 }
 
-export const links: IAuthNavLinks[] = [
+export const headerLinks: IAuthNavLinks[] = [
   {
     name: "Dashboard",
     href: "/dashboard",
@@ -49,6 +49,9 @@ export const links: IAuthNavLinks[] = [
     href: "/users",
     allowedRoles: [Roles.ADMIN],
   },
+];
+
+export const footerLinks: IAuthNavLinks[] = [
   {
     name: "Settings",
     href: "/settings",
@@ -73,3 +76,5 @@ export const getJWTPublicTokenPEMFormatted = (): string => {
 
   return pemFormattedKey;
 };
+
+export const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?~-]{8,30}$/;

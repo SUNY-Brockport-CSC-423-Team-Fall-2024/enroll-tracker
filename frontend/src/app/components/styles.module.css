@@ -13,24 +13,122 @@
 }
 
 .auth_navbar {
-  background-color: var(--navbar-background);
+  background-color: var(--cyan2);
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  color: white;
   padding: 20px;
-  height: 100%;
   gap: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.auth_navlinks_header {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  flex: 1;
+}
+
+.auth_navlinks_footer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 20px;
 }
 
 .auth_navlink {
-  color: white;
+  display: flex;
+  gap: 5px;
+  width: 100%;
 }
 
-.button {
+.auth_navlink:hover {
+  color: var(--red1);
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.auth_navlink a {
+  color: white;
+  text-decoration: none;
+}
+
+.auth_navlink_icon {
+  width: 10px;
+  height: 10px;
+  background: var(--red1);
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.auth_logout_button {
+  font-family: var(--font-josefin);
+  background: var(--red1);
+  color: white;
+  border: 0px;
+  border-radius: 50px;
+  padding: 10px;
+  margin-top: 15px;
+  font-size: 1rem;
+  transition: 0.25s;
+  width: 100%;
+  align-self: center;
+}
+
+.auth_logout_button:hover {
+  cursor: pointer;
+  transition: 0.25s;
+  transform: translateY(-2px);
+  box-shadow: 0px 5px 2px var(--shadow-color);
+}
+
+.change_password_form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background: var(--button-background);
-  padding: 10px 20px;
+  gap: 15px;
+  align-items: left;
+}
+
+.change_password_form_field {
+  display: flex;
+  flex-direction: column;
+}
+
+.change_password_result_field {
+  min-height: 30px;
+}
+
+.change_password_success_message {
+  color: green;
+  margin: 0px;
+  font-size: 15px;
+}
+
+.change_password_error_message {
+  color: red;
+  margin: 0px;
+  font-size: 15px;
+}
+
+#change_password_submit {
+  font-family: var(--font-josefin);
+  background: var(--red1);
   color: white;
+  border: 0px;
   border-radius: 50px;
+  padding: 10px;
+  margin-top: 15px;
+  font-size: 1rem;
+  transition: 0.25s;
+  width: 50%;
+  align-self: center;
+}
+
+#change_password_submit:hover {
+  cursor: pointer;
+  transition: 0.25s;
+  transform: translateY(-2px);
+  box-shadow: 0px 5px 2px var(--shadow-color);
 }

@@ -3,11 +3,11 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"enroll-tracker/internal/middleware"
 	"enroll-tracker/internal/models"
 	"enroll-tracker/internal/services"
 	"enroll-tracker/pkg/utils"
 	"net/http"
-	"strings"
 	"time"
 )
 
@@ -53,7 +53,7 @@ func LoginHandler(userSessionService *services.UserSessionService, userAuthServi
 		//Validate username & password
 		valid, err := utils.VerifyHashedText(p, userAuth.PasswordHash)
 		if err != nil || !valid {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.Error(w, "Login failed: Invalid username and password", http.StatusBadRequest)
 			return
 		}
 
@@ -202,11 +202,11 @@ func LogoutHandler(userSessionService *services.UserSessionService, redisService
 			return
 		}
 
-		//Verify access token
-		accessToken := strings.TrimSpace(strings.TrimPrefix(bearerToken, "Bearer"))
-		claims, err := utils.VerifyJWT(accessToken)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+		//Get context info
+		accessToken, accessTokenOK := (r.Context().Value(middleware.AccessTokenKey)).(string)
+		claims, claimsOK := (r.Context().Value(middleware.ClaimsKey)).(*models.CustomClaims)
+		if !accessTokenOK || !claimsOK || claims == nil {
+			http.Error(w, "Unable to successfully logout", http.StatusBadRequest)
 			return
 		}
 
@@ -238,6 +238,53 @@ func LogoutHandler(userSessionService *services.UserSessionService, redisService
 		ok, err = userSessionService.RevokeUserSessionWithID(refreshTokenID)
 		if err != nil || !ok {
 			http.Error(w, "Unable to successfully logout", http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(200)
+	}
+}
+
+func ChangePasswordHandler(userAuthService *services.UserAuthenticationService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		//Get request body
+		var kv map[string]interface{}
+
+		//Get request body
+		if err := json.NewDecoder(r.Body).Decode(&kv); err != nil {
+			http.Error(w, "Error ocurred while changing users password", http.StatusBadRequest)
+			return
+		}
+
+		currentPassword, currentpasswordOk := kv["current_password"]
+		newPassword, newPasswordOk := kv["new_password"]
+		if !newPasswordOk || !currentpasswordOk {
+			http.Error(w, "Current or new password not supplied", http.StatusBadRequest)
+			return
+		}
+		cP, cpOk := currentPassword.(string)
+		nP, npOk := newPassword.(string)
+		if !npOk || !cpOk {
+			http.Error(w, "Current or new password not valid format", http.StatusBadRequest)
+			return
+		}
+
+		//Get username from context
+		claims, claimsOK := (r.Context().Value(middleware.ClaimsKey)).(*models.CustomClaims)
+		if !claimsOK || claims == nil {
+			http.Error(w, "Error ocurred while changing users password", http.StatusBadRequest)
+			return
+		}
+		username := claims.Subject
+
+		//Change users password
+		userAuth, err := userAuthService.ChangePassword(username, nP, cP)
+		if err != nil || userAuth == nil {
+			http.Error(w, "Error ocurred while changing users password", http.StatusBadRequest)
 			return
 		}
 		w.WriteHeader(200)

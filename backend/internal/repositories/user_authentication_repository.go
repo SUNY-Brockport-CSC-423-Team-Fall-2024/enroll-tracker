@@ -8,7 +8,8 @@ import (
 
 type UserAuthenticationRepository interface {
 	CreateUserAuthentication(username string, passwordHash string) (models.UserAuthentication, error)
-	GetUserAuthentication(username string) (models.UserAuthentication, error)
+	GetUserAuthentication(username string) (*models.UserAuthentication, error)
+	ChangePassword(userAuthID int, newPasswordHash string) (*models.UserAuthentication, error)
 }
 
 type PostgresUserAuthenticationRepository struct {
@@ -29,7 +30,7 @@ func (r *PostgresUserAuthenticationRepository) CreateUserAuthentication(username
 	return userAuth, err
 }
 
-func (r *PostgresUserAuthenticationRepository) GetUserAuthentication(username string) (models.UserAuthentication, error) {
+func (r *PostgresUserAuthenticationRepository) GetUserAuthentication(username string) (*models.UserAuthentication, error) {
 	var userAuth models.UserAuthentication
 
 	query := `SELECT id, username, password_hash FROM public.userauthentication WHERE username=$1`
@@ -38,10 +39,24 @@ func (r *PostgresUserAuthenticationRepository) GetUserAuthentication(username st
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return userAuth, nil
+			return nil, nil
 		}
-		return userAuth, err
+		return nil, err
 	}
 
-	return userAuth, nil
+	return &userAuth, nil
+}
+
+func (r *PostgresUserAuthenticationRepository) ChangePassword(userAuthID int, newPasswordHash string) (*models.UserAuthentication, error) {
+	var userAuth models.UserAuthentication
+
+	query := `SELECT * FROM public.change_user_password($1,$2)`
+
+	err := r.db.QueryRow(query, userAuthID, newPasswordHash).Scan(&userAuth.ID, &userAuth.Username, &userAuth.PasswordHash, &userAuth.LastPasswordReset)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &userAuth, nil
 }

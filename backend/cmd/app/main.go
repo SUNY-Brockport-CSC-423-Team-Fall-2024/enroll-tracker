@@ -70,6 +70,7 @@ func main() {
 	stdMux.HandleFunc("/auth/login", handlers.LoginHandler(userSessionService, userAuthService))
 	stdMux.HandleFunc("POST /auth/token-refresh", handlers.RefreshTokenHandler(userSessionService, redisSession))
 	stdMux.HandleFunc("POST /auth/logout", handlers.LogoutHandler(userSessionService, redisSession))
+	stdMux.HandleFunc("POST /auth/change-password", handlers.ChangePasswordHandler(userAuthService))
 
 	//Crete auth middleware
 	authMiddleware := middleware.AuthMiddleware(redisSession)

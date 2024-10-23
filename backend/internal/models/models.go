@@ -103,9 +103,10 @@ type Administrator struct {
 }
 
 type UserAuthentication struct {
-	ID           int    `json:"id"`
-	Username     string `json:"username"`
-	PasswordHash string `json:"password_hash"`
+	ID                int        `json:"id"`
+	Username          string     `json:"username"`
+	PasswordHash      string     `json:"password_hash"`
+	LastPasswordReset *time.Time `json:"last_password_reset"`
 }
 
 type UserSession struct {
