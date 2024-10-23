@@ -37,21 +37,25 @@ const AuthNavbar: React.FC<IAuthNavbar> = ({ userRole }) => {
 
   return (
     <div className={styles.auth_navbar}>
-        <h1>Enroll<br/>Tracker</h1>
-        <div className={styles.auth_navlinks_header}>
-      {headerLinks.map((link) => {
-        if (link.allowedRoles.find((role) => role === userRole) === undefined) {
-          return null;
-        }
-        return (
-          <div className={styles.auth_navlink} key={link.name}>
-            <div className={styles.auth_navlink_icon}></div>
-            <Link key={link.name} href={link.href}>
-              {link.name}
-            </Link>
-          </div>
-        );
-      })}
+      <h1>
+        Enroll
+        <br />
+        Tracker
+      </h1>
+      <div className={styles.auth_navlinks_header}>
+        {headerLinks.map((link) => {
+          if (link.allowedRoles.find((role) => role === userRole) === undefined) {
+            return null;
+          }
+          return (
+            <div className={styles.auth_navlink} key={link.name}>
+              <div className={styles.auth_navlink_icon}></div>
+              <Link key={link.name} href={link.href}>
+                {link.name}
+              </Link>
+            </div>
+          );
+        })}
       </div>
       <div className={styles.auth_navlinks_footer}>
         {footerLinks.map((link) => {
@@ -60,7 +64,7 @@ const AuthNavbar: React.FC<IAuthNavbar> = ({ userRole }) => {
           }
           return (
             <div className={styles.auth_navlink} key={link.name}>
-                <div className={styles.auth_navlink_icon}></div>
+              <div className={styles.auth_navlink_icon}></div>
               <Link key={link.name} href={link.href}>
                 {link.name}
               </Link>
@@ -68,7 +72,9 @@ const AuthNavbar: React.FC<IAuthNavbar> = ({ userRole }) => {
           );
         })}
         <div className={styles.auth_navlink}>
-          <button className={styles.auth_logout_button} onClick={handleLogout}>Logout</button>
+          <button className={styles.auth_logout_button} onClick={handleLogout}>
+            Logout
+          </button>
         </div>
       </div>
     </div>

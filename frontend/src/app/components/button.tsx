@@ -1,4 +1,3 @@
-
 interface ButtonWithCallbackProps {
   btnTitle: string;
   onClick: (...args: any[]) => any;

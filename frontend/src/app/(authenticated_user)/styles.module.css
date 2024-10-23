@@ -5,12 +5,12 @@
 }
 
 .auth_content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .auth_navbar {
-    width: 250px;
-    height: 100%;
+  width: 250px;
+  height: 100%;
 }

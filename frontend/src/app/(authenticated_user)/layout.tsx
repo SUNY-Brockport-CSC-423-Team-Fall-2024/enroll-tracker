@@ -29,9 +29,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
       <div className={styles.auth_navbar}>
         <AuthNavbar userRole={userRole} />
       </div>
-      <div className={styles.auth_content}>
-        {children}
-      </div>
+      <div className={styles.auth_content}>{children}</div>
     </div>
   );
 }

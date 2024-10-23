@@ -25,34 +25,34 @@
 }
 
 .auth_navlinks_header {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  flex: 1;
 }
 
 .auth_navlinks_footer {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 20px;
 }
 
 .auth_navlink {
-    display: flex;
-    gap: 5px;
-    width: 100%;
+  display: flex;
+  gap: 5px;
+  width: 100%;
 }
 
 .auth_navlink:hover {
-    color: var(--red1);
-    cursor: pointer;
-    transition: 0.25s;
+  color: var(--red1);
+  cursor: pointer;
+  transition: 0.25s;
 }
 
 .auth_navlink a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
 
 .auth_navlink_icon {
@@ -97,19 +97,19 @@
 }
 
 .change_password_result_field {
-    min-height: 30px;
+  min-height: 30px;
 }
 
 .change_password_success_message {
-    color: green;
-    margin: 0px;
-    font-size: 15px;
+  color: green;
+  margin: 0px;
+  font-size: 15px;
 }
 
 .change_password_error_message {
-    color: red;
-    margin: 0px;
-    font-size: 15px;
+  color: red;
+  margin: 0px;
+  font-size: 15px;
 }
 
 #change_password_submit {
