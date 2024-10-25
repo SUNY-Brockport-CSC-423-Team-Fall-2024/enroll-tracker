@@ -10,6 +10,7 @@ type UserAuthenticationRepository interface {
 	CreateUserAuthentication(username string, passwordHash string) (models.UserAuthentication, error)
 	GetUserAuthentication(username string) (*models.UserAuthentication, error)
 	ChangePassword(userAuthID int, newPasswordHash string) (*models.UserAuthentication, error)
+	UpdateLastLogin(userAuthID int) (*models.UserAuthentication, error)
 }
 
 type PostgresUserAuthenticationRepository struct {
@@ -53,6 +54,20 @@ func (r *PostgresUserAuthenticationRepository) ChangePassword(userAuthID int, ne
 	query := `SELECT * FROM public.change_user_password($1,$2)`
 
 	err := r.db.QueryRow(query, userAuthID, newPasswordHash).Scan(&userAuth.ID, &userAuth.Username, &userAuth.PasswordHash, &userAuth.LastLogin, &userAuth.LastPasswordReset)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &userAuth, nil
+}
+
+func (r *PostgresUserAuthenticationRepository) UpdateLastLogin(userAuthID int) (*models.UserAuthentication, error) {
+	var userAuth models.UserAuthentication
+
+	query := `SELECT * FROM public.update_last_login($1)`
+
+	err := r.db.QueryRow(query, userAuthID).Scan(&userAuth.ID, &userAuth.Username, &userAuth.PasswordHash, &userAuth.LastLogin, &userAuth.LastPasswordReset)
 
 	if err != nil {
 		return nil, err

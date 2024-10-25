@@ -88,3 +88,11 @@ func (s *UserAuthenticationService) ChangePassword(username string, newPassword 
 
 	return newUa, nil
 }
+
+func (s *UserAuthenticationService) UpdateLastLogin(userAuthID int) (*models.UserAuthentication, error) {
+	userAuth, err := s.repository.UpdateLastLogin(userAuthID)
+	if err != nil {
+		return nil, err
+	}
+	return userAuth, nil
+}
