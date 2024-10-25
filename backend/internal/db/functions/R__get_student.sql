@@ -7,7 +7,6 @@ CREATE OR REPLACE FUNCTION get_student (
     OUT o_major_id int,
     OUT o_phone_number varchar,
     OUT o_email varchar,
-    OUT o_last_login timestamp,
     OUT o_created_at timestamp,
     OUT o_updated_at timestamp
 )
@@ -21,7 +20,6 @@ BEGIN
         Student.major_id,
         Student.phone_number,
         Student.email,
-        Student.last_login,
         Student.created_at,
         Student.updated_at
     INTO 
@@ -32,7 +30,6 @@ BEGIN
         o_major_id,
         o_phone_number,
         o_email,
-        o_last_login,
         o_created_at,
         o_updated_at
     FROM Student

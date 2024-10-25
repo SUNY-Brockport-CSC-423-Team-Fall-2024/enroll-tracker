@@ -39,7 +39,7 @@ func (r *PostgresAdministratorRepository) GetAdministrator(username string) (mod
 	//execute function
 	row := r.db.QueryRow(query, username)
 
-	err := row.Scan(&administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.LastLogin, &administrator.CreatedAt, &administrator.UpdatedAt)
+	err := row.Scan(&administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt)
 
 	return administrator, err
 }
@@ -48,11 +48,11 @@ func (r *PostgresAdministratorRepository) UpdateAdministrator(username string, a
 	var administrator models.Administrator
 
 	//create query
-	query := `SELECT * FROM public.update_administrator($1,$2,$3,$4,$5,$6,$7)`
+	query := `SELECT * FROM public.update_administrator($1,$2,$3,$4,$5,$6)`
 
-	row := r.db.QueryRow(query, username, administratorUpdates.FirstName, administratorUpdates.LastName, administratorUpdates.PhoneNumber, administratorUpdates.Email, administratorUpdates.Office, administratorUpdates.LastLogin)
+	row := r.db.QueryRow(query, username, administratorUpdates.FirstName, administratorUpdates.LastName, administratorUpdates.PhoneNumber, administratorUpdates.Email, administratorUpdates.Office)
 
-	err := row.Scan(&administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.LastLogin, &administrator.CreatedAt, &administrator.UpdatedAt)
+	err := row.Scan(&administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt)
 
 	return administrator, err
 }

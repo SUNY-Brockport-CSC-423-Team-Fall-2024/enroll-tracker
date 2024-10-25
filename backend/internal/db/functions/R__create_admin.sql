@@ -17,8 +17,8 @@ CREATE OR REPLACE FUNCTION create_administrator (
 )
 AS $$
 BEGIN
-    INSERT INTO Administrator (first_name, last_name, auth_id, phone_number, email, office, last_login)
-    VALUES (i_first_name, i_last_name, i_auth_id, i_phone_number, i_email, i_office, NULL)
+    INSERT INTO Administrator (first_name, last_name, auth_id, phone_number, email, office)
+    VALUES (i_first_name, i_last_name, i_auth_id, i_phone_number, i_email, i_office)
     RETURNING 
         id,
         first_name,

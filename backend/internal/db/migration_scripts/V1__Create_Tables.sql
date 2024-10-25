@@ -10,6 +10,7 @@ CREATE TABLE UserAuthentication (
     id SERIAL PRIMARY KEY,
     username VARCHAR(60) UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
+    last_login TIMESTAMP,
     last_password_reset TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -34,7 +35,6 @@ CREATE TABLE Student (
     major_id INT,
     phone_number VARCHAR(20) NOT NULL,
     email VARCHAR(50) NOT NULL,
-    last_login TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -50,7 +50,6 @@ CREATE TABLE Teacher (
     phone_number VARCHAR(20) NOT NULL,
     email VARCHAR(50) NOT NULL,
     office VARCHAR(60) NOT NULL,
-    last_login TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -65,7 +64,6 @@ CREATE TABLE Administrator (
     phone_number VARCHAR(20) NOT NULL,
     office VARCHAR(60) NOT NULL,
     email VARCHAR(50) NOT NULL,
-    last_login TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 

@@ -25,7 +25,7 @@ func (r *PostgresUserAuthenticationRepository) CreateUserAuthentication(username
 
 	query := `SELECT * FROM public.create_user_auth($1, $2)`
 
-	err := r.db.QueryRow(query, username, passwordHash).Scan(&userAuth.ID, &userAuth.Username, &userAuth.PasswordHash)
+	err := r.db.QueryRow(query, username, passwordHash).Scan(&userAuth.ID, &userAuth.Username, &userAuth.PasswordHash, &userAuth.LastLogin)
 
 	return userAuth, err
 }
@@ -33,9 +33,9 @@ func (r *PostgresUserAuthenticationRepository) CreateUserAuthentication(username
 func (r *PostgresUserAuthenticationRepository) GetUserAuthentication(username string) (*models.UserAuthentication, error) {
 	var userAuth models.UserAuthentication
 
-	query := `SELECT id, username, password_hash FROM public.userauthentication WHERE username=$1`
+	query := `SELECT id, username, password_hash, last_login FROM public.userauthentication WHERE username=$1`
 
-	err := r.db.QueryRow(query, username).Scan(&userAuth.ID, &userAuth.Username, &userAuth.PasswordHash)
+	err := r.db.QueryRow(query, username).Scan(&userAuth.ID, &userAuth.Username, &userAuth.PasswordHash, &userAuth.LastLogin)
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -52,7 +52,7 @@ func (r *PostgresUserAuthenticationRepository) ChangePassword(userAuthID int, ne
 
 	query := `SELECT * FROM public.change_user_password($1,$2)`
 
-	err := r.db.QueryRow(query, userAuthID, newPasswordHash).Scan(&userAuth.ID, &userAuth.Username, &userAuth.PasswordHash, &userAuth.LastPasswordReset)
+	err := r.db.QueryRow(query, userAuthID, newPasswordHash).Scan(&userAuth.ID, &userAuth.Username, &userAuth.PasswordHash, &userAuth.LastLogin, &userAuth.LastPasswordReset)
 
 	if err != nil {
 		return nil, err

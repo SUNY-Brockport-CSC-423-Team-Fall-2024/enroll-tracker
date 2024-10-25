@@ -39,7 +39,7 @@ func (r *PostgresTeacherRepository) GetTeacher(username string) (models.Teacher,
 	//execute function
 	row := r.db.QueryRow(query, username)
 
-	err := row.Scan(&teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.LastLogin, &teacher.CreatedAt, &teacher.UpdatedAt)
+	err := row.Scan(&teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt)
 
 	return teacher, err
 }
@@ -48,11 +48,11 @@ func (r *PostgresTeacherRepository) UpdateTeacher(username string, teacherUpdate
 	var teacher models.Teacher
 
 	//create query
-	query := `SELECT * FROM public.update_teacher($1,$2,$3,$4,$5,$6,$7)`
+	query := `SELECT * FROM public.update_teacher($1,$2,$3,$4,$5,$6)`
 
-	row := r.db.QueryRow(query, username, teacherUpdates.FirstName, teacherUpdates.LastName, teacherUpdates.PhoneNumber, teacherUpdates.Email, teacherUpdates.Office, teacherUpdates.LastLogin)
+	row := r.db.QueryRow(query, username, teacherUpdates.FirstName, teacherUpdates.LastName, teacherUpdates.PhoneNumber, teacherUpdates.Email, teacherUpdates.Office)
 
-	err := row.Scan(&teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.LastLogin, &teacher.CreatedAt, &teacher.UpdatedAt)
+	err := row.Scan(&teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt)
 
 	return teacher, err
 }
