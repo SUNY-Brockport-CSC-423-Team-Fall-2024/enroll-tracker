@@ -75,7 +75,10 @@ func LoginHandler(userSessionService *services.UserSessionService, userAuthServi
 		}
 
 		//Update last login
-		userAuthService.UpdateLastLogin(userAuth.ID)
+        if _, err := userAuthService.UpdateLastLogin(userAuth.ID); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+        }
 
 		//Assign values to token response before serialization
 		tokenResponse.AccessToken = accessToken
