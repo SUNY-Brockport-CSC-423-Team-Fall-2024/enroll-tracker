@@ -39,6 +39,21 @@ func (s *StudentService) CreateStudent(username string, password string, firstNa
 	return student, err
 }
 
+func (s *StudentService) GetStudents(queryParams models.StudentQueryParams) ([]models.Student, error) {
+	//Validate query params
+	if queryParams.Limit != nil && (*queryParams.Limit < 10 || *queryParams.Limit > 100) {
+		return nil, errors.New("Limit is not within range of 10-100")
+	}
+
+	//Get students
+	students, err := s.repository.GetStudents(queryParams)
+	if err != nil {
+		return nil, err
+	}
+
+	return students, nil
+}
+
 func (s *StudentService) GetStudent(username string) (models.Student, error) {
 	var student models.Student
 

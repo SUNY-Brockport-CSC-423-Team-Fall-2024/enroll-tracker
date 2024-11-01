@@ -7,6 +7,17 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+type StudentQueryParams struct {
+	Username    *string   `json:"username"`
+	FirstName   *string   `json:"first_name"`
+	LastName    *string   `json:"last_name"`
+	PhoneNumber *string   `json:"phone_number"`
+	Email       *string   `json:"email"`
+	Limit       *int      `json:"limit"`
+	Offset      *int      `json:"offset"`
+	Majors      *[]string `json:"majors"`
+}
+
 type StudentCreation struct {
 	Username    string `json:"username"`
 	Password    string `json:"password"`
