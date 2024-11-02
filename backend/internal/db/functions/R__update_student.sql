@@ -4,7 +4,6 @@ CREATE OR REPLACE FUNCTION update_student (
     i_last_name varchar DEFAULT NULL,
     i_phone_number varchar DEFAULT NULL,
     i_email varchar DEFAULT NULL,
-    i_last_login timestamp DEFAULT NULL,
     i_major_id int DEFAULT NULL,
     OUT o_id int,
     OUT o_first_name varchar,
@@ -13,7 +12,6 @@ CREATE OR REPLACE FUNCTION update_student (
     OUT o_major_id int,
     OUT o_phone_number varchar,
     OUT o_email varchar,
-    OUT o_last_login timestamp,
     OUT o_created_at timestamp,
     OUT o_updated_at timestamp
 )
@@ -33,7 +31,6 @@ BEGIN
             last_name = COALESCE(i_last_name, last_name),
             phone_number = COALESCE(i_phone_number, phone_number),
             email = COALESCE(i_email, email),
-            last_login = COALESCE(i_last_login, last_login),
             major_id = COALESCE(i_major_id, major_id)
         WHERE
             id = student_id
@@ -46,7 +43,6 @@ BEGIN
             o_major_id,
             o_phone_number,
             o_email,
-            o_last_login,
             o_created_at,
             o_updated_at;
 END;

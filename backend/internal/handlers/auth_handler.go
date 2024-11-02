@@ -73,6 +73,19 @@ func LoginHandler(userSessionService *services.UserSessionService, userAuthServi
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+
+		//Update last login
+		success, err := userAuthService.UpdateLastLogin(userAuth.ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		if !success {
+			http.Error(w, "Error occured while logging user in", http.StatusInternalServerError)
+			return
+		}
+
 		//Assign values to token response before serialization
 		tokenResponse.AccessToken = accessToken
 		tokenResponse.RefreshTokenID = userSession.RefreshTokenID

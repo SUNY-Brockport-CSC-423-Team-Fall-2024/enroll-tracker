@@ -39,6 +39,21 @@ func (s *AdministratorService) CreateAdministrator(username string, password str
 	return administrator, err
 }
 
+func (s *AdministratorService) GetAdministrators(queryParams models.AdministratorQueryParams) ([]models.Administrator, error) {
+	//Validate query params
+	if queryParams.Limit != nil && (*queryParams.Limit < 10 || *queryParams.Limit > 100) {
+		return nil, errors.New("Limit is not within range of 10-100")
+	}
+
+	//Get administrators
+	administrators, err := s.repository.GetAdministrators(queryParams)
+	if err != nil {
+		return nil, err
+	}
+
+	return administrators, nil
+}
+
 func (s *AdministratorService) GetAdministrator(username string) (models.Administrator, error) {
 	var administrator models.Administrator
 
@@ -77,4 +92,17 @@ func (s *AdministratorService) UpdateAdministrator(username string, administrato
 	administrator, err := s.repository.UpdateAdministrator(username, administratorUpdates)
 
 	return administrator, err
+}
+
+func (s *AdministratorService) DeleteAdministrator(username string) (bool, error) {
+	//Make sure username is valid
+	if !utils.ValidUsername(username) {
+		return false, errors.New("Username isn't valid")
+	}
+
+	success, err := s.userAuthenticationService.DeleteUserAuthentication(username)
+	if err != nil {
+		return false, err
+	}
+	return success, nil
 }

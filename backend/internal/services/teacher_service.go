@@ -39,6 +39,21 @@ func (s *TeacherService) CreateTeacher(username string, password string, firstNa
 	return teacher, err
 }
 
+func (s *TeacherService) GetTeachers(queryParams models.TeacherQueryParams) ([]models.Teacher, error) {
+	//Validate query params
+	if queryParams.Limit != nil && (*queryParams.Limit < 10 || *queryParams.Limit > 100) {
+		return nil, errors.New("Limit is not within range of 10-100")
+	}
+
+	//Get teachers
+	teachers, err := s.repository.GetTeachers(queryParams)
+	if err != nil {
+		return nil, err
+	}
+
+	return teachers, nil
+}
+
 func (s *TeacherService) GetTeacher(username string) (models.Teacher, error) {
 	var teacher models.Teacher
 
@@ -77,4 +92,17 @@ func (s *TeacherService) UpdateTeacher(username string, teacherUpdates models.Te
 	teacher, err := s.repository.UpdateTeacher(username, teacherUpdates)
 
 	return teacher, err
+}
+
+func (s *TeacherService) DeleteTeacher(username string) (bool, error) {
+	//Make sure username is valid
+	if !utils.ValidUsername(username) {
+		return false, errors.New("Username isn't valid")
+	}
+
+	success, err := s.userAuthenticationService.DeleteUserAuthentication(username)
+	if err != nil {
+		return false, err
+	}
+	return success, nil
 }

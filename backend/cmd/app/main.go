@@ -53,18 +53,24 @@ func main() {
 
 	//Student routes
 	stdMux.HandleFunc("POST /api/students", handlers.CreateStudentHandler(studentService))
+	stdMux.HandleFunc("GET /api/students", handlers.GetStudentsHandler(studentService))
 	stdMux.HandleFunc("GET /api/students/{username}", handlers.GetStudentHandler(studentService))
 	stdMux.HandleFunc("PUT /api/students/{username}", handlers.UpdateStudentHandler(studentService))
+	stdMux.HandleFunc("DELETE /api/students/{username}", handlers.DeleteStudentHandler(studentService, userSessionService))
 
 	//Teacher routes
 	stdMux.HandleFunc("POST /api/teachers", handlers.CreateTeacherHandler(teacherService))
+	stdMux.HandleFunc("GET /api/teachers", handlers.GetTeachersHandler(teacherService))
 	stdMux.HandleFunc("GET /api/teachers/{username}", handlers.GetTeacherHandler(teacherService))
 	stdMux.HandleFunc("PUT /api/teachers/{username}", handlers.UpdateTeacherHandler(teacherService))
+	stdMux.HandleFunc("DELETE /api/teachers/{username}", handlers.DeleteTeacherHandler(teacherService, userSessionService))
 
 	//Administrator routes
 	stdMux.HandleFunc("POST /api/administrators", handlers.CreateAdministratorHandler(administratorService))
+	stdMux.HandleFunc("GET /api/administrators", handlers.GetAdministratorsHandler(administratorService))
 	stdMux.HandleFunc("GET /api/administrators/{username}", handlers.GetAdministratorHandler(administratorService))
 	stdMux.HandleFunc("PUT /api/administrators/{username}", handlers.UpdateAdministratorHandler(administratorService))
+	stdMux.HandleFunc("DELETE /api/administrators/{username}", handlers.DeleteAdministratorHandler(administratorService, userSessionService))
 
 	//Auth routes
 	stdMux.HandleFunc("/auth/login", handlers.LoginHandler(userSessionService, userAuthService))
