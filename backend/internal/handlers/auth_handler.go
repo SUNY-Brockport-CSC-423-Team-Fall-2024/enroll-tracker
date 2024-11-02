@@ -75,8 +75,14 @@ func LoginHandler(userSessionService *services.UserSessionService, userAuthServi
 		}
 
 		//Update last login
-		if _, err := userAuthService.UpdateLastLogin(userAuth.ID); err != nil {
+		success, err := userAuthService.UpdateLastLogin(userAuth.ID)
+		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		if !success {
+			http.Error(w, "Error occured while logging user in", http.StatusInternalServerError)
 			return
 		}
 

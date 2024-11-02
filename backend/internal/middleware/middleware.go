@@ -22,18 +22,18 @@ var (
 		//		},
 		//	},
 		//},
-		regexp.MustCompile(`^/api/students/[a-zA-Z0-9]{8,50}(\?.*)?$`): { //matches /api/students/{username}?queryparams...
-			MethodRoles: []models.MethodRoles{
-				{
-					Roles:       []string{utils.Roles.ADMIN, utils.Roles.TEACHER},
-					HTTPMethods: []string{http.MethodPut},
-				},
-				{
-					Roles:       []string{utils.Roles.STUDENT},
-					HTTPMethods: []string{http.MethodGet},
-				},
-			},
-		},
+		//regexp.MustCompile(`^/api/students/[a-zA-Z0-9]{8,50}(\?.*)?$`): { //matches /api/students/{username}?queryparams...
+		//	MethodRoles: []models.MethodRoles{
+		//		{
+		//			Roles:       []string{utils.Roles.ADMIN, utils.Roles.TEACHER},
+		//			HTTPMethods: []string{http.MethodPut},
+		//		},
+		//		{
+		//			Roles:       []string{utils.Roles.STUDENT},
+		//			HTTPMethods: []string{http.MethodGet},
+		//		},
+		//	},
+		//},
 		//regexp.MustCompile(`^/auth/token-refresh(\?.*)?$`): {
 		//	MethodRoles: []models.MethodRoles{
 		//		{

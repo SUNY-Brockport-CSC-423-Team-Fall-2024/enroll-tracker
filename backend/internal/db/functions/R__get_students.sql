@@ -12,9 +12,12 @@ RETURNS SETOF Student
 AS $$
 BEGIN
     RETURN QUERY
-    SELECT *
+    SELECT S.id, S.first_name, S.last_name, S.auth_id, S.major_id, S.phone_number, S.email, S.created_at, S.updated_at
     FROM Student AS S
+    JOIN UserAuthentication AS UA ON UA.id = S.auth_id
     WHERE 
+        UA.is_active = true
+        AND
         (i_first_name IS NULL OR S.first_name LIKE '%' || i_first_name || '%')
         AND 
         (i_last_name IS NULL OR S.last_name LIKE '%' || i_last_name || '%')
@@ -32,12 +35,7 @@ BEGIN
                 AND M.id = S.major_id
             )
         ))
-        AND (i_username IS NULL OR EXISTS ( -- If username provided. Grab entries where the users username contains the parameter
-            SELECT 1
-            FROM UserAuthentication AS UA
-            WHERE UA.username LIKE '%' || i_username || '%'
-            AND UA.id = S.auth_id
-        ))
+        AND (i_username IS NULL OR UA.username LIKE '%' || i_username || '%')
     LIMIT COALESCE(i_limit, 10)
     OFFSET COALESCE(i_offset, 0);
 END;

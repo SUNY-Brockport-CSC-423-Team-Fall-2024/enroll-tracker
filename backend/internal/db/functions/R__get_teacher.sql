@@ -26,7 +26,8 @@ BEGIN
     FROM Teacher
     INNER JOIN
         UserAuthentication ON Teacher.auth_id = UserAuthentication.id
-    WHERE UserAuthentication.username = i_username;
+    WHERE UserAuthentication.username = i_username
+    AND UserAuthentication.is_active = true;
 
     EXCEPTION
         WHEN NO_DATA_FOUND THEN

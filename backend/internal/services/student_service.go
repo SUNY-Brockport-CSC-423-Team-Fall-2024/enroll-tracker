@@ -93,3 +93,16 @@ func (s *StudentService) UpdateStudent(username string, studentUpdates models.St
 
 	return student, err
 }
+
+func (s *StudentService) DeleteStudent(username string) (bool, error) {
+	//Make sure username is valid
+	if !utils.ValidUsername(username) {
+		return false, errors.New("Username isn't valid")
+	}
+
+	success, err := s.userAuthenticationService.DeleteUserAuthentication(username)
+	if err != nil {
+		return false, err
+	}
+	return success, nil
+}

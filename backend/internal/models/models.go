@@ -113,6 +113,7 @@ type UserAuthentication struct {
 	PasswordHash      string     `json:"password_hash"`
 	LastLogin         *time.Time `json:"last_login"`
 	LastPasswordReset *time.Time `json:"last_password_reset"`
+	IsActive          bool       `json:"is_active"`
 }
 
 type UserSession struct {

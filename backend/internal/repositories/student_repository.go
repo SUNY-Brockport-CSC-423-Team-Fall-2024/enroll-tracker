@@ -13,7 +13,6 @@ type StudentRepository interface {
 	GetStudents(queryParams models.StudentQueryParams) ([]models.Student, error)
 	GetStudent(username string) (models.Student, error)
 	UpdateStudent(username string, studentUpdates models.StudentUpdate) (models.Student, error)
-	//DeleteStudent(username string) (bool, error)
 }
 
 type PostgresStudentRepository struct {

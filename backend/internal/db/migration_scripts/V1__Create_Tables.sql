@@ -11,7 +11,8 @@ CREATE TABLE UserAuthentication (
     username VARCHAR(60) UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
     last_login TIMESTAMP,
-    last_password_reset TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    last_password_reset TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE UserSession (
