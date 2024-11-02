@@ -185,3 +185,31 @@ func UpdateAdministratorHandler(administratorService *services.AdministratorServ
 		w.WriteHeader(http.StatusOK)
 	}
 }
+
+func DeleteAdministratorHandler(adminService *services.AdministratorService, userSessionService *services.UserSessionService) http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+		//Get username to delete
+		username := r.PathValue("username")
+		if username == "" {
+			http.Error(w, "Administrator username not provided", http.StatusBadRequest)
+			return
+		}
+		//Revoke any active user sessions associated with the user
+		if _, err := userSessionService.RevokeUserSessionWithUsername(username); err != nil {
+			http.Error(w, "Error occured when deleting administrator", http.StatusInternalServerError)
+			return
+		}
+		//Delete administrator
+		success, err := adminService.DeleteAdministrator(username)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		if !success {
+			http.Error(w, "Error occured when deleting administrator", http.StatusInternalServerError)
+			return
+		}
+		//Write 204 back to indicate successful deletion
+		w.WriteHeader(http.StatusNoContent)
+    }
+}

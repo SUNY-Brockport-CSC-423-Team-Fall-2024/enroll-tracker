@@ -70,7 +70,7 @@ func main() {
 	stdMux.HandleFunc("GET /api/administrators", handlers.GetAdministratorsHandler(administratorService))
 	stdMux.HandleFunc("GET /api/administrators/{username}", handlers.GetAdministratorHandler(administratorService))
 	stdMux.HandleFunc("PUT /api/administrators/{username}", handlers.UpdateAdministratorHandler(administratorService))
-	//stdMux.HandleFunc("DELETE /api/administrators/{username}", handlers.DeleteAdministratorHandler(administratorService))
+	stdMux.HandleFunc("DELETE /api/administrators/{username}", handlers.DeleteAdministratorHandler(administratorService, userSessionService))
 
 	//Auth routes
 	stdMux.HandleFunc("/auth/login", handlers.LoginHandler(userSessionService, userAuthService))
