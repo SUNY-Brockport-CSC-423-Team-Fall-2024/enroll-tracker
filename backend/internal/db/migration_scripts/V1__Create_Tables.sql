@@ -1,9 +1,13 @@
 CREATE TYPE CourseStatus AS ENUM('active', 'inactive');
+CREATE TYPE MajorStatus AS ENUM('active', 'inactive');
 
 CREATE TABLE Major (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL,
-    description VARCHAR(250) NOT NULL
+    description VARCHAR(250) NOT NULL,
+    status MajorStatus NOT NULL DEFAULT 'active',
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE UserAuthentication (
@@ -79,12 +83,14 @@ CREATE TABLE Course (
     teacher_id INT,
     max_enrollment INT NOT NULL,
     num_credits INT NOT NULL,
-    status CourseStatus NOT NULL,
+    status CourseStatus NOT NULL DEFAULT 'active',
     last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY(teacher_id) REFERENCES Teacher(id),
-    CHECK ((status = 'inactive' AND max_enrollment = 0) OR status = 'active')
+    CHECK ((status = 'inactive' AND max_enrollment = 0) OR status = 'active'),
+    CHECK(num_credits > 0 AND num_credits <= 6),
+    CHECK(max_enrollment >= 0 AND max_enrollment <= 100)
 );
 
 CREATE TABLE Course_Major (
