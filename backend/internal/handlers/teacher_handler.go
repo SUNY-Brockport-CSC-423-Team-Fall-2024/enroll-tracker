@@ -186,8 +186,30 @@ func UpdateTeacherHandler(teacherService *services.TeacherService) http.HandlerF
 	}
 }
 
-func DeleteTeacherHandler(teacherService *services.TeacherService) http.HandlerFunc {
+func DeleteTeacherHandler(teacherService *services.TeacherService, userSessionService *services.UserSessionService) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
-        
+		//Get username to delete
+		username := r.PathValue("username")
+		if username == "" {
+			http.Error(w, "Teacher username not provided", http.StatusBadRequest)
+			return
+		}
+		//Revoke any active user sessions associated with the user
+		if _, err := userSessionService.RevokeUserSessionWithUsername(username); err != nil {
+			http.Error(w, "Error occured when deleting teacher", http.StatusInternalServerError)
+			return
+		}
+		//Delete teacher
+		success, err := teacherService.DeleteTeacher(username)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		if !success {
+			http.Error(w, "Error occured when deleting teacher", http.StatusInternalServerError)
+			return
+		}
+		//Write 204 back to indicate successful deletion
+		w.WriteHeader(http.StatusNoContent)
     }
 }
