@@ -75,9 +75,9 @@ func (r *PostgresMajorRepository) UpdateMajor(majorID int, majorUpdates models.M
 	if err != nil {
 		return false, err
 	}
-    if !success {
-        return false, models.NoAffectedRows
-    }
+	if !success {
+		return false, models.NoAffectedRows
+	}
 	return true, nil
 }
 

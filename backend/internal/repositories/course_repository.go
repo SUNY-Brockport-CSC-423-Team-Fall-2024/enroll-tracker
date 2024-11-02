@@ -67,17 +67,17 @@ func (r *PostgresCourseRepository) GetCourse(courseID int) (models.Course, error
 }
 
 func (r *PostgresCourseRepository) UpdateCourse(courseID int, courseUpdates models.CourseUpdate) (bool, error) {
-    var success bool
-	
-    query := `SELECT * FROM public.update_course($1,$2,$3,$4,$5,$6)`
+	var success bool
+
+	query := `SELECT * FROM public.update_course($1,$2,$3,$4,$5,$6)`
 
 	err := r.db.QueryRow(query, courseID, courseUpdates.Description, courseUpdates.TeacherID, courseUpdates.MaxEnrollment, courseUpdates.NumCredits, courseUpdates.Status).Scan(&success)
 	if err != nil {
 		return false, err
 	}
-    if !success {
-        return false, models.NoAffectedRows
-    }
+	if !success {
+		return false, models.NoAffectedRows
+	}
 	return true, nil
 }
 

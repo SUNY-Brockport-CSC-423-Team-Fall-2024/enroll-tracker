@@ -161,18 +161,18 @@ func UpdateMajorHandler(s *services.MajorService) http.HandlerFunc {
 
 		success, err := s.UpdateMajor(majorID, majorUpdate)
 		if err != nil {
-            if errors.Is(err, models.NoAffectedRows) {
-                http.Error(w, "No major was found to update", http.StatusNotFound)
-			    return
-            }
+			if errors.Is(err, models.NoAffectedRows) {
+				http.Error(w, "No major was found to update", http.StatusNotFound)
+				return
+			}
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-        if !success {
+		if !success {
 			http.Error(w, "Error occured while updating major", http.StatusInternalServerError)
 			return
-        }
+		}
 
 		w.WriteHeader(http.StatusOK)
 	}

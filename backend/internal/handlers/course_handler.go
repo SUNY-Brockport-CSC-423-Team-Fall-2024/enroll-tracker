@@ -221,18 +221,18 @@ func UpdateCourseHandler(s *services.CourseService) http.HandlerFunc {
 
 		success, err := s.UpdateCourse(courseID, courseUpdate)
 		if err != nil {
-            if errors.Is(err, models.NoAffectedRows) {
-                http.Error(w, "No course was found to update", http.StatusNotFound)
-                return
-            } 
+			if errors.Is(err, models.NoAffectedRows) {
+				http.Error(w, "No course was found to update", http.StatusNotFound)
+				return
+			}
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
-        if !success {
+		if !success {
 			http.Error(w, "Error occured while updating course", http.StatusBadRequest)
 			return
-        }
+		}
 
 		w.WriteHeader(http.StatusOK)
 	}

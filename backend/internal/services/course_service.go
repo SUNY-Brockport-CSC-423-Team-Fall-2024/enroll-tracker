@@ -38,21 +38,21 @@ func (s *CourseService) GetCourse(courseID int) (models.Course, error) {
 }
 
 func (s *CourseService) UpdateCourse(courseID int, courseUpdates models.CourseUpdate) (bool, error) {
-    //Validate updates
-    if courseUpdates.MaxEnrollment != nil && (*courseUpdates.MaxEnrollment < 0 || *courseUpdates.MaxEnrollment > 100) {
-        return false, errors.New("Max enrollment needs to be in the range 0-99")
-    }
-    if courseUpdates.NumCredits != nil && (*courseUpdates.NumCredits <= 0 || *courseUpdates.NumCredits > 6) {
-        return false, errors.New("Num credits needs to be in the range 1-6")
-    }
-    
-    //Set max enrollment to 0 if we are making a course inactive
-    if courseUpdates.Status != nil && (*courseUpdates.Status == "inactive") {
-        if courseUpdates.MaxEnrollment == nil {
-            courseUpdates.MaxEnrollment = new(int)
-        }
-        *courseUpdates.MaxEnrollment = 0
-    }
+	//Validate updates
+	if courseUpdates.MaxEnrollment != nil && (*courseUpdates.MaxEnrollment < 0 || *courseUpdates.MaxEnrollment > 100) {
+		return false, errors.New("Max enrollment needs to be in the range 0-99")
+	}
+	if courseUpdates.NumCredits != nil && (*courseUpdates.NumCredits <= 0 || *courseUpdates.NumCredits > 6) {
+		return false, errors.New("Num credits needs to be in the range 1-6")
+	}
+
+	//Set max enrollment to 0 if we are making a course inactive
+	if courseUpdates.Status != nil && (*courseUpdates.Status == "inactive") {
+		if courseUpdates.MaxEnrollment == nil {
+			courseUpdates.MaxEnrollment = new(int)
+		}
+		*courseUpdates.MaxEnrollment = 0
+	}
 
 	success, err := s.repository.UpdateCourse(courseID, courseUpdates)
 	if err != nil {
