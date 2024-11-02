@@ -60,10 +60,10 @@ func main() {
 
 	//Teacher routes
 	stdMux.HandleFunc("POST /api/teachers", handlers.CreateTeacherHandler(teacherService))
-	//stdMux.HandleFunc("GET /api/teachers", handlers.GetTeachersHandler(teacherService))
+	stdMux.HandleFunc("GET /api/teachers", handlers.GetTeachersHandler(teacherService))
 	stdMux.HandleFunc("GET /api/teachers/{username}", handlers.GetTeacherHandler(teacherService))
 	stdMux.HandleFunc("PUT /api/teachers/{username}", handlers.UpdateTeacherHandler(teacherService))
-	//stdMux.HandleFunc("DELETE /api/teachers/{username}", handlers.DeleteTeacherHandler(teacherService))
+	stdMux.HandleFunc("DELETE /api/teachers/{username}", handlers.DeleteTeacherHandler(teacherService))
 
 	//Administrator routes
 	stdMux.HandleFunc("POST /api/administrators", handlers.CreateAdministratorHandler(administratorService))

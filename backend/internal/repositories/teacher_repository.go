@@ -7,6 +7,7 @@ import (
 
 type TeacherRepository interface {
 	CreateTeacher(firstName string, lastName string, authId int, phoneNumber string, email string, office string) (models.Teacher, error)
+    GetTeachers(queryParams models.TeacherQueryParams) ([]models.Teacher, error)
 	GetTeacher(username string) (models.Teacher, error)
 	UpdateTeacher(username string, teacherUpdates models.TeacherUpdate) (models.Teacher, error)
 }
@@ -24,9 +25,41 @@ func (r *PostgresTeacherRepository) CreateTeacher(firstName string, lastName str
 
 	query := `SELECT * FROM public.create_teacher($1,$2,$3,$4,$5,$6)`
 
-	err := r.db.QueryRow(query, firstName, lastName, authId, phoneNumber, email, office).Scan(&teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office)
+	err := r.db.QueryRow(query, firstName, lastName, authId, phoneNumber, email, office).Scan(&teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt)
 
 	return teacher, err
+}
+
+func (r *PostgresTeacherRepository) GetTeachers(queryParams models.TeacherQueryParams) ([]models.Teacher, error) {
+	//teacher array
+	var teachers = make([]models.Teacher, 0)
+
+	query := `SELECT * FROM public.get_teachers($1,$2,$3,$4,$5,$6,$7,$8)`
+
+	rows, err := r.db.Query(query, queryParams.Limit, queryParams.Offset, queryParams.FirstName, queryParams.LastName, queryParams.Username, queryParams.Email, queryParams.PhoneNumber, queryParams.Office)
+	if err != nil {
+		return nil, err
+	}
+	//Be sure to close connection
+	defer rows.Close()
+
+	//Loop through returned rows
+	for rows.Next() {
+		teacher := models.Teacher{}
+		if err := rows.Scan(&teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt); err != nil {
+			if len(teachers) == 0 {
+				return []models.Teacher{}, nil
+			}
+			return nil, err
+		}
+		teachers = append(teachers, teacher)
+	}
+
+	if len(teachers) == 0 {
+		return []models.Teacher{}, nil
+	}
+
+	return teachers, nil
 }
 
 func (r *PostgresTeacherRepository) GetTeacher(username string) (models.Teacher, error) {
