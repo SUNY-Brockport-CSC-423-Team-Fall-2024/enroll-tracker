@@ -35,6 +35,8 @@ func main() {
 	administratorRepo := repositories.CreatePostgresAdministratorRepository(db)
 	userSessionRepo := repositories.CreatePostgresUserSessionRepository(db)
 	redisRepo := repositories.CreateRedisRepository(redis)
+	courseRepo := repositories.CreateCourseRepository(db)
+	majorRepo := repositories.CreateMajorRepository(db)
 
 	//Create services
 	userAuthService := services.CreateUserAuthenticationService(uaRepo)
@@ -43,6 +45,8 @@ func main() {
 	administratorService := services.CreateAdministratorService(administratorRepo, userAuthService)
 	userSessionService := services.CreateUserSessionService(userSessionRepo)
 	redisSession := services.CreateRedisService(redisRepo)
+	courseService := services.CreateCourseService(courseRepo)
+	majorService := services.CreateMajorService(majorRepo)
 
 	//Create http multiplexer
 	stdMux := http.NewServeMux()
@@ -77,6 +81,20 @@ func main() {
 	stdMux.HandleFunc("POST /auth/token-refresh", handlers.RefreshTokenHandler(userSessionService, redisSession))
 	stdMux.HandleFunc("POST /auth/logout", handlers.LogoutHandler(userSessionService, redisSession))
 	stdMux.HandleFunc("POST /auth/change-password", handlers.ChangePasswordHandler(userAuthService))
+
+	//Courses routes
+	stdMux.HandleFunc("POST /api/courses", handlers.CreateCourseHandler(courseService))
+	stdMux.HandleFunc("GET /api/courses", handlers.GetCoursesHandler(courseService))
+	stdMux.HandleFunc("GET /api/courses/{courseID}", handlers.GetCourseHandler(courseService))
+	stdMux.HandleFunc("PUT /api/courses/{courseID}", handlers.UpdateCourseHandler(courseService))
+	stdMux.HandleFunc("DELETE /api/courses/{courseID}", handlers.DeleteCourseHandler(courseService))
+
+	//Majors routes
+	stdMux.HandleFunc("POST /api/majors", handlers.CreateMajorHandler(majorService))
+	stdMux.HandleFunc("GET /api/majors", handlers.GetMajorsHandler(majorService))
+	stdMux.HandleFunc("GET /api/majors/{majorID}", handlers.GetMajorHandler(majorService))
+	stdMux.HandleFunc("PUT /api/majors/{majorID}", handlers.UpdateMajorHandler(majorService))
+	stdMux.HandleFunc("DELETE /api/majors/{majorID}", handlers.DeleteMajorHandler(majorService))
 
 	//Crete auth middleware
 	authMiddleware := middleware.AuthMiddleware(redisSession)
