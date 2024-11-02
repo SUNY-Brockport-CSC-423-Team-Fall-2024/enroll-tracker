@@ -23,7 +23,7 @@ BEGIN
         o_office,
         o_created_at,
         o_updated_at
-    FROM Teacher
+    FROM Administrator
     INNER JOIN
         UserAuthentication ON Administrator.auth_id = UserAuthentication.id
     WHERE UserAuthentication.username = i_username

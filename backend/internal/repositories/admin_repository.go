@@ -7,6 +7,7 @@ import (
 
 type AdministratorRepository interface {
 	CreateAdministrator(firstName string, lastName string, authId int, phoneNumber string, email string, office string) (models.Administrator, error)
+    GetAdministrators(queryParams models.AdministratorQueryParams) ([]models.Administrator, error)
 	GetAdministrator(username string) (models.Administrator, error)
 	UpdateAdministrator(username string, administratorUpdates models.AdministratorUpdate) (models.Administrator, error)
 }
@@ -27,6 +28,38 @@ func (r *PostgresAdministratorRepository) CreateAdministrator(firstName string, 
 	err := r.db.QueryRow(query, firstName, lastName, authId, phoneNumber, email, office).Scan(&administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt)
 
 	return administrator, err
+}
+
+func (r *PostgresAdministratorRepository) GetAdministrators(queryParams models.AdministratorQueryParams) ([]models.Administrator, error) {
+	//administrator array
+	var administrators = make([]models.Administrator, 0)
+
+	query := `SELECT * FROM public.get_admins($1,$2,$3,$4,$5,$6,$7,$8)`
+
+	rows, err := r.db.Query(query, queryParams.Limit, queryParams.Offset, queryParams.FirstName, queryParams.LastName, queryParams.Username, queryParams.Email, queryParams.PhoneNumber, queryParams.Office)
+	if err != nil {
+		return nil, err
+	}
+	//Be sure to close connection
+	defer rows.Close()
+
+	//Loop through returned rows
+	for rows.Next() {
+		administrator := models.Administrator{}
+		if err := rows.Scan(&administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt); err != nil {
+			if len(administrators) == 0 {
+				return []models.Administrator{}, nil
+			}
+			return nil, err
+		}
+		administrators = append(administrators, administrator)
+	}
+
+	if len(administrators) == 0 {
+		return []models.Administrator{}, nil
+	}
+
+	return administrators, nil
 }
 
 func (r *PostgresAdministratorRepository) GetAdministrator(username string) (models.Administrator, error) {

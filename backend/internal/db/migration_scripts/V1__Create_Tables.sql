@@ -63,8 +63,8 @@ CREATE TABLE Administrator (
     last_name VARCHAR(50) NOT NULL,
     auth_id INT,
     phone_number VARCHAR(20) NOT NULL,
-    office VARCHAR(60) NOT NULL,
     email VARCHAR(50) NOT NULL,
+    office VARCHAR(60) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
