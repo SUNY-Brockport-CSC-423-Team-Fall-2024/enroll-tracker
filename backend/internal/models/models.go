@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"net/http"
 	"time"
 
@@ -38,6 +39,27 @@ type AdministratorQueryParams struct {
 	Office      *string `json:"office"`
 	Limit       *int    `json:"limit"`
 	Offset      *int    `json:"offset"`
+}
+
+type CourseQueryParams struct {
+	Limit         *int    `json:"limit"`
+	Offset        *int    `json:"offset"`
+	Name          *string `json:"name"`
+	Description   *string `json:"description"`
+	TeacherID     *int    `json:"teacher_id"`
+	MaxEnrollment *int    `json:"max_enrollment"`
+	MinEnrollment *int    `json:"min_enrollment"`
+	MaxNumCredits *int    `json:"max_num_credits"`
+	MinNumCredits *int    `json:"min_num_credits"`
+	Status        *string `json:"status"`
+}
+
+type MajorQueryParams struct {
+	Limit       *int    `json:"limit"`
+	Offset      *int    `json:"offset"`
+	Name        *string `json:"name"`
+	Description *string `json:"description"`
+	Status      *string `json:"status"`
 }
 
 type StudentCreation struct {
@@ -162,6 +184,53 @@ type TokenResponse struct {
 	ExpiresIn      time.Time `json:"expires_in"`
 }
 
+type Course struct {
+	ID            int       `json:"id"`
+	Name          string    `json:"name"`
+	Description   string    `json:"description"`
+	TeacherID     int       `json:"teacher_id"`
+	MaxEnrollment int       `json:"max_enrollment"`
+	NumCredits    int       `json:"num_credits"`
+	Status        string    `json:"status"`
+	LastUpdated   time.Time `json:"last_updated"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+type CourseCreation struct {
+	Name          string `json:"name"`
+	Description   string `json:"description"`
+	TeacherID     int    `json:"teacher_id"`
+	MaxEnrollment int    `json:"max_enrollment"`
+	NumCredits    int    `json:"num_credits"`
+}
+
+type CourseUpdate struct {
+	Description   *string `json:"description"`
+	TeacherID     *int    `json:"teacher_id"`
+	MaxEnrollment *int    `json:"max_enrollment"`
+	NumCredits    *int    `json:"num_credits"`
+	Status        *string `json:"status"`
+}
+
+type Major struct {
+	ID          int       `json:"id"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	Status      string    `json:"status"`
+	LastUpdated time.Time `json:"last_updated"`
+	CreatedAt   time.Time `json:"created_at"`
+}
+
+type MajorCreation struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type MajorUpdate struct {
+	Description *string `json:"description"`
+	Status      *string `json:"status"`
+}
+
 type RouteAuth struct {
 	MethodRoles []MethodRoles
 }
@@ -196,3 +265,5 @@ func (rw *ResponseWriter) WriteHeader(code int) {
 func WrapResponseWriter(w http.ResponseWriter) *ResponseWriter {
 	return &ResponseWriter{ResponseWriter: w}
 }
+
+var NoAffectedRows = errors.New("No affected rows")

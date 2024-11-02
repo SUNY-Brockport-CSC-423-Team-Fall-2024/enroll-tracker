@@ -47,16 +47,9 @@ func (r *PostgresTeacherRepository) GetTeachers(queryParams models.TeacherQueryP
 	for rows.Next() {
 		teacher := models.Teacher{}
 		if err := rows.Scan(&teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt); err != nil {
-			if len(teachers) == 0 {
-				return []models.Teacher{}, nil
-			}
-			return nil, err
+			return teachers, err
 		}
 		teachers = append(teachers, teacher)
-	}
-
-	if len(teachers) == 0 {
-		return []models.Teacher{}, nil
 	}
 
 	return teachers, nil

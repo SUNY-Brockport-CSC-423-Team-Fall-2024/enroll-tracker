@@ -47,16 +47,9 @@ func (r *PostgresAdministratorRepository) GetAdministrators(queryParams models.A
 	for rows.Next() {
 		administrator := models.Administrator{}
 		if err := rows.Scan(&administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt); err != nil {
-			if len(administrators) == 0 {
-				return []models.Administrator{}, nil
-			}
 			return nil, err
 		}
 		administrators = append(administrators, administrator)
-	}
-
-	if len(administrators) == 0 {
-		return []models.Administrator{}, nil
 	}
 
 	return administrators, nil

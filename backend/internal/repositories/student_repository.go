@@ -53,18 +53,10 @@ func (r *PostgresStudentRepository) GetStudents(queryParams models.StudentQueryP
 	for rows.Next() {
 		student := models.Student{}
 		if err := rows.Scan(&student.ID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt); err != nil {
-			if len(students) == 0 {
-				return []models.Student{}, nil
-			}
-			return nil, err
+			return students, err
 		}
 		students = append(students, student)
 	}
-
-	if len(students) == 0 {
-		return []models.Student{}, nil
-	}
-
 	return students, nil
 }
 
