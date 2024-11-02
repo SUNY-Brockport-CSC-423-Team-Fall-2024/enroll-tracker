@@ -7,7 +7,7 @@ import (
 
 type TeacherRepository interface {
 	CreateTeacher(firstName string, lastName string, authId int, phoneNumber string, email string, office string) (models.Teacher, error)
-    GetTeachers(queryParams models.TeacherQueryParams) ([]models.Teacher, error)
+	GetTeachers(queryParams models.TeacherQueryParams) ([]models.Teacher, error)
 	GetTeacher(username string) (models.Teacher, error)
 	UpdateTeacher(username string, teacherUpdates models.TeacherUpdate) (models.Teacher, error)
 }

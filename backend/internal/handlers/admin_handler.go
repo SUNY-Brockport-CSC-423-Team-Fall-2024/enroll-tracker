@@ -5,7 +5,7 @@ import (
 	"enroll-tracker/internal/models"
 	"enroll-tracker/internal/services"
 	"net/http"
-    "strconv"
+	"strconv"
 )
 
 func CreateAdministratorHandler(s *services.AdministratorService) http.HandlerFunc {
@@ -28,7 +28,7 @@ func CreateAdministratorHandler(s *services.AdministratorService) http.HandlerFu
 }
 
 func GetAdministratorsHandler(s *services.AdministratorService) http.HandlerFunc {
-    return func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		//Query params we want to take
 		query := r.URL.Query()
 		limitParam := query.Get("limit")
@@ -111,7 +111,7 @@ func GetAdministratorsHandler(s *services.AdministratorService) http.HandlerFunc
 			LastName:    lastName,
 			Email:       email,
 			PhoneNumber: phoneNumber,
-			Office: office,
+			Office:      office,
 		}
 
 		administrators, err := s.GetAdministrators(queryParams)
@@ -127,7 +127,7 @@ func GetAdministratorsHandler(s *services.AdministratorService) http.HandlerFunc
 		}
 
 		w.WriteHeader(http.StatusOK)
-    }
+	}
 }
 
 func GetAdministratorHandler(s *services.AdministratorService) http.HandlerFunc {
@@ -187,7 +187,7 @@ func UpdateAdministratorHandler(administratorService *services.AdministratorServ
 }
 
 func DeleteAdministratorHandler(adminService *services.AdministratorService, userSessionService *services.UserSessionService) http.HandlerFunc {
-    return func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		//Get username to delete
 		username := r.PathValue("username")
 		if username == "" {
@@ -211,5 +211,5 @@ func DeleteAdministratorHandler(adminService *services.AdministratorService, use
 		}
 		//Write 204 back to indicate successful deletion
 		w.WriteHeader(http.StatusNoContent)
-    }
+	}
 }

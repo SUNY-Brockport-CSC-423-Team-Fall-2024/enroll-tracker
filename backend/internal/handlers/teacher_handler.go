@@ -5,7 +5,7 @@ import (
 	"enroll-tracker/internal/models"
 	"enroll-tracker/internal/services"
 	"net/http"
-    "strconv"
+	"strconv"
 )
 
 func CreateTeacherHandler(s *services.TeacherService) http.HandlerFunc {
@@ -28,7 +28,7 @@ func CreateTeacherHandler(s *services.TeacherService) http.HandlerFunc {
 }
 
 func GetTeachersHandler(s *services.TeacherService) http.HandlerFunc {
-    return func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		//Query params we want to take
 		query := r.URL.Query()
 		limitParam := query.Get("limit")
@@ -111,7 +111,7 @@ func GetTeachersHandler(s *services.TeacherService) http.HandlerFunc {
 			LastName:    lastName,
 			Email:       email,
 			PhoneNumber: phoneNumber,
-			Office: office,
+			Office:      office,
 		}
 
 		teachers, err := s.GetTeachers(queryParams)
@@ -127,7 +127,7 @@ func GetTeachersHandler(s *services.TeacherService) http.HandlerFunc {
 		}
 
 		w.WriteHeader(http.StatusOK)
-    }
+	}
 }
 
 func GetTeacherHandler(s *services.TeacherService) http.HandlerFunc {
@@ -187,7 +187,7 @@ func UpdateTeacherHandler(teacherService *services.TeacherService) http.HandlerF
 }
 
 func DeleteTeacherHandler(teacherService *services.TeacherService, userSessionService *services.UserSessionService) http.HandlerFunc {
-    return func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		//Get username to delete
 		username := r.PathValue("username")
 		if username == "" {
@@ -211,5 +211,5 @@ func DeleteTeacherHandler(teacherService *services.TeacherService, userSessionSe
 		}
 		//Write 204 back to indicate successful deletion
 		w.WriteHeader(http.StatusNoContent)
-    }
+	}
 }

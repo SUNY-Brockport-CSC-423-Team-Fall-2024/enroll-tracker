@@ -7,7 +7,7 @@ import (
 
 type AdministratorRepository interface {
 	CreateAdministrator(firstName string, lastName string, authId int, phoneNumber string, email string, office string) (models.Administrator, error)
-    GetAdministrators(queryParams models.AdministratorQueryParams) ([]models.Administrator, error)
+	GetAdministrators(queryParams models.AdministratorQueryParams) ([]models.Administrator, error)
 	GetAdministrator(username string) (models.Administrator, error)
 	UpdateAdministrator(username string, administratorUpdates models.AdministratorUpdate) (models.Administrator, error)
 }

@@ -40,7 +40,7 @@ func (s *TeacherService) CreateTeacher(username string, password string, firstNa
 }
 
 func (s *TeacherService) GetTeachers(queryParams models.TeacherQueryParams) ([]models.Teacher, error) {
-    //Validate query params
+	//Validate query params
 	if queryParams.Limit != nil && (*queryParams.Limit < 10 || *queryParams.Limit > 100) {
 		return nil, errors.New("Limit is not within range of 10-100")
 	}

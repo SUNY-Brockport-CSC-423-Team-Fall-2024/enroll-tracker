@@ -19,25 +19,25 @@ type StudentQueryParams struct {
 }
 
 type TeacherQueryParams struct {
-	Username    *string   `json:"username"`
-	FirstName   *string   `json:"first_name"`
-	LastName    *string   `json:"last_name"`
-	PhoneNumber *string   `json:"phone_number"`
-	Email       *string   `json:"email"`
-	Office       *string   `json:"office"`
-	Limit       *int      `json:"limit"`
-	Offset      *int      `json:"offset"`
+	Username    *string `json:"username"`
+	FirstName   *string `json:"first_name"`
+	LastName    *string `json:"last_name"`
+	PhoneNumber *string `json:"phone_number"`
+	Email       *string `json:"email"`
+	Office      *string `json:"office"`
+	Limit       *int    `json:"limit"`
+	Offset      *int    `json:"offset"`
 }
 
 type AdministratorQueryParams struct {
-	Username    *string   `json:"username"`
-	FirstName   *string   `json:"first_name"`
-	LastName    *string   `json:"last_name"`
-	PhoneNumber *string   `json:"phone_number"`
-	Email       *string   `json:"email"`
-	Office       *string   `json:"office"`
-	Limit       *int      `json:"limit"`
-	Offset      *int      `json:"offset"`
+	Username    *string `json:"username"`
+	FirstName   *string `json:"first_name"`
+	LastName    *string `json:"last_name"`
+	PhoneNumber *string `json:"phone_number"`
+	Email       *string `json:"email"`
+	Office      *string `json:"office"`
+	Limit       *int    `json:"limit"`
+	Offset      *int    `json:"offset"`
 }
 
 type StudentCreation struct {

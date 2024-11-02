@@ -40,7 +40,7 @@ func (s *AdministratorService) CreateAdministrator(username string, password str
 }
 
 func (s *AdministratorService) GetAdministrators(queryParams models.AdministratorQueryParams) ([]models.Administrator, error) {
-    //Validate query params
+	//Validate query params
 	if queryParams.Limit != nil && (*queryParams.Limit < 10 || *queryParams.Limit > 100) {
 		return nil, errors.New("Limit is not within range of 10-100")
 	}
