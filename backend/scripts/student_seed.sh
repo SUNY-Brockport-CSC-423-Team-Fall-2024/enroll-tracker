@@ -3,13 +3,21 @@
 # Endpoint URL
 URL="http://localhost:8002/api/students"
 
+firstNames=("John" "Jane" "Alex" "Chris" "Taylor" "Emily" "Jordan" "Morgan" "Sam" "Dana")
+lastNames=("Smith" "Johnson" "Williams" "Jones" "Brown" "Davis" "Miller" "Wilson")
+firstNamesLen=${#firstNames[@]}
+lastNamesLen=${#lastNames[@]}
+
 # Generate random user details and send 10 POST requests
 for i in {1..10}; do
+  # Generate random numbers
+  random_index_f=$((RANDOM % firstNamesLen))
+  random_index_l=$((RANDOM % lastNamesLen))
   # Generate random data for each user
   USERNAME="user$(uuidgen | tr -d '-' | head -c 8)"
   PASSWORD="testPassword123"
-  FIRST_NAME=$(echo -e "John\nJane\nAlex\nChris\nTaylor\nJordan\nMorgan\nSam\nDana\nSkyler" | awk 'BEGIN{srand()} {print rand(), $0}' | sort -n | head -n 1 | cut -d' ' -f2-)
-  LAST_NAME=$(echo -e "Smith\nJohnson\nWilliams\nJones\nBrown\nDavis\nMiller\nWilson\nMoore\nTaylor" | awk 'BEGIN{srand()} {print rand(), $0}' | sort -n | head -n 1 | cut -d ' ' -f2-)
+  FIRST_NAME=$(echo -e ${firstNames[$random_index_f]})
+  LAST_NAME=$(echo -e ${lastNames[$random_index_l]})
   EMAIL="${USERNAME}@example.com"
 
   # Create JSON payload
