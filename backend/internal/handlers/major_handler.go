@@ -222,23 +222,23 @@ func AddCourseToMajorHandler(s *services.MajorService) http.HandlerFunc {
 			return
 		}
 
-        //Get course id
-        var kv map[string]interface{}
-        if err := json.NewDecoder(r.Body).Decode(&kv); err != nil {
+		//Get course id
+		var kv map[string]interface{}
+		if err := json.NewDecoder(r.Body).Decode(&kv); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
-        }
+		}
 
-        courseIDParam, ok := kv["courseID"]
-        if !ok {
+		courseIDParam, ok := kv["courseID"]
+		if !ok {
 			http.Error(w, "Course ID not provided in body", http.StatusBadRequest)
 			return
-        }
-        courseID, ok := courseIDParam.(float64) // by default numbers are decoded as float64 when interface{} is the value type
-        if !ok {
+		}
+		courseID, ok := courseIDParam.(float64) // by default numbers are decoded as float64 when interface{} is the value type
+		if !ok {
 			http.Error(w, "Course ID not in valid format", http.StatusBadRequest)
 			return
-        }
+		}
 
 		success, err := s.AddCourseToMajor(majorID, int(courseID))
 		if err != nil {
