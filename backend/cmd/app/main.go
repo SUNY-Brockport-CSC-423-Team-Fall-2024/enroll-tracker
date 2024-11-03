@@ -37,6 +37,7 @@ func main() {
 	redisRepo := repositories.CreateRedisRepository(redis)
 	courseRepo := repositories.CreateCourseRepository(db)
 	majorRepo := repositories.CreateMajorRepository(db)
+	courseMajorRepo := repositories.CreateCourseMajorRepository(db)
 
 	//Create services
 	userAuthService := services.CreateUserAuthenticationService(uaRepo)
@@ -46,7 +47,7 @@ func main() {
 	userSessionService := services.CreateUserSessionService(userSessionRepo)
 	redisSession := services.CreateRedisService(redisRepo)
 	courseService := services.CreateCourseService(courseRepo)
-	majorService := services.CreateMajorService(majorRepo)
+	majorService := services.CreateMajorService(majorRepo, courseMajorRepo)
 
 	//Create http multiplexer
 	stdMux := http.NewServeMux()
@@ -95,6 +96,9 @@ func main() {
 	stdMux.HandleFunc("GET /api/majors/{majorID}", handlers.GetMajorHandler(majorService))
 	stdMux.HandleFunc("PUT /api/majors/{majorID}", handlers.UpdateMajorHandler(majorService))
 	stdMux.HandleFunc("DELETE /api/majors/{majorID}", handlers.DeleteMajorHandler(majorService))
+	stdMux.HandleFunc("POST /api/majors/{majorID}/courses", handlers.AddCourseToMajorHandler(majorService))
+	stdMux.HandleFunc("GET /api/majors/{majorID}/courses", handlers.GetCoursesAssoicatedWithMajorHandler(majorService))
+	stdMux.HandleFunc("DELETE /api/majors/{majorID}/courses/{courseID}", handlers.DeleteCourseFromMajorHandler(majorService))
 
 	//Crete auth middleware
 	authMiddleware := middleware.AuthMiddleware(redisSession)

@@ -6,11 +6,12 @@ import (
 )
 
 type MajorService struct {
-	repository repositories.MajorRepository
+	repository            repositories.MajorRepository
+	courseMajorRepository repositories.CourseMajorRepository
 }
 
-func CreateMajorService(repo repositories.MajorRepository) *MajorService {
-	return &MajorService{repository: repo}
+func CreateMajorService(repo repositories.MajorRepository, courseMajorRepo repositories.CourseMajorRepository) *MajorService {
+	return &MajorService{repository: repo, courseMajorRepository: courseMajorRepo}
 }
 
 func (s *MajorService) CreateMajor(majorCreation models.MajorCreation) (models.Major, error) {
@@ -46,6 +47,36 @@ func (s *MajorService) UpdateMajor(majorID int, majorUpdates models.MajorUpdate)
 
 func (s *MajorService) DeleteMajor(majorID int) (bool, error) {
 	success, err := s.repository.DeleteMajor(majorID)
+	if err != nil {
+		return false, err
+	}
+	if !success {
+		return false, nil
+	}
+	return true, nil
+}
+
+func (s *MajorService) AddCourseToMajor(majorID int, courseID int) (bool, error) {
+	success, err := s.courseMajorRepository.AddCourseToMajor(majorID, courseID)
+	if err != nil {
+		return false, err
+	}
+	if !success {
+		return false, nil
+	}
+	return true, nil
+}
+
+func (s *MajorService) GetCoursesAssociatedWithMajor(majorID int, queryParams models.CourseQueryParams) ([]models.Course, error) {
+	courses, err := s.courseMajorRepository.GetCoursesAssoicatedWithMajor(majorID, queryParams)
+	if err != nil {
+		return []models.Course{}, err
+	}
+	return courses, nil
+}
+
+func (s *MajorService) RemoveCourseFromMajor(majorID int, courseID int) (bool, error) {
+	success, err := s.courseMajorRepository.RemoveCourseFromMajor(majorID, courseID)
 	if err != nil {
 		return false, err
 	}
