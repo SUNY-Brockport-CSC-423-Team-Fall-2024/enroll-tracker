@@ -106,3 +106,14 @@ func (s *StudentService) DeleteStudent(username string) (bool, error) {
 	}
 	return success, nil
 }
+
+func (s *StudentService) AddStudentToMajor(majorID int, studentID int) (bool, error) {
+	success, err := s.repository.AddStudentToMajor(majorID, studentID)
+	if err != nil {
+		return false, err
+	}
+	if !success {
+		return false, nil
+	}
+	return true, nil
+}

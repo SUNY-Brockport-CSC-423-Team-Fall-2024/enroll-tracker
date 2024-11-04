@@ -4,7 +4,6 @@ CREATE OR REPLACE FUNCTION update_student (
     i_last_name varchar DEFAULT NULL,
     i_phone_number varchar DEFAULT NULL,
     i_email varchar DEFAULT NULL,
-    i_major_id int DEFAULT NULL,
     OUT o_id int,
     OUT o_first_name varchar,
     OUT o_last_name varchar,
@@ -19,7 +18,7 @@ AS $$
 DECLARE
     student_id int;
 BEGIN
-    SELECT get_student.o_id INTO student_id FROM get_student(i_username);
+    SELECT get_student.id INTO student_id FROM get_student(i_username);
 
     IF student_id IS NULL THEN
         RAISE EXCEPTION 'No student found with username: %s', i_username;
@@ -30,8 +29,7 @@ BEGIN
             first_name = COALESCE(i_first_name, first_name),
             last_name = COALESCE(i_last_name, last_name),
             phone_number = COALESCE(i_phone_number, phone_number),
-            email = COALESCE(i_email, email),
-            major_id = COALESCE(i_major_id, major_id)
+            email = COALESCE(i_email, email)
         WHERE
             id = student_id
         RETURNING *

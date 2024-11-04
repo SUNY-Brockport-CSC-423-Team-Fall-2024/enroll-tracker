@@ -96,7 +96,6 @@ type StudentUpdate struct {
 	LastName    *string `json:"last_name,omitempty"`
 	PhoneNumber *string `json:"phone_number,omitempty"`
 	Email       *string `json:"email,omitempty"`
-	MajorID     *int    `json:"major_id,omitempty"`
 }
 
 type TeacherUpdate struct {

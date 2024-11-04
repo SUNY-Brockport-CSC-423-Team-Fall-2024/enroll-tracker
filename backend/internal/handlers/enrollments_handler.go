@@ -88,7 +88,7 @@ func UnenrollStudentHandler(s *services.EnrollmentsService) http.HandlerFunc {
 func GetCoursesStudentsHandler(s *services.EnrollmentsService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		courseIDParam := r.PathValue("courseID")
-		isEnrolledParam := r.PathValue("isEnrolled")
+		isEnrolledParam := r.URL.Query().Get("isEnrolled")
 
 		var isEnrolled *bool = nil
 
@@ -111,7 +111,6 @@ func GetCoursesStudentsHandler(s *services.EnrollmentsService) http.HandlerFunc 
 				return
 			}
 		}
-
 		students, err := s.GetCoursesStudents(courseID, isEnrolled)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -130,7 +129,7 @@ func GetCoursesStudentsHandler(s *services.EnrollmentsService) http.HandlerFunc 
 func GetStudentsCoursesHandler(s *services.EnrollmentsService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		studentIDParam := r.PathValue("studentID")
-		isEnrolledParam := r.PathValue("isEnrolled")
+		isEnrolledParam := r.URL.Query().Get("isEnrolled")
 
 		var isEnrolled *bool = nil
 
