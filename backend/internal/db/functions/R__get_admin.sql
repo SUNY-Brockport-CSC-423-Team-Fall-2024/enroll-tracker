@@ -7,7 +7,6 @@ CREATE OR REPLACE FUNCTION get_administrator (
     OUT o_phone_number varchar,
     OUT o_email varchar,
     OUT o_office varchar,
-    OUT o_last_login timestamp,
     OUT o_created_at timestamp,
     OUT o_updated_at timestamp
 )
@@ -22,13 +21,13 @@ BEGIN
         o_phone_number,
         o_email,
         o_office,
-        o_last_login,
         o_created_at,
         o_updated_at
-    FROM Teacher
+    FROM Administrator
     INNER JOIN
         UserAuthentication ON Administrator.auth_id = UserAuthentication.id
-    WHERE UserAuthentication.username = i_username;
+    WHERE UserAuthentication.username = i_username
+    AND UserAuthentication.is_active = true;
 
     EXCEPTION
         WHEN NO_DATA_FOUND THEN

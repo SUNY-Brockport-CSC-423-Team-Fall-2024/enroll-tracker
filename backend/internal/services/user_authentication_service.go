@@ -41,8 +41,13 @@ func (s *UserAuthenticationService) CreateNewUserAuthentication(username string,
 func (s *UserAuthenticationService) GetUserAuthentication(username string) (*models.UserAuthentication, error) {
 	userAuth, err := s.repository.GetUserAuthentication(username)
 	if err != nil {
-		return userAuth, err
+		return nil, err
 	}
+	//Make sure user is not in active
+	if !userAuth.IsActive {
+		return nil, errors.New("No user found.")
+	}
+
 	return userAuth, nil
 }
 
@@ -56,6 +61,11 @@ func (s *UserAuthenticationService) ChangePassword(username string, newPassword 
 	//Check if we actually got a user
 	if ua == nil {
 		return nil, errors.New("No user found to change password for.")
+	}
+
+	//Make sure user is not in active
+	if !ua.IsActive {
+		return nil, errors.New("User is no longer active.")
 	}
 
 	//Verify old password
@@ -87,4 +97,20 @@ func (s *UserAuthenticationService) ChangePassword(username string, newPassword 
 	}
 
 	return newUa, nil
+}
+
+func (s *UserAuthenticationService) UpdateLastLogin(userAuthID int) (bool, error) {
+	success, err := s.repository.UpdateLastLogin(userAuthID)
+	if err != nil {
+		return false, err
+	}
+	return success, nil
+}
+
+func (s *UserAuthenticationService) DeleteUserAuthentication(username string) (bool, error) {
+	success, err := s.repository.DeleteUserAuthentication(username)
+	if err != nil {
+		return false, err
+	}
+	return success, nil
 }

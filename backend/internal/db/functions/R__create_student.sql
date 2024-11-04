@@ -15,8 +15,8 @@ CREATE OR REPLACE FUNCTION create_student(
 ) 
 AS $$
 BEGIN
-    INSERT INTO Student (first_name, last_name, auth_id, major_id, phone_number, email, last_login)
-    VALUES (i_first_name, i_last_name, i_auth_id, NULL, i_phone_number, i_email, NULL)
+    INSERT INTO Student (first_name, last_name, auth_id, major_id, phone_number, email)
+    VALUES (i_first_name, i_last_name, i_auth_id, NULL, i_phone_number, i_email)
     RETURNING id, first_name, last_name, auth_id, phone_number, email, created_at, updated_at
     INTO o_id, o_first_name, o_last_name, o_auth_id, o_phone_number, o_email, o_created_at, o_updated_at;
 END;
