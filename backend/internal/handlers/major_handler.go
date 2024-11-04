@@ -104,7 +104,7 @@ func GetMajorsHandler(s *services.MajorService) http.HandlerFunc {
 			return
 		}
 
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusCreated)
 	}
 }
 func GetMajorHandler(s *services.MajorService) http.HandlerFunc {

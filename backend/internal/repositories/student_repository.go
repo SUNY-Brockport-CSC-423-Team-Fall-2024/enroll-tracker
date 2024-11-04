@@ -13,6 +13,7 @@ type StudentRepository interface {
 	GetStudents(queryParams models.StudentQueryParams) ([]models.Student, error)
 	GetStudent(username string) (models.Student, error)
 	UpdateStudent(username string, studentUpdates models.StudentUpdate) (models.Student, error)
+    AddStudentToMajor(majorID int, studentID int) (bool, error)
 }
 
 type PostgresStudentRepository struct {
@@ -79,11 +80,24 @@ func (r *PostgresStudentRepository) UpdateStudent(username string, studentUpdate
 	var student models.Student
 
 	//create query
-	query := `SELECT * FROM public.update_student($1, $2, $3, $4, $5, $6)`
+	query := `SELECT * FROM public.update_student($1, $2, $3, $4, $5)`
 
-	row := r.db.QueryRow(query, username, studentUpdates.FirstName, studentUpdates.LastName, studentUpdates.PhoneNumber, studentUpdates.Email, studentUpdates.MajorID)
+	row := r.db.QueryRow(query, username, studentUpdates.FirstName, studentUpdates.LastName, studentUpdates.PhoneNumber, studentUpdates.Email)
 
 	err := row.Scan(&student.ID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt)
 
 	return student, err
 }
+
+func (r *PostgresStudentRepository) AddStudentToMajor(majorID int, studentID int) (bool, error) {
+    var success bool
+
+    query := `SELECT * FROM public.add_student_to_major($1,$2)`
+
+    err := r.db.QueryRow(query, majorID, studentID).Scan(&success)
+    if err != nil {
+        return false, err
+    }
+    return success, nil
+}
+

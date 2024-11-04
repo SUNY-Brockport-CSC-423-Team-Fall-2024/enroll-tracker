@@ -19,7 +19,7 @@ AS $$
 DECLARE
     teacher_id int;
 BEGIN
-    SELECT get_teacher.o_id INTO teacher_id FROM get_teacher(i_username);
+    SELECT get_teacher.id INTO teacher_id FROM get_teacher(i_username);
 
     IF teacher_id IS NULL THEN
         RAISE EXCEPTION 'No teacher found with username: %s', i_username;

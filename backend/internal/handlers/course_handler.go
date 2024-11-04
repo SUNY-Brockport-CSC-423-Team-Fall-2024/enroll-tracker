@@ -164,7 +164,7 @@ func GetCoursesHandler(s *services.CourseService) http.HandlerFunc {
 			return
 		}
 
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusCreated)
 	}
 }
 func GetCourseHandler(s *services.CourseService) http.HandlerFunc {

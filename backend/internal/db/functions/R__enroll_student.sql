@@ -4,11 +4,27 @@ CREATE OR REPLACE FUNCTION enroll_student (
 )
 RETURNS void
 AS $$
+DECLARE
+    major_course_match_exists BOOLEAN;
 BEGIN
+    SELECT EXISTS (
+        SELECT 1
+        FROM Student AS S
+        JOIN Course_Major AS CM ON CM.major_id = S.major_id
+        WHERE S.id = i_student_id 
+        AND CM.course_id = i_course_id
+    )
+    INTO major_course_match_exists;
+    
+    IF NOT major_course_match_exists THEN
+        RAISE EXCEPTION 'Enrollment failed: Course % is not part of students major', i_course_id;
+    END IF;
+
     INSERT INTO Enrollments (course_id, student_id)
     VALUES
     (i_course_id, i_student_id);
-    EXCEPTION
+
+        EXCEPTION
         WHEN unique_violation THEN
             RAISE EXCEPTION 'Student % enrolled in course %.', i_student_id, i_course_id;
         WHEN foreign_key_violation THEN
