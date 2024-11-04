@@ -26,7 +26,7 @@ func (s *EnrollmentsService) EnrollStudent(courseID int, studentID int) (bool, e
 	}
 
 	//Check for student's current num of enrolled credits
-	if studentEnrolledCredits+numOfCourseCredits > 6 {
+	if studentEnrolledCredits+numOfCourseCredits > 18 {
 		return false, errors.New("Unable to enroll in course. Would put student over max number of course credits they can be enrolled in.")
 	}
 

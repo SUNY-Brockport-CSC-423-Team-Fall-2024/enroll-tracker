@@ -100,7 +100,7 @@ func GetMajorsHandler(s *services.MajorService) http.HandlerFunc {
 
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(majors); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
@@ -196,11 +196,11 @@ func DeleteMajorHandler(s *services.MajorService) http.HandlerFunc {
 		//Delete major
 		success, err := s.DeleteMajor(majorID)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		if !success {
-			http.Error(w, "Error occured when deleting major", http.StatusBadRequest)
+			http.Error(w, "Error occured when deleting major", http.StatusInternalServerError)
 			return
 		}
 		//Write 204 back to indicate successful deletion
@@ -242,11 +242,11 @@ func AddCourseToMajorHandler(s *services.MajorService) http.HandlerFunc {
 
 		success, err := s.AddCourseToMajor(majorID, int(courseID))
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		if !success {
-			http.Error(w, "Unable to add course to major", http.StatusBadRequest)
+			http.Error(w, "Unable to add course to major", http.StatusInternalServerError)
 			return
 		}
 

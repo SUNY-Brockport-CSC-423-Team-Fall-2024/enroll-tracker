@@ -122,7 +122,7 @@ func GetAdministratorsHandler(s *services.AdministratorService) http.HandlerFunc
 
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(administrators); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
@@ -167,13 +167,13 @@ func UpdateAdministratorHandler(administratorService *services.AdministratorServ
 		}
 
 		if err := json.NewDecoder(r.Body).Decode(&administratorUpdate); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		administrator, err := administratorService.UpdateAdministrator(username, administratorUpdate)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 

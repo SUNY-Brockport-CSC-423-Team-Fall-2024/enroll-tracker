@@ -256,11 +256,11 @@ func DeleteCourseHandler(s *services.CourseService) http.HandlerFunc {
 		//Delete course
 		success, err := s.DeleteCourse(courseID)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		if !success {
-			http.Error(w, "Error occured when deleting course", http.StatusInternalServerError)
+			http.Error(w, "Error occured when deleting course", http.StatusBadRequest)
 			return
 		}
 		//Write 204 back to indicate successful deletion
