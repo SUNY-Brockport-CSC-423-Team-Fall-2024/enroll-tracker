@@ -13,7 +13,8 @@ interface IAuthHeader {
 // This is checking that the user is logged in?
 const AuthHeader: React.FC<IAuthHeader> = ({ userRole }) => {
     const router = useRouter();
-  
+    
+
     const { setIsLoggedIn } = useAuth();
   
     const handleLogout = async () => {
@@ -39,11 +40,17 @@ const AuthHeader: React.FC<IAuthHeader> = ({ userRole }) => {
     return (
       // Start building component html here
       // Page Title, Profile Box, User Name (And initials)
-      <div className="authheader">
-        <div className="pageTitle"></div>
-        <div className="userBox">
-            <div className="userInit"></div>
-            <div className="userName"></div>
+      <div className={styles.auth_header}>
+            <div className={styles.auth_title}>
+              <h1>Page Title</h1>
+            </div>
+        <div className={styles.auth_userBox}>
+            <div className={styles.auth_userInit}>
+                <p>TJ</p>
+            </div>
+            <div className={styles.auth_userName}>
+                <p>User Name</p>
+            </div>
         </div>
       </div>
     );

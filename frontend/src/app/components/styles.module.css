@@ -84,6 +84,36 @@
   box-shadow: 0px 5px 2px var(--shadow-color);
 }
 
+.auth_header {
+  display: flex;
+  flex-direction: row;
+}
+
+.auth_title{
+  width: 150px;
+}
+
+.auth_userBox {
+  background-color: #DF6C49;
+  color: white;
+  display: flex;
+  width: 150px;
+  height: 35px;
+  border-radius: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth_userInit {
+  font: GeistMonoVF;
+  font-size: 15px;
+}
+
+.auth_userName{
+  font-size: 10px;
+  margin-left: 10%;
+}
+
 .change_password_form {
   display: flex;
   flex-direction: column;
