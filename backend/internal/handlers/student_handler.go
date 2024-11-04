@@ -215,48 +215,48 @@ func DeleteStudentHandler(studentService *services.StudentService, userSessionSe
 }
 
 func AddStudentToMajorHandler(s *services.StudentService) http.HandlerFunc {
-    return func(w http.ResponseWriter, r *http.Request) {
-        studentIDParam := r.PathValue("studentID")
+	return func(w http.ResponseWriter, r *http.Request) {
+		studentIDParam := r.PathValue("studentID")
 
-        if studentIDParam == "" {
-            http.Error(w, "Student id not provided", http.StatusBadRequest)
-            return
-        }
+		if studentIDParam == "" {
+			http.Error(w, "Student id not provided", http.StatusBadRequest)
+			return
+		}
 
-        studentID, err := strconv.Atoi(studentIDParam)
-        if err != nil {
-            http.Error(w, "Student id invalid format", http.StatusBadRequest)
-            return
-        }
+		studentID, err := strconv.Atoi(studentIDParam)
+		if err != nil {
+			http.Error(w, "Student id invalid format", http.StatusBadRequest)
+			return
+		}
 
-        var kv map[string]interface{}
-        if err := json.NewDecoder(r.Body).Decode(&kv); err != nil {
-            http.Error(w, "Issue parsing request body", http.StatusInternalServerError)
-            return
-        }
-        majorIDParam, ok := kv["majorID"]
-        if !ok {
-            http.Error(w, "Major id not provided", http.StatusBadRequest)
-            return
-        }
+		var kv map[string]interface{}
+		if err := json.NewDecoder(r.Body).Decode(&kv); err != nil {
+			http.Error(w, "Issue parsing request body", http.StatusInternalServerError)
+			return
+		}
+		majorIDParam, ok := kv["majorID"]
+		if !ok {
+			http.Error(w, "Major id not provided", http.StatusBadRequest)
+			return
+		}
 
-        majorID, ok := majorIDParam.(float64)
-        if !ok {
-            http.Error(w, "Major id invalid format", http.StatusBadRequest)
-            return
-        }
+		majorID, ok := majorIDParam.(float64)
+		if !ok {
+			http.Error(w, "Major id invalid format", http.StatusBadRequest)
+			return
+		}
 
-        success, err := s.AddStudentToMajor(int(majorID), studentID)
-        if err != nil {
-            http.Error(w, err.Error(), http.StatusBadRequest)
-            return
-        }
+		success, err := s.AddStudentToMajor(int(majorID), studentID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
 
-        if !success {
-            http.Error(w, "Error occured adding student to the major", http.StatusBadRequest)
-            return
-        }
+		if !success {
+			http.Error(w, "Error occured adding student to the major", http.StatusBadRequest)
+			return
+		}
 
-        w.WriteHeader(http.StatusCreated)
-    }
+		w.WriteHeader(http.StatusCreated)
+	}
 }

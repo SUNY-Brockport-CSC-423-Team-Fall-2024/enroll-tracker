@@ -13,7 +13,7 @@ type StudentRepository interface {
 	GetStudents(queryParams models.StudentQueryParams) ([]models.Student, error)
 	GetStudent(username string) (models.Student, error)
 	UpdateStudent(username string, studentUpdates models.StudentUpdate) (models.Student, error)
-    AddStudentToMajor(majorID int, studentID int) (bool, error)
+	AddStudentToMajor(majorID int, studentID int) (bool, error)
 }
 
 type PostgresStudentRepository struct {
@@ -90,14 +90,13 @@ func (r *PostgresStudentRepository) UpdateStudent(username string, studentUpdate
 }
 
 func (r *PostgresStudentRepository) AddStudentToMajor(majorID int, studentID int) (bool, error) {
-    var success bool
+	var success bool
 
-    query := `SELECT * FROM public.add_student_to_major($1,$2)`
+	query := `SELECT * FROM public.add_student_to_major($1,$2)`
 
-    err := r.db.QueryRow(query, majorID, studentID).Scan(&success)
-    if err != nil {
-        return false, err
-    }
-    return success, nil
+	err := r.db.QueryRow(query, majorID, studentID).Scan(&success)
+	if err != nil {
+		return false, err
+	}
+	return success, nil
 }
-
