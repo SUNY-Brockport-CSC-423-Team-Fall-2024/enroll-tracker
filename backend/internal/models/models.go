@@ -172,6 +172,36 @@ type UserSession struct {
 	Revoked        bool      `json:"revoked"`
 }
 
+type CoursesStudent struct {
+	StudentID      int        `json:"student_id"`
+	FirstName      string     `json:"first_name"`
+	LastName       string     `json:"last_name"`
+	AuthID         int        `json:"auth_id"`
+	MajorID        *int       `json:"major_id"`
+	PhoneNumber    string     `json:"phone_number"`
+	Email          string     `json:"email"`
+	CreatedAt      time.Time  `json:"created_at"`
+	UpdatedAt      time.Time  `json:"updated_at"`
+	IsEnrolled     bool       `json:"is_enrolled"`
+	EnrolledDate   time.Time  `json:"enrolled_date"`
+	UnenrolledDate *time.Time `json:"unenrolled_date"`
+}
+
+type StudentsCourse struct {
+	CourseID          int        `json:"course_id"`
+	CourseName        string     `json:"course_name"`
+	CourseDescription string     `json:"course_description"`
+	TeacherID         int        `json:"teacher_id"`
+	MaxEnrollment     int        `json:"max_enrollment"`
+	NumCredits        int        `json:"num_credits"`
+	Status            string     `json:"status"`
+	LastUpdated       time.Time  `json:"last_updated"`
+	CreatedAt         time.Time  `json:"created_at"`
+	IsEnrolled        bool       `json:"is_enrolled"`
+	EnrolledDate      time.Time  `json:"enrolled_date"`
+	UnenrolledDate    *time.Time `json:"unenrolled_date"`
+}
+
 type CustomClaims struct {
 	jwt.RegisteredClaims
 	Role string `json:"role"`

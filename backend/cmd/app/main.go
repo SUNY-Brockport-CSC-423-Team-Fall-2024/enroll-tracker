@@ -38,6 +38,7 @@ func main() {
 	courseRepo := repositories.CreateCourseRepository(db)
 	majorRepo := repositories.CreateMajorRepository(db)
 	courseMajorRepo := repositories.CreateCourseMajorRepository(db)
+	enrollmentsRepo := repositories.CreateEnrollmentsRepository(db)
 
 	//Create services
 	userAuthService := services.CreateUserAuthenticationService(uaRepo)
@@ -48,6 +49,7 @@ func main() {
 	redisSession := services.CreateRedisService(redisRepo)
 	courseService := services.CreateCourseService(courseRepo)
 	majorService := services.CreateMajorService(majorRepo, courseMajorRepo)
+	enrollmentsService := services.CreateEnrollmentsService(enrollmentsRepo)
 
 	//Create http multiplexer
 	stdMux := http.NewServeMux()
@@ -62,6 +64,7 @@ func main() {
 	stdMux.HandleFunc("GET /api/students/{username}", handlers.GetStudentHandler(studentService))
 	stdMux.HandleFunc("PUT /api/students/{username}", handlers.UpdateStudentHandler(studentService))
 	stdMux.HandleFunc("DELETE /api/students/{username}", handlers.DeleteStudentHandler(studentService, userSessionService))
+	stdMux.HandleFunc("GET /api/students/{studentID}/courses", handlers.GetStudentsCoursesHandler(enrollmentsService))
 
 	//Teacher routes
 	stdMux.HandleFunc("POST /api/teachers", handlers.CreateTeacherHandler(teacherService))
@@ -99,6 +102,11 @@ func main() {
 	stdMux.HandleFunc("POST /api/majors/{majorID}/courses", handlers.AddCourseToMajorHandler(majorService))
 	stdMux.HandleFunc("GET /api/majors/{majorID}/courses", handlers.GetCoursesAssoicatedWithMajorHandler(majorService))
 	stdMux.HandleFunc("DELETE /api/majors/{majorID}/courses/{courseID}", handlers.DeleteCourseFromMajorHandler(majorService))
+
+	//Enrollment routes
+	stdMux.HandleFunc("GET /api/enrollments/{courseID}/students", handlers.GetCoursesStudentsHandler(enrollmentsService))
+	stdMux.HandleFunc("POST /api/enrollments/{courseID}/{studentID}", handlers.EnrollStudentHandler(enrollmentsService))
+	stdMux.HandleFunc("DELETE /api/enrollments/{courseID}/{studentID}", handlers.UnenrollStudentHandler(enrollmentsService))
 
 	//Crete auth middleware
 	authMiddleware := middleware.AuthMiddleware(redisSession)

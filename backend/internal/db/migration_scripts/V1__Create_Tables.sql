@@ -94,24 +94,24 @@ CREATE TABLE Course (
 );
 
 CREATE TABLE Course_Major (
-    id SERIAL PRIMARY KEY,
     major_id INT,
     course_id INT,
-
+    
+    PRIMARY KEY(major_id, course_id),
     FOREIGN KEY(major_id) REFERENCES Major(id),
     FOREIGN KEY(course_id) REFERENCES Course(id)
 );
 
-CREATE TABLE Registered (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE Enrollments (
     course_id INT,
     student_id INT,
-    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    unregistered_date TIMESTAMP,
-    is_unregistered BOOLEAN,
-
+    enrolled_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    unenrolled_date TIMESTAMP DEFAULT NULL,
+    is_enrolled BOOLEAN DEFAULT true,
+    
+    PRIMARY KEY(course_id, student_id),
     FOREIGN KEY(course_id) REFERENCES Course(id),
     FOREIGN KEY(student_id) REFERENCES Student(id),
-    CHECK ((is_unregistered = FALSE AND unregistered_date IS NULL) OR (is_unregistered = TRUE AND unregistered_date IS NOT NULL))
+    CHECK ((is_enrolled = FALSE AND unenrolled_date IS NOT NULL) OR (is_enrolled = TRUE AND unenrolled_date IS NULL))
 );
 
