@@ -7,7 +7,7 @@ interface AuthContextProps {
   setUserRole: (role: string | undefined) => void;
   username: string | undefined;
   setUsername: (username: string | undefined) => void;
-    getUserStuff: () => Promise<{[key:string]:any} | undefined>;
+  getUserStuff: () => Promise<{ [key: string]: any } | undefined>;
   checkLoginStatus: () => Promise<boolean>;
 }
 
@@ -39,12 +39,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { isLoggedIn } = await resp.json();
     return isLoggedIn;
   };
-  const getUserStuff = async (): Promise<{[key:string]: any} | undefined> => {
+  const getUserStuff = async (): Promise<{ [key: string]: any } | undefined> => {
     const resp = await fetch("/api/user-stuff", {
       method: "GET",
     });
     const { role, username } = await resp.json();
-    return { "role": role, "username": username };
+    return { role: role, username: username };
   };
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (loggedIn) {
             const data = await getUserStuff();
             setUserRole(data?.role);
-            setUsername(data?.username)
+            setUsername(data?.username);
           }
         } else {
           // Token refresh failed, mark the user as logged out
@@ -78,7 +78,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, userRole, setUserRole, username, setUsername, getUserStuff,checkLoginStatus }}
+      value={{
+        isLoggedIn,
+        setIsLoggedIn,
+        userRole,
+        setUserRole,
+        username,
+        setUsername,
+        getUserStuff,
+        checkLoginStatus,
+      }}
     >
       {children}
     </AuthContext.Provider>
