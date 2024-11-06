@@ -203,7 +203,8 @@ type StudentsCourse struct {
 
 type CustomClaims struct {
 	jwt.RegisteredClaims
-	Role string `json:"role"`
+	Role   string `json:"role"`
+	UserID int    `json:"user_id"`
 }
 
 type TokenResponse struct {
