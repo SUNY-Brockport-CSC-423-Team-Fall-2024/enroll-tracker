@@ -1,0 +1,49 @@
+# Endpoint URL
+$URL = "http://localhost:8002/api/administrators"
+
+# Define arrays for first names, last names, and offices
+$firstNames = @("John", "Jane", "Alex", "Chris", "Taylor", "Emily", "Jordan", "Morgan", "Sam", "Dana")
+$lastNames = @("Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson")
+$offices = @("Brown Bldg #123", "Brown Bldg #124", "Westchester Hall #124", "Wosinski Bldg #14")
+
+$firstNamesLen = $firstNames.Length
+$lastNamesLen = $lastNames.Length
+$officesLen = $offices.Length
+
+# Generate random user details and send 10 POST requests
+for ($i = 1; $i -le 10; $i++) {
+    # Generate random indices
+    $randomIndexF = Get-Random -Minimum 0 -Maximum $firstNamesLen
+    $randomIndexL = Get-Random -Minimum 0 -Maximum $lastNamesLen
+    $randomIndexO = Get-Random -Minimum 0 -Maximum $officesLen
+
+    # Generate random data for each user
+    $USERNAME = "user" + [Guid]::NewGuid().ToString("N").Substring(0, 8)
+    $PASSWORD = "testPassword123"
+    $FIRST_NAME = $firstNames[$randomIndexF]
+    $LAST_NAME = $lastNames[$randomIndexL]
+    $PHONE_NUMBER = "585-555-5555"
+    $EMAIL = "$USERNAME@example.com"
+    $OFFICE = $offices[$randomIndexO]
+
+    # Create JSON payload
+    $DATA = @{
+        username     = $USERNAME
+        password     = $PASSWORD
+        first_name   = $FIRST_NAME
+        last_name    = $LAST_NAME
+        phone_number = $PHONE_NUMBER
+        email        = $EMAIL
+        office       = $OFFICE
+    } | ConvertTo-Json
+
+    # Send POST request
+    $response = Invoke-RestMethod -Uri $URL -Method Post -ContentType "application/json" -Body $DATA -StatusCodeVariable httpStatus
+
+    # Check if the request was successful
+    if ($httpStatus -eq 201) {
+        Write-Output "Successfully created administrator: $USERNAME"
+    } else {
+        Write-Output "Failed to create administrator: $USERNAME - Status Code: $httpStatus"
+    }
+}
