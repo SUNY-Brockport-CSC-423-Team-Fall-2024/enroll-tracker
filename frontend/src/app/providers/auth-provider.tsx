@@ -5,7 +5,9 @@ interface AuthContextProps {
   setIsLoggedIn: (value: boolean) => void;
   userRole: string | undefined;
   setUserRole: (role: string | undefined) => void;
-  getUserRole: () => Promise<string | undefined>;
+  username: string | undefined;
+  setUsername: (username: string | undefined) => void;
+    getUserStuff: () => Promise<{[key:string]:any} | undefined>;
   checkLoginStatus: () => Promise<boolean>;
 }
 
@@ -22,6 +24,7 @@ export const useAuth = () => {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<string | undefined>(undefined);
+  const [username, setUsername] = useState<string | undefined>(undefined);
 
   const refreshToken = async () => {
     const resp = await fetch("/api/token-refresh", {
@@ -36,12 +39,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { isLoggedIn } = await resp.json();
     return isLoggedIn;
   };
-  const getUserRole = async (): Promise<string | undefined> => {
-    const resp = await fetch("/api/user-role", {
+  const getUserStuff = async (): Promise<{[key:string]: any} | undefined> => {
+    const resp = await fetch("/api/user-stuff", {
       method: "GET",
     });
-    const { role } = await resp.json();
-    return role;
+    const { role, username } = await resp.json();
+    return { "role": role, "username": username };
   };
 
   useEffect(() => {
@@ -56,8 +59,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
           // If the user is logged in, fetch their role
           if (loggedIn) {
-            const role = await getUserRole();
-            setUserRole(role);
+            const data = await getUserStuff();
+            setUserRole(data?.role);
+            setUsername(data?.username)
           }
         } else {
           // Token refresh failed, mark the user as logged out
@@ -74,7 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, userRole, setUserRole, getUserRole, checkLoginStatus }}
+      value={{ isLoggedIn, setIsLoggedIn, userRole, setUserRole, username, setUsername, getUserStuff,checkLoginStatus }}
     >
       {children}
     </AuthContext.Provider>
