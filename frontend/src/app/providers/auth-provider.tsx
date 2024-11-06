@@ -7,6 +7,8 @@ interface AuthContextProps {
   setUserRole: (role: string | undefined) => void;
   username: string | undefined;
   setUsername: (username: string | undefined) => void;
+  userID: number | undefined;
+  setUserID: (userID: number | undefined) => void;
   getUserStuff: () => Promise<{ [key: string]: any } | undefined>;
   checkLoginStatus: () => Promise<boolean>;
 }
@@ -25,6 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<string | undefined>(undefined);
   const [username, setUsername] = useState<string | undefined>(undefined);
+  const [userID, setUserID] = useState<number | undefined>(undefined);
 
   const refreshToken = async () => {
     const resp = await fetch("/api/token-refresh", {
@@ -43,8 +46,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const resp = await fetch("/api/user-stuff", {
       method: "GET",
     });
-    const { role, username } = await resp.json();
-    return { role: role, username: username };
+    const { role, username, user_id } = await resp.json();
+    return { role: role, username: username, userID: user_id };
   };
 
   useEffect(() => {
@@ -62,6 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             const data = await getUserStuff();
             setUserRole(data?.role);
             setUsername(data?.username);
+            setUserID(data?.user_id);
           }
         } else {
           // Token refresh failed, mark the user as logged out
@@ -85,6 +89,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUserRole,
         username,
         setUsername,
+        userID,
+        setUserID,
         getUserStuff,
         checkLoginStatus,
       }}
