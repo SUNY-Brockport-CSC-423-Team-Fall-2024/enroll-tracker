@@ -13,6 +13,12 @@ interface AuthContextProps {
   checkLoginStatus: () => Promise<boolean>;
 }
 
+type UserStuff = {
+  role: string | undefined;
+  username: string | undefined;
+  user_id: number | undefined;
+};
+
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const useAuth = () => {
@@ -42,12 +48,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { isLoggedIn } = await resp.json();
     return isLoggedIn;
   };
-  const getUserStuff = async (): Promise<{ [key: string]: any } | undefined> => {
+  const getUserStuff = async (): Promise<UserStuff | undefined> => {
     const resp = await fetch("/api/user-stuff", {
       method: "GET",
     });
-    const { role, username, user_id } = await resp.json();
-    return { role: role, username: username, userID: user_id };
+    const userStuff = await resp.json();
+    return userStuff;
   };
 
   useEffect(() => {

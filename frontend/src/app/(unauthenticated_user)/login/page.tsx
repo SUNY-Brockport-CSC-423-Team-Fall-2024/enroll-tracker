@@ -8,7 +8,7 @@ import { useAuth } from "@/app/providers/auth-provider";
 export default function Login() {
   const router = useRouter();
 
-  const { setIsLoggedIn, getUserStuff, setUserRole } = useAuth();
+  const { setIsLoggedIn, getUserStuff, setUserRole, setUserID } = useAuth();
 
   let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
@@ -42,6 +42,8 @@ export default function Login() {
         setIsLoggedIn(true);
         const data = await getUserStuff();
         setUserRole(data?.role);
+        setUsername(data?.username);
+        setUserID(data?.user_id);
         router.push("/dashboard");
       }
       // display error message for failed login

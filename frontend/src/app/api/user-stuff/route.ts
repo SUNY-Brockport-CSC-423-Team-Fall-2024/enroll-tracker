@@ -17,9 +17,12 @@ export async function GET() {
         clockTolerance: JWTCLOCKTOLERANCE,
       });
 
-      return new NextResponse(JSON.stringify({ role: payload.role, username: payload.sub }), {
-        status: 200,
-      });
+      return new NextResponse(
+        JSON.stringify({ role: payload.role, username: payload.sub, user_id: payload.user_id }),
+        {
+          status: 200,
+        },
+      );
     } catch (err) {
       return new NextResponse(JSON.stringify({ role: undefined }), { status: 200 });
     }
