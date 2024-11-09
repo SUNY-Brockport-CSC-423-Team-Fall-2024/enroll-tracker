@@ -10,7 +10,7 @@ import (
 func EnrollStudentHandler(s *services.EnrollmentsService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Set CORS
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
@@ -58,7 +58,7 @@ func EnrollStudentHandler(s *services.EnrollmentsService) http.HandlerFunc {
 func UnenrollStudentHandler(s *services.EnrollmentsService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Set CORS
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
@@ -106,7 +106,7 @@ func UnenrollStudentHandler(s *services.EnrollmentsService) http.HandlerFunc {
 func GetCoursesStudentsHandler(s *services.EnrollmentsService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Set CORS
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
@@ -156,7 +156,7 @@ func GetCoursesStudentsHandler(s *services.EnrollmentsService) http.HandlerFunc 
 func GetStudentsCoursesHandler(s *services.EnrollmentsService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Set CORS
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
