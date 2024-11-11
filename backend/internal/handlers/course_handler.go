@@ -12,7 +12,7 @@ import (
 func CreateCourseHandler(s *services.CourseService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Set CORS
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
@@ -37,6 +37,15 @@ func CreateCourseHandler(s *services.CourseService) http.HandlerFunc {
 }
 func GetCoursesHandler(s *services.CourseService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Query params we want to take
 		query := r.URL.Query()
 		limitParam := query.Get("limit")
@@ -178,6 +187,15 @@ func GetCoursesHandler(s *services.CourseService) http.HandlerFunc {
 }
 func GetCourseHandler(s *services.CourseService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Get course id
 		courseIDParam := r.PathValue("courseID")
 
@@ -209,6 +227,15 @@ func GetCourseHandler(s *services.CourseService) http.HandlerFunc {
 }
 func UpdateCourseHandler(s *services.CourseService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "PUT, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		var courseUpdate models.CourseUpdate
 		courseIDParam := r.PathValue("courseID")
 
@@ -248,6 +275,15 @@ func UpdateCourseHandler(s *services.CourseService) http.HandlerFunc {
 }
 func DeleteCourseHandler(s *services.CourseService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Get course id to delete
 		courseIDParam := r.PathValue("courseID")
 

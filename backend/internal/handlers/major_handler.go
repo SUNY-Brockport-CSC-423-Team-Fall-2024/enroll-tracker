@@ -11,6 +11,15 @@ import (
 
 func CreateMajorHandler(s *services.MajorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Decode http request params
 		var majorCreation models.MajorCreation
 		if err := json.NewDecoder(r.Body).Decode(&majorCreation); err != nil {
@@ -28,6 +37,15 @@ func CreateMajorHandler(s *services.MajorService) http.HandlerFunc {
 }
 func GetMajorsHandler(s *services.MajorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Query params we want to take
 		query := r.URL.Query()
 		limitParam := query.Get("limit")
@@ -109,6 +127,15 @@ func GetMajorsHandler(s *services.MajorService) http.HandlerFunc {
 }
 func GetMajorHandler(s *services.MajorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Get major id
 		majorIDParam := r.PathValue("majorID")
 
@@ -140,6 +167,15 @@ func GetMajorHandler(s *services.MajorService) http.HandlerFunc {
 }
 func UpdateMajorHandler(s *services.MajorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "PUT, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		var majorUpdate models.MajorUpdate
 		majorIDParam := r.PathValue("majorID")
 
@@ -179,6 +215,15 @@ func UpdateMajorHandler(s *services.MajorService) http.HandlerFunc {
 }
 func DeleteMajorHandler(s *services.MajorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Get major id to delete
 		majorIDParam := r.PathValue("majorID")
 
@@ -210,6 +255,15 @@ func DeleteMajorHandler(s *services.MajorService) http.HandlerFunc {
 
 func AddCourseToMajorHandler(s *services.MajorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		majorIDParam := r.PathValue("majorID")
 
 		if majorIDParam == "" {
@@ -255,6 +309,15 @@ func AddCourseToMajorHandler(s *services.MajorService) http.HandlerFunc {
 }
 func GetCoursesAssoicatedWithMajorHandler(s *services.MajorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Get major id
 		majorIDParam := r.PathValue("majorID")
 		if majorIDParam == "" {
@@ -408,6 +471,15 @@ func GetCoursesAssoicatedWithMajorHandler(s *services.MajorService) http.Handler
 }
 func DeleteCourseFromMajorHandler(s *services.MajorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		majorIDParam := r.PathValue("majorID")
 		courseIDParam := r.PathValue("courseID")
 
