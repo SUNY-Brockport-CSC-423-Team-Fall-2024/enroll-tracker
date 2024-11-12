@@ -8,10 +8,13 @@ import { useRouter } from "next/navigation";
 
 interface IAuthHeader {
     userRole: string | undefined;
+    pageTitle: string;
+    userName: string;
+    userInits: string;
 }
 
 // This is checking that the user is logged in?
-const AuthHeader: React.FC<IAuthHeader> = ({ userRole }) => {
+const AuthHeader: React.FC<IAuthHeader> = ({ userRole, pageTitle, userName, userInits }) => {
     const router = useRouter();
     
 
@@ -42,14 +45,14 @@ const AuthHeader: React.FC<IAuthHeader> = ({ userRole }) => {
       // Page Title, Profile Box, User Name (And initials)
       <div className={styles.auth_header}>
             <div className={styles.auth_title}>
-              <h1>Page Title</h1>
+              <h1>{pageTitle}</h1>
             </div>
         <div className={styles.auth_userBox}>
             <div className={styles.auth_userInit}>
-                <p>TJ</p>
+                <p>{userInits}</p>
             </div>
             <div className={styles.auth_userName}>
-                <p>User Name</p>
+                <p>{userName}</p>
             </div>
         </div>
       </div>

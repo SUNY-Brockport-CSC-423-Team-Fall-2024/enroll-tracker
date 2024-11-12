@@ -88,33 +88,40 @@
   box-shadow: 0px 5px 5px var(--shadow-color);
 }
 
+/** Authenticated Header **/
 .auth_header {
   display: flex;
   flex-direction: row;
-}
-
-.auth_title{
-  width: 150px;
+  overflow: hidden; /* Prevent content overflow */
+  margin-bottom: 20px; /* Space between header and navbar */
+  padding: 10px 20px; /* Optional: add padding for inner spacing */
 }
 
 .auth_userBox {
   background-color: #DF6C49;
   color: white;
   display: flex;
-  width: 150px;
-  height: 35px;
+  width: 250px;
+  height: 65px;
   border-radius: 30px;
   align-items: center;
   justify-content: center;
+  margin-left: 20px;  /* Add some space between title and user box */
+}
+
+.auth_title{
+  flex-grow: 1; /* Let the title take up remaining space */
+  display: flex;
+  justify-content: flex-start;
 }
 
 .auth_userInit {
   font: GeistMonoVF;
-  font-size: 15px;
+  font-size: 30px;
 }
 
 .auth_userName{
-  font-size: 10px;
+  font-size: 20px;
   margin-left: 10%;
 }
 
