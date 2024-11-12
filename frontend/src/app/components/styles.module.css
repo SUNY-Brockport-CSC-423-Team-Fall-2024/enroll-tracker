@@ -94,7 +94,7 @@
   flex-direction: row;
   overflow: hidden; /* Prevent content overflow */
   margin-bottom: 20px; /* Space between header and navbar */
-  padding: 10px 20px; /* Optional: add padding for inner spacing */
+  padding: 10px 50px; /* Optional: add padding for inner spacing */
 }
 
 .auth_userBox {
