@@ -20,7 +20,7 @@ func CreateUUID() string {
 	return uuid.NewString()
 }
 
-func CreateJWT(username string, role string, expiresAt time.Time, issuedAt time.Time, notBefore time.Time) (string, error) {
+func CreateJWT(username string, userID int, role string, expiresAt time.Time, issuedAt time.Time, notBefore time.Time) (string, error) {
 	signingKeyEncoded, ok := os.LookupEnv("ENROLL_TRACKER_RSA_PRIVATE_KEY")
 	if !ok {
 		return "", errors.New("Can't sign JWT")
@@ -45,7 +45,8 @@ func CreateJWT(username string, role string, expiresAt time.Time, issuedAt time.
 			Subject:   username,
 			Audience:  jwt.ClaimStrings{"enroll-tracker-client"},
 		},
-		Role: role,
+		Role:   role,
+		UserID: userID,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, &claims)

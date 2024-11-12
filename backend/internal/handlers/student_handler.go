@@ -10,6 +10,15 @@ import (
 
 func CreateStudentHandler(s *services.StudentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Decode http request params
 		var studentCreation models.StudentCreation
 		if err := json.NewDecoder(r.Body).Decode(&studentCreation); err != nil {
@@ -29,6 +38,15 @@ func CreateStudentHandler(s *services.StudentService) http.HandlerFunc {
 
 func GetStudentsHandler(s *services.StudentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Query params we want to take
 		query := r.URL.Query()
 		limitParam := query.Get("limit")
@@ -132,6 +150,15 @@ func GetStudentsHandler(s *services.StudentService) http.HandlerFunc {
 
 func GetStudentHandler(s *services.StudentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Get username
 		username := r.PathValue("username")
 
@@ -158,6 +185,15 @@ func GetStudentHandler(s *services.StudentService) http.HandlerFunc {
 
 func UpdateStudentHandler(studentService *services.StudentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		var studentUpdate models.StudentUpdate
 		username := r.PathValue("username")
 
@@ -188,6 +224,15 @@ func UpdateStudentHandler(studentService *services.StudentService) http.HandlerF
 
 func DeleteStudentHandler(studentService *services.StudentService, userSessionService *services.UserSessionService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Get username to delete
 		username := r.PathValue("username")
 		if username == "" {
@@ -216,6 +261,15 @@ func DeleteStudentHandler(studentService *services.StudentService, userSessionSe
 
 func AddStudentToMajorHandler(s *services.StudentService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		studentIDParam := r.PathValue("studentID")
 
 		if studentIDParam == "" {

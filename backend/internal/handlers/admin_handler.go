@@ -10,6 +10,15 @@ import (
 
 func CreateAdministratorHandler(s *services.AdministratorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Decode http request params
 		var administratorCreation models.AdministratorCreation
 		if err := json.NewDecoder(r.Body).Decode(&administratorCreation); err != nil {
@@ -29,6 +38,15 @@ func CreateAdministratorHandler(s *services.AdministratorService) http.HandlerFu
 
 func GetAdministratorsHandler(s *services.AdministratorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Query params we want to take
 		query := r.URL.Query()
 		limitParam := query.Get("limit")
@@ -132,6 +150,15 @@ func GetAdministratorsHandler(s *services.AdministratorService) http.HandlerFunc
 
 func GetAdministratorHandler(s *services.AdministratorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Get username
 		username := r.PathValue("username")
 
@@ -158,6 +185,15 @@ func GetAdministratorHandler(s *services.AdministratorService) http.HandlerFunc 
 
 func UpdateAdministratorHandler(administratorService *services.AdministratorService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "PUT, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		var administratorUpdate models.AdministratorUpdate
 		username := r.PathValue("username")
 
@@ -188,6 +224,15 @@ func UpdateAdministratorHandler(administratorService *services.AdministratorServ
 
 func DeleteAdministratorHandler(adminService *services.AdministratorService, userSessionService *services.UserSessionService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
 		//Get username to delete
 		username := r.PathValue("username")
 		if username == "" {

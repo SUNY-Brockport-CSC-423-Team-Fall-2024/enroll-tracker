@@ -14,7 +14,7 @@ import (
 func LoginHandler(userSessionService *services.UserSessionService, userAuthService *services.UserAuthenticationService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Set CORS
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
@@ -182,7 +182,7 @@ func RefreshTokenHandler(userSessionService *services.UserSessionService, redisS
 func LogoutHandler(userSessionService *services.UserSessionService, redisService *services.RedisService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Set CORS
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		var kv map[string]interface{}
@@ -260,7 +260,7 @@ func LogoutHandler(userSessionService *services.UserSessionService, redisService
 func ChangePasswordHandler(userAuthService *services.UserAuthenticationService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Set CORS
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
