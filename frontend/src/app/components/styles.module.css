@@ -75,6 +75,7 @@
   border-radius: 50px;
   padding: 10px;
   margin-top: 15px;
+  margin-bottom: 25px;
   font-size: 1rem;
   transition: 0.25s;
   width: 100%;
@@ -93,6 +94,7 @@
   flex-direction: column;
   gap: 15px;
   align-items: left;
+  width: 50%;
 }
 
 .change_password_form_field {
@@ -135,4 +137,78 @@
   transition: 0.25s;
   transform: translateY(-2px);
   box-shadow: 0px 5px 2px var(--shadow-color);
+}
+
+.settings-nav-bar {
+  background-color: var(--red1);
+  border-radius: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  height: 50px;
+  width: 100%;
+}
+
+.settings-nav-bar button {
+  color: white;
+  box-shadow: none;
+  border: none;
+  border-radius: 5px;
+  font-family: var(--font-kode);
+  font-size: 1.5rem;
+  padding-inline: 20px;
+  height: 100%;
+  width: auto;
+  transition: 0.5s;
+  background-color: var(--red1);
+}
+
+.settings-nav-bar button .not-selected {
+  background-color: var(--red1);
+}
+
+.settings-nav-bar button .selected {
+  background-color: var(--red2);
+}
+
+.settings-nav-bar div p {
+  margin-block: 0.5em;
+}
+
+.settings-user-email {
+  line-height: 150%;
+  width: 50%;
+  text-align: justify;
+  margin-bottom: 25px;
+  text-align: right;
+}
+
+.settings-gen-box {
+  text-align: right;
+  line-height: 200%;
+  width: 50%;
+  margin: 25px;
+}
+
+.settings-gen-box button {
+  color: white;
+  box-shadow: none;
+  border: none;
+  border-radius: 5px;
+  font-family: var(--font-kode);
+  font-size: 1.5rem;
+  padding-inline: 20px;
+  height: 100%;
+  width: auto;
+  transition: 0.5s;
+  background-color: var(--red1);
+}
+
+.settings-gen-box .not-selected {
+  background-color: var(--red1);
+}
+
+.settings-gen-box .selected {
+  background-color: var(--red2);
 }
