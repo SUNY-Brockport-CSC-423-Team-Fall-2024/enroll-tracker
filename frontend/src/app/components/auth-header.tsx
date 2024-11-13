@@ -8,9 +8,9 @@ import { useRouter } from "next/navigation";
 
 interface IAuthHeader {
     pageTitle: string;
-    userRole: string | undefined = undefined;
-    userName: string = '';
-    userInits: string = '';
+    userRole: string | undefined;
+    userName: string;
+    userInits: string;
 }
 
 // This is checking that the user is logged in?
@@ -40,6 +40,9 @@ const AuthHeader: React.FC<IAuthHeader> = ({ userRole, pageTitle, userName, user
       }
     };
   
+    // Generate User initials
+    userInits = generateInitials(userName);
+
     return (
       // Start building component html here
       // Page Title, Profile Box, User Name (And initials)
@@ -58,5 +61,18 @@ const AuthHeader: React.FC<IAuthHeader> = ({ userRole, pageTitle, userName, user
       </div>
     );
   };
+
+  // Function to generate initials from username
+export const generateInitials = (name: string | undefined): string => {
+  if (!name || typeof name !== 'string') {
+    return 'NA'; // or return a default value like 'NA' for Not Available
+  }
+
+  const nameParts = name.trim().split(" ");
+  const initials = nameParts.length >= 2
+    ? nameParts[0][0] + nameParts[1][0]
+    : nameParts[0][0];
+  return initials.toUpperCase();
+};
 
 export default AuthHeader;
