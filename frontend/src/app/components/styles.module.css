@@ -125,6 +125,38 @@
   margin-left: 10%;
 }
 
+/** Page Slider **/
+.full-slider {
+  background-color: #F99779;
+  width: 800px;
+  height: 65px;
+  margin-left: 20px;
+  margin-right: 20px;
+  overflow: hidden; /* Ensures content doesn't overflow */
+  align-items: center;
+  display: flex;
+  border-radius: 50px; /* Outer rounded corners */
+}
+
+.slider_left {
+  background-color: #DF6C49;
+  flex-direction: row;
+  width: 50%;
+  padding: 10%;
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.slider_right {
+  background-color: #DF6C49;
+  flex-direction: row;
+  width: 50%;
+  padding: 10%;
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+/** Change Password **/
 .change_password_form {
   display: flex;
   flex-direction: column;
