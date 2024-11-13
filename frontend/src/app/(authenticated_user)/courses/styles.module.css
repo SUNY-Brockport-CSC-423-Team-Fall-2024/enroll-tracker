@@ -52,7 +52,7 @@
 
 .nav_bar {
   display: flex;
-  background-color: #F99779;
+  background-color: #f99779;
   border-radius: 50px;
   overflow: hidden;
   width: 100%;
@@ -84,7 +84,7 @@
 .header_bar {
   display: flex;
   justify-content: space-between;
-  background-color: #F0F0F0;
+  background-color: #f0f0f0;
   padding: 10px;
   font-weight: 550;
   color: #444444;
@@ -109,9 +109,12 @@
   justify-content: space-between;
 }
 
-.course_name, .course_credits, .teacher_name, .max_enrollment {
+.course_name,
+.course_credits,
+.teacher_name,
+.max_enrollment {
   flex: 1;
-  text-align: center; 
+  text-align: center;
 }
 .red_center_text {
   color: red;
@@ -119,4 +122,3 @@
   font-weight: bold;
   margin: 1rem 0;
 }
-

@@ -26,15 +26,14 @@ interface Teacher {
 }
 
 export default function Courses() {
-  
   const router = useRouter();
   const { userRole, userID, username } = useAuth();
   const [selectedButton, setSelectedButton] = useState<string>(
-    userRole === "instructor" ? "Active" : "My Major"
+    userRole === "instructor" ? "Active" : "My Major",
   );
   const [enrolledCourses, setEnrolledCourses] = useState<Course[]>([]);
-  const [majorCourses, setMajorCourses] = useState<Course[]>([]); 
-  const [droppedCourses, setDroppedCourses] = useState<Course[]>([]); 
+  const [majorCourses, setMajorCourses] = useState<Course[]>([]);
+  const [droppedCourses, setDroppedCourses] = useState<Course[]>([]);
   const [teacherNames, setTeacherNames] = useState<{ [id: number]: string }>({});
   const [error, setError] = useState<string | null>(null);
   const [selectedCourseID, setSelectedCourseID] = useState<number | null>(null);
@@ -61,9 +60,9 @@ export default function Courses() {
 
             // Filter courses based on `is_enrolled` status
             if (selectedButton === "Enrolled") {
-              setEnrolledCourses(data.filter(course => course.is_enrolled));
+              setEnrolledCourses(data.filter((course) => course.is_enrolled));
             } else if (selectedButton === "Dropped") {
-              setDroppedCourses(data.filter(course => !course.is_enrolled));
+              setDroppedCourses(data.filter((course) => !course.is_enrolled));
             }
           } else if (selectedButton === "My Major") {
             // Fetch courses for the major
@@ -81,7 +80,6 @@ export default function Courses() {
             }));
             setMajorCourses(normalizedCourses); // Set major courses with normalization
           }
-
         } catch (err) {
           setError(err instanceof Error ? err.message : "An unknown error occurred");
         }
@@ -99,11 +97,14 @@ export default function Courses() {
         if (!response.ok) throw new Error("Error fetching teachers");
 
         const data: Teacher[] = await response.json();
-        const teacherDict = data.reduce((acc, teacher) => {
-          acc[teacher.id] = teacher.last_name;
-          return acc;
-        }, {} as { [id: number]: string });
-        console.log(teacherDict);  // Check the teacherDict here
+        const teacherDict = data.reduce(
+          (acc, teacher) => {
+            acc[teacher.id] = teacher.last_name;
+            return acc;
+          },
+          {} as { [id: number]: string },
+        );
+        console.log(teacherDict); // Check the teacherDict here
         setTeacherNames(teacherDict);
       } catch (err) {
         setError("Failed to fetch teacher last names");
@@ -123,18 +124,15 @@ export default function Courses() {
   const handleCourseClick = (courseID: number) => {
     setSelectedCourseID(courseID);
   };
-  
-  const buttons = userRole === "instructor"
-    ? ["Active", "Inactive"]
-    : ["My Major", "Enrolled", "Dropped"];
+
+  const buttons =
+    userRole === "instructor" ? ["Active", "Inactive"] : ["My Major", "Enrolled", "Dropped"];
 
   return (
     <div className={styles.courses_root}>
       <header className={styles.header}>
         <h1>Courses</h1>
-        <button className={styles.right_button}> 
-          {username}
-        </button>
+        <button className={styles.right_button}>{username}</button>
       </header>
 
       <nav className={styles.nav_bar}>
@@ -142,9 +140,7 @@ export default function Courses() {
           <button
             key={button}
             onClick={() => handleButtonClick(button)}
-            className={`${styles.nav_button} ${
-              selectedButton === button ? styles.selected : ""
-            }`}
+            className={`${styles.nav_button} ${selectedButton === button ? styles.selected : ""}`}
           >
             {button}
           </button>
@@ -181,8 +177,8 @@ export default function Courses() {
 
             {majorCourses.length > 0 ? (
               majorCourses.map((course, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className={styles.list_item}
                   onClick={() => handleCourseClick(course.course_id)}
                   style={{ cursor: "pointer" }}
@@ -213,8 +209,8 @@ export default function Courses() {
 
             {enrolledCourses.length > 0 ? (
               enrolledCourses.map((course, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className={styles.list_item}
                   onClick={() => handleCourseClick(course.course_id)}
                   style={{ cursor: "pointer" }}
@@ -234,38 +230,37 @@ export default function Courses() {
         )}
         {selectedButton === "Dropped" && (
           <>
-          {error && <p className={styles.error}>Error: {error}</p>}
+            {error && <p className={styles.error}>Error: {error}</p>}
 
-          <div className={styles.header_bar}>
-            <span className={styles.column_header}>Course Name</span>
-            <span className={styles.column_header}>Credits</span>
-            <span className={styles.column_header}>Professor</span>
-            <span className={styles.column_header}>Max Enrollment</span>
-          </div>
+            <div className={styles.header_bar}>
+              <span className={styles.column_header}>Course Name</span>
+              <span className={styles.column_header}>Credits</span>
+              <span className={styles.column_header}>Professor</span>
+              <span className={styles.column_header}>Max Enrollment</span>
+            </div>
 
-          {droppedCourses.length > 0 ? (
-            droppedCourses.map((course, index) => (
-              <div 
-                key={index} 
-                className={styles.list_item}
-                onClick={() => handleCourseClick(course.course_id)}
-                style={{ cursor: "pointer" }}
-              >
-                <span className={styles.course_name}>{course.course_name}</span>
-                <span className={styles.course_credits}>{course.num_credits}</span>
-                <span className={styles.teacher_name}>
-                  {teacherNames[course.teacher_id] || course.teacher_id}
-                </span>
-                <span className={styles.max_enrollment}>{course.max_enrollment}</span>
-              </div>
-            ))
-          ) : (
-            <p>No dropped courses found.</p>
-          )}
-        </>
+            {droppedCourses.length > 0 ? (
+              droppedCourses.map((course, index) => (
+                <div
+                  key={index}
+                  className={styles.list_item}
+                  onClick={() => handleCourseClick(course.course_id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <span className={styles.course_name}>{course.course_name}</span>
+                  <span className={styles.course_credits}>{course.num_credits}</span>
+                  <span className={styles.teacher_name}>
+                    {teacherNames[course.teacher_id] || course.teacher_id}
+                  </span>
+                  <span className={styles.max_enrollment}>{course.max_enrollment}</span>
+                </div>
+              ))
+            ) : (
+              <p>No dropped courses found.</p>
+            )}
+          </>
         )}
       </div>
     </div>
   );
 }
-

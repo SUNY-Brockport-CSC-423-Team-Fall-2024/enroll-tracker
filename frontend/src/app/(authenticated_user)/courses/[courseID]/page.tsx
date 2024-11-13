@@ -47,8 +47,8 @@ export default function CourseDetail() {
         const response = await fetch(`http://localhost:8002/api/enrollments/${courseID}/students`);
         if (response.ok) {
           const students: Student[] = await response.json();
-          const studentEnrollment = students.find(student => student.student_id === userID);
-          
+          const studentEnrollment = students.find((student) => student.student_id === userID);
+
           if (studentEnrollment) {
             setIsEnrolled(studentEnrollment.is_enrolled ? true : "dropped");
           } else {
@@ -73,7 +73,7 @@ export default function CourseDetail() {
     try {
       const response = await fetch(url, { method });
       if (!response.ok) throw new Error(`Failed to update enrollment STATUS: ${response.status}`);
-      setIsEnrolled(prevState => prevState === true ? "dropped" : true); // Toggle enrollment status based on previous state
+      setIsEnrolled((prevState) => (prevState === true ? "dropped" : true)); // Toggle enrollment status based on previous state
     } catch (error) {
       console.error(error);
     }
@@ -93,9 +93,15 @@ export default function CourseDetail() {
         <hr />
       </div>
       <div>
-        <p><b>Description:</b> {course.description}</p>
-        <p><b>Credits:</b> {course.num_credits}</p>
-        <p><b>Max Enrollment:</b> {course.max_enrollment}</p>
+        <p>
+          <b>Description:</b> {course.description}
+        </p>
+        <p>
+          <b>Credits:</b> {course.num_credits}
+        </p>
+        <p>
+          <b>Max Enrollment:</b> {course.max_enrollment}
+        </p>
       </div>
       {isEnrolled === null ? (
         <p>Loading...</p>
@@ -109,4 +115,3 @@ export default function CourseDetail() {
     </div>
   );
 }
-
