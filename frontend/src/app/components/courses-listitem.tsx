@@ -2,6 +2,7 @@
 //Ammaad Denmark 11/13
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from "./styles.module.css";
 
 interface ICourseListItem {
     courseName: string,
