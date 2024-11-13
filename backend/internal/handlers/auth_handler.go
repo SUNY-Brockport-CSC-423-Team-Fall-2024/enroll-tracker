@@ -251,6 +251,12 @@ func ChangePasswordHandler(userAuthService *services.UserAuthenticationService) 
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
+		if r.Method == http.MethodOptions{
+		
+				w.WriteHeader(200)
+				return
+		}//Is this request method Options?
+
 		//Get request body
 		var kv map[string]interface{}
 
