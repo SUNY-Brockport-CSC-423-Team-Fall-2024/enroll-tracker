@@ -3,7 +3,7 @@ interface ButtonWithCallbackProps {
   onClick: (...args: any[]) => any;
 }
 
-const Button: React.FC<ButtonWithCallbackProps> = ({ onClick, btnTitle }) => {
+const Button: React.FC<ButtonWithCallbackProps> = ({ onClick, btnTitle }) => {//Propoerties
   return (
     <div onClick={onClick}>
       <p>{btnTitle}</p>

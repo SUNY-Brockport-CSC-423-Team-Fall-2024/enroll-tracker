@@ -6,9 +6,9 @@ import Link from "next/link";
 import { useAuth } from "@/app/providers/auth-provider";
 import { useRouter } from "next/navigation";
 
-interface IAuthNavbar {
+interface IAuthNavbar {//Define what functions or objects can do or have.
   userRole: string | undefined;
-}
+}//What properties does out component take.
 
 const AuthNavbar: React.FC<IAuthNavbar> = ({ userRole }) => {
   const router = useRouter();
@@ -35,7 +35,7 @@ const AuthNavbar: React.FC<IAuthNavbar> = ({ userRole }) => {
     }
   };
 
-  return (
+  return (//Markup, outlining what is displayed
     <div className={styles.auth_navbar}>
       <h1>
         Enroll
