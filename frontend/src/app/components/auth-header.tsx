@@ -7,10 +7,10 @@ import { useAuth } from "@/app/providers/auth-provider";
 import { useRouter } from "next/navigation";
 
 interface IAuthHeader {
-    userRole: string | undefined;
     pageTitle: string;
-    userName: string;
-    userInits: string;
+    userRole: string | undefined = undefined;
+    userName: string = '';
+    userInits: string = '';
 }
 
 // This is checking that the user is logged in?

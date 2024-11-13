@@ -138,22 +138,32 @@
   border-radius: 50px; /* Outer rounded corners */
 }
 
-.slider_left {
-  background-color: #DF6C49;
+.slider-left {
+   background-color: #DF6C49;
   flex-direction: row;
-  width: 50%;
+  width: 300px;
   padding: 10%;
   border-radius: 50px;
   overflow: hidden;
+  margin-right: 5px;
 }
 
-.slider_right {
-  background-color: #DF6C49;
+.slider-right {
+   background-color: #DF6C49;
   flex-direction: row;
-  width: 50%;
+  width: 300px;
   padding: 10%;
   border-radius: 50px;
   overflow: hidden;
+  margin-left: 5px;
+}
+
+.slider-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /** Change Password **/

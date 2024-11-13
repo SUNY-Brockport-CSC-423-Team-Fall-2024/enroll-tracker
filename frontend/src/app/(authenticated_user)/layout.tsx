@@ -36,4 +36,13 @@ export default async function Layout({ children }: { children: React.ReactNode }
       <div className={styles.auth_content}>{children}</div>
     </div>
   );
+};
+
+//Helper function generates initials
+function generateInitials(name: string): string {
+  const nameParts = name.split(" ");
+  const initials = nameParts
+    .map((part) => part[0].toUpperCase())
+    .join("");
+  return initials;
 }
