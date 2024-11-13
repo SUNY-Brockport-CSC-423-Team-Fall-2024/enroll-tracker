@@ -14,7 +14,7 @@ import (
 func LoginHandler(userSessionService *services.UserSessionService, userAuthService *services.UserAuthenticationService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Set CORS
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
@@ -73,6 +73,19 @@ func LoginHandler(userSessionService *services.UserSessionService, userAuthServi
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+
+		//Update last login
+		success, err := userAuthService.UpdateLastLogin(userAuth.ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		if !success {
+			http.Error(w, "Error occured while logging user in", http.StatusInternalServerError)
+			return
+		}
+
 		//Assign values to token response before serialization
 		tokenResponse.AccessToken = accessToken
 		tokenResponse.RefreshTokenID = userSession.RefreshTokenID
@@ -169,7 +182,7 @@ func RefreshTokenHandler(userSessionService *services.UserSessionService, redisS
 func LogoutHandler(userSessionService *services.UserSessionService, redisService *services.RedisService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Set CORS
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		var kv map[string]interface{}
@@ -247,7 +260,7 @@ func LogoutHandler(userSessionService *services.UserSessionService, redisService
 func ChangePasswordHandler(userAuthService *services.UserAuthenticationService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Set CORS
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 

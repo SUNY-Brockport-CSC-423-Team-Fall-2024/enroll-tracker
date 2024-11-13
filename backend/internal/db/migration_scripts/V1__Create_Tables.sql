@@ -1,16 +1,22 @@
 CREATE TYPE CourseStatus AS ENUM('active', 'inactive');
+CREATE TYPE MajorStatus AS ENUM('active', 'inactive');
 
 CREATE TABLE Major (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL,
-    description VARCHAR(250) NOT NULL
+    description VARCHAR(250) NOT NULL,
+    status MajorStatus NOT NULL DEFAULT 'active',
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE UserAuthentication (
     id SERIAL PRIMARY KEY,
     username VARCHAR(60) UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
-    last_password_reset TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    last_login TIMESTAMP,
+    last_password_reset TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE UserSession (
@@ -34,7 +40,6 @@ CREATE TABLE Student (
     major_id INT,
     phone_number VARCHAR(20) NOT NULL,
     email VARCHAR(50) NOT NULL,
-    last_login TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -50,7 +55,6 @@ CREATE TABLE Teacher (
     phone_number VARCHAR(20) NOT NULL,
     email VARCHAR(50) NOT NULL,
     office VARCHAR(60) NOT NULL,
-    last_login TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -63,9 +67,8 @@ CREATE TABLE Administrator (
     last_name VARCHAR(50) NOT NULL,
     auth_id INT,
     phone_number VARCHAR(20) NOT NULL,
-    office VARCHAR(60) NOT NULL,
     email VARCHAR(50) NOT NULL,
-    last_login TIMESTAMP,
+    office VARCHAR(60) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -80,33 +83,35 @@ CREATE TABLE Course (
     teacher_id INT,
     max_enrollment INT NOT NULL,
     num_credits INT NOT NULL,
-    status CourseStatus NOT NULL,
+    status CourseStatus NOT NULL DEFAULT 'active',
     last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY(teacher_id) REFERENCES Teacher(id),
-    CHECK ((status = 'inactive' AND max_enrollment = 0) OR status = 'active')
+    CHECK ((status = 'inactive' AND max_enrollment = 0) OR status = 'active'),
+    CHECK(num_credits > 0 AND num_credits <= 6),
+    CHECK(max_enrollment >= 0 AND max_enrollment <= 100)
 );
 
 CREATE TABLE Course_Major (
-    id SERIAL PRIMARY KEY,
     major_id INT,
     course_id INT,
-
+    
+    PRIMARY KEY(major_id, course_id),
     FOREIGN KEY(major_id) REFERENCES Major(id),
     FOREIGN KEY(course_id) REFERENCES Course(id)
 );
 
-CREATE TABLE Registered (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE Enrollments (
     course_id INT,
     student_id INT,
-    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    unregistered_date TIMESTAMP,
-    is_unregistered BOOLEAN,
-
+    enrolled_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    unenrolled_date TIMESTAMP DEFAULT NULL,
+    is_enrolled BOOLEAN DEFAULT true,
+    
+    PRIMARY KEY(course_id, student_id),
     FOREIGN KEY(course_id) REFERENCES Course(id),
     FOREIGN KEY(student_id) REFERENCES Student(id),
-    CHECK ((is_unregistered = FALSE AND unregistered_date IS NULL) OR (is_unregistered = TRUE AND unregistered_date IS NOT NULL))
+    CHECK ((is_enrolled = FALSE AND unenrolled_date IS NOT NULL) OR (is_enrolled = TRUE AND unenrolled_date IS NULL))
 );
 

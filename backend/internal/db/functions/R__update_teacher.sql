@@ -5,7 +5,6 @@ CREATE OR REPLACE FUNCTION update_teacher (
     i_phone_number varchar DEFAULT NULL,
     i_email varchar DEFAULT NULL,
     i_office varchar DEFAULT NULL,
-    i_last_login timestamp DEFAULT NULL,
     OUT o_id int,
     OUT o_first_name varchar,
     OUT o_last_name varchar,
@@ -13,7 +12,6 @@ CREATE OR REPLACE FUNCTION update_teacher (
     OUT o_phone_number varchar,
     OUT o_email varchar,
     OUT o_office varchar,
-    OUT o_last_login timestamp,
     OUT o_created_at timestamp,
     OUT o_updated_at timestamp
 )
@@ -21,7 +19,7 @@ AS $$
 DECLARE
     teacher_id int;
 BEGIN
-    SELECT get_teacher.o_id INTO teacher_id FROM get_teacher(i_username);
+    SELECT get_teacher.id INTO teacher_id FROM get_teacher(i_username);
 
     IF teacher_id IS NULL THEN
         RAISE EXCEPTION 'No teacher found with username: %s', i_username;
@@ -33,8 +31,7 @@ BEGIN
             last_name = COALESCE(i_last_name, last_name),
             phone_number = COALESCE(i_phone_number, phone_number),
             email = COALESCE(i_email, email),
-            office = COALESCE(i_office, email),
-            last_login = COALESCE(i_last_login, last_login)
+            office = COALESCE(i_office, email)
         WHERE
             id = teacher_id
         RETURNING *
@@ -46,7 +43,6 @@ BEGIN
             o_phone_number,
             o_email,
             o_office,
-            o_last_login,
             o_created_at,
             o_updated_at;
 END;

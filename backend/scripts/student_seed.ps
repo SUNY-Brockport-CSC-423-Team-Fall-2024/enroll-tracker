@@ -1,0 +1,41 @@
+# Endpoint URL
+$URL = "http://localhost:8002/api/students"
+
+# Define arrays of first and last names
+$firstNames = @("John", "Jane", "Alex", "Chris", "Taylor", "Emily", "Jordan", "Morgan", "Sam", "Dana")
+$lastNames = @("Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson")
+$firstNamesLen = $firstNames.Length
+$lastNamesLen = $lastNames.Length
+
+# Generate random user details and send 10 POST requests
+for ($i = 1; $i -le 10; $i++) {
+    # Generate random indices for first and last names
+    $randomIndexF = Get-Random -Minimum 0 -Maximum $firstNamesLen
+    $randomIndexL = Get-Random -Minimum 0 -Maximum $lastNamesLen
+
+    # Generate random data for each user
+    $USERNAME = "user" + [Guid]::NewGuid().ToString("N").Substring(0, 8)
+    $PASSWORD = "testPassword123"
+    $FIRST_NAME = $firstNames[$randomIndexF]
+    $LAST_NAME = $lastNames[$randomIndexL]
+    $EMAIL = "$USERNAME@example.com"
+
+    # Create JSON payload
+    $DATA = @{
+        username   = $USERNAME
+        password   = $PASSWORD
+        first_name = $FIRST_NAME
+        last_name  = $LAST_NAME
+        email      = $EMAIL
+    } | ConvertTo-Json
+
+    # Send POST request
+    $response = Invoke-RestMethod -Uri $URL -Method Post -ContentType "application/json" -Body $DATA -StatusCodeVariable httpStatus
+
+    # Check if the request was successful
+    if ($httpStatus -eq 201) {
+        Write-Output "Successfully created user: $USERNAME"
+    } else {
+        Write-Output "Failed to create user: $USERNAME - Status Code: $httpStatus"
+    }
+}

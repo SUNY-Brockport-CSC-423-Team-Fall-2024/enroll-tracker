@@ -4,7 +4,9 @@ CREATE OR REPLACE FUNCTION change_user_password (
     OUT o_id int,
     OUT o_username varchar,
     OUT o_password_hash text,
-    OUT o_last_password_reset timestamp
+    OUT o_last_login timestamp,
+    OUT o_last_password_reset timestamp,
+    OUT o_is_active boolean
 )
 AS $$
 BEGIN
@@ -19,7 +21,9 @@ BEGIN
         o_id,
         o_username,
         o_password_hash,
-        o_last_password_reset;
+        o_last_login,
+        o_last_password_reset,
+        o_is_active;
 END;
 $$
 LANGUAGE plpgsql;
