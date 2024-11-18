@@ -10,9 +10,9 @@ export default function Majors() {
       <h1>Majors</h1>
 
       <MajorListItem
-        majorName="Poultry science"
-        description="The study and research of various forms of chicken"
-        path="poultryscience.edu"
+        majorName="Computer Science"
+        description="Learn more about computers and theory of computation"
+        path="computerscience.edu"
 
       ></MajorListItem>
     </div>
