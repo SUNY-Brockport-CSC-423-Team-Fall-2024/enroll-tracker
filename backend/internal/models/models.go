@@ -115,6 +115,7 @@ type AdministratorUpdate struct {
 }
 
 type Student struct {
+	Username    string    `json:"username"`
 	ID          int       `json:"id"`
 	FirstName   string    `json:"first_name"`
 	LastName    string    `json:"last_name"`
@@ -127,6 +128,7 @@ type Student struct {
 }
 
 type Teacher struct {
+	Username    string    `json:"username"`
 	ID          int       `json:"id"`
 	FirstName   string    `json:"first_name"`
 	LastName    string    `json:"last_name"`
@@ -139,6 +141,7 @@ type Teacher struct {
 }
 
 type Administrator struct {
+	Username    string    `json:"username"`
 	ID          int       `json:"id"`
 	FirstName   string    `json:"first_name"`
 	LastName    string    `json:"last_name"`
@@ -172,18 +175,19 @@ type UserSession struct {
 }
 
 type CoursesStudent struct {
-	StudentID      int        `json:"student_id"`
-	FirstName      string     `json:"first_name"`
-	LastName       string     `json:"last_name"`
-	AuthID         int        `json:"auth_id"`
-	MajorID        *int       `json:"major_id"`
-	PhoneNumber    string     `json:"phone_number"`
-	Email          string     `json:"email"`
-	CreatedAt      time.Time  `json:"created_at"`
-	UpdatedAt      time.Time  `json:"updated_at"`
-	IsEnrolled     bool       `json:"is_enrolled"`
-	EnrolledDate   time.Time  `json:"enrolled_date"`
-	UnenrolledDate *time.Time `json:"unenrolled_date"`
+	StudentUsername string     `json:"student_username"`
+	StudentID       int        `json:"student_id"`
+	FirstName       string     `json:"first_name"`
+	LastName        string     `json:"last_name"`
+	AuthID          int        `json:"auth_id"`
+	MajorID         *int       `json:"major_id"`
+	PhoneNumber     string     `json:"phone_number"`
+	Email           string     `json:"email"`
+	CreatedAt       time.Time  `json:"created_at"`
+	UpdatedAt       time.Time  `json:"updated_at"`
+	IsEnrolled      bool       `json:"is_enrolled"`
+	EnrolledDate    time.Time  `json:"enrolled_date"`
+	UnenrolledDate  *time.Time `json:"unenrolled_date"`
 }
 
 type StudentsCourse struct {

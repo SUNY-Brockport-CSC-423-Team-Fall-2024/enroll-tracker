@@ -8,11 +8,22 @@ CREATE OR REPLACE FUNCTION get_teachers (
     i_phone_number varchar,
     i_office varchar
 )
-RETURNS SETOF Teacher
+RETURNS TABLE (
+    username varchar(60),
+    id int,
+    first_name varchar(50),
+    last_name varchar(50),
+    auth_id int,
+    phone_number varchar(20),
+    email varchar(50),
+    office varchar(60),
+    created_at timestamp,
+    updated_at timestamp
+)
 AS $$
 BEGIN
     RETURN QUERY
-    SELECT T.id, T.first_name, T.last_name, T.auth_id, T.phone_number, T.email, T.office, T.created_at, T.updated_at
+    SELECT UA.username, T.id, T.first_name, T.last_name, T.auth_id, T.phone_number, T.email, T.office, T.created_at, T.updated_at
     FROM Teacher AS T
     JOIN UserAuthentication AS UA ON UA.id = T.auth_id
     WHERE 
