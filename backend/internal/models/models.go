@@ -115,7 +115,8 @@ type AdministratorUpdate struct {
 }
 
 type Student struct {
-	ID          int       `json:"id"`
+    Username string `json:"username"`
+    ID          int       `json:"id"`
 	FirstName   string    `json:"first_name"`
 	LastName    string    `json:"last_name"`
 	AuthID      int       `json:"auth_id"`
@@ -127,6 +128,7 @@ type Student struct {
 }
 
 type Teacher struct {
+    Username string `json:"username"`
 	ID          int       `json:"id"`
 	FirstName   string    `json:"first_name"`
 	LastName    string    `json:"last_name"`
@@ -139,6 +141,7 @@ type Teacher struct {
 }
 
 type Administrator struct {
+    Username string `json:"username"`
 	ID          int       `json:"id"`
 	FirstName   string    `json:"first_name"`
 	LastName    string    `json:"last_name"`
@@ -172,7 +175,8 @@ type UserSession struct {
 }
 
 type CoursesStudent struct {
-	StudentID      int        `json:"student_id"`
+    StudentUsername string `json:"student_username"`
+    StudentID      int        `json:"student_id"`
 	FirstName      string     `json:"first_name"`
 	LastName       string     `json:"last_name"`
 	AuthID         int        `json:"auth_id"`

@@ -74,7 +74,7 @@ func (r *PostgresEnrollmentsRepository) GetCoursesStudents(courseID int, isEnrol
 
 	for rows.Next() {
 		var student models.CoursesStudent
-		if err := rows.Scan(&student.StudentID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt, &student.IsEnrolled, &student.EnrolledDate, &student.UnenrolledDate); err != nil {
+		if err := rows.Scan(&student.StudentUsername, &student.StudentID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt, &student.IsEnrolled, &student.EnrolledDate, &student.UnenrolledDate); err != nil {
 			return students, err
 		}
 

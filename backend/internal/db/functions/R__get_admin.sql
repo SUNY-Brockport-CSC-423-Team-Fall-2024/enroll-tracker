@@ -1,37 +1,31 @@
-CREATE OR REPLACE FUNCTION get_administrator (
-    i_username varchar,
-    OUT o_id int,
-    OUT o_first_name varchar,
-    OUT o_last_name varchar,
-    OUT o_auth_id int,
-    OUT o_phone_number varchar,
-    OUT o_email varchar,
-    OUT o_office varchar,
-    OUT o_created_at timestamp,
-    OUT o_updated_at timestamp
+CREATE OR REPLACE FUNCTION get_admin (
+    i_username varchar
+)
+RETURNS TABLE (
+    username varchar(60),
+    id int,
+    first_name varchar(50),
+    last_name varchar(50),
+    auth_id int,
+    phone_number varchar(20),
+    email varchar(50),
+    office varchar(60),
+    created_at timestamp,
+    updated_at timestamp
 )
 AS $$
 BEGIN
-    SELECT *
-    INTO
-        o_id,
-        o_first_name,
-        o_last_name,
-        o_auth_id,
-        o_phone_number,
-        o_email,
-        o_office,
-        o_created_at,
-        o_updated_at
-    FROM Administrator
+    RETURN QUERY
+    SELECT UA.username, A.*
+    FROM Administrator AS A
     INNER JOIN
-        UserAuthentication ON Administrator.auth_id = UserAuthentication.id
-    WHERE UserAuthentication.username = i_username
-    AND UserAuthentication.is_active = true;
+        UserAuthentication AS UA ON A.auth_id = UA.id
+    WHERE UA.username = i_username
+    AND UA.is_active = true;
 
     EXCEPTION
         WHEN NO_DATA_FOUND THEN
-            RAISE EXCEPTION 'No admin found for username %s', i_username;
+            RAISE EXCEPTION 'No administrator found for username %s', i_username;
 END;
 $$
 LANGUAGE plpgsql;

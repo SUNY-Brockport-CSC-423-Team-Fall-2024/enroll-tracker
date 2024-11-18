@@ -25,7 +25,7 @@ func (r *PostgresTeacherRepository) CreateTeacher(firstName string, lastName str
 
 	query := `SELECT * FROM public.create_teacher($1,$2,$3,$4,$5,$6)`
 
-	err := r.db.QueryRow(query, firstName, lastName, authId, phoneNumber, email, office).Scan(&teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt)
+	err := r.db.QueryRow(query, firstName, lastName, authId, phoneNumber, email, office).Scan(&teacher.Username, &teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt)
 
 	return teacher, err
 }
@@ -46,7 +46,7 @@ func (r *PostgresTeacherRepository) GetTeachers(queryParams models.TeacherQueryP
 	//Loop through returned rows
 	for rows.Next() {
 		teacher := models.Teacher{}
-		if err := rows.Scan(&teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt); err != nil {
+		if err := rows.Scan(&teacher.Username, &teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt); err != nil {
 			return teachers, err
 		}
 		teachers = append(teachers, teacher)
@@ -65,7 +65,7 @@ func (r *PostgresTeacherRepository) GetTeacher(username string) (models.Teacher,
 	//execute function
 	row := r.db.QueryRow(query, username)
 
-	err := row.Scan(&teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt)
+	err := row.Scan(&teacher.Username, &teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt)
 
 	return teacher, err
 }
@@ -78,7 +78,7 @@ func (r *PostgresTeacherRepository) UpdateTeacher(username string, teacherUpdate
 
 	row := r.db.QueryRow(query, username, teacherUpdates.FirstName, teacherUpdates.LastName, teacherUpdates.PhoneNumber, teacherUpdates.Email, teacherUpdates.Office)
 
-	err := row.Scan(&teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt)
+	err := row.Scan(&teacher.Username, &teacher.ID, &teacher.FirstName, &teacher.LastName, &teacher.AuthID, &teacher.PhoneNumber, &teacher.Email, &teacher.Office, &teacher.CreatedAt, &teacher.UpdatedAt)
 
 	return teacher, err
 }
