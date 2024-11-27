@@ -130,11 +130,6 @@ export default function Courses() {
 
   return (
     <div className={styles.courses_root}>
-      <header className={styles.header}>
-        <h1>Courses</h1>
-        <button className={styles.right_button}>{username}</button>
-      </header>
-
       <nav className={styles.nav_bar}>
         {buttons.map((button) => (
           <button

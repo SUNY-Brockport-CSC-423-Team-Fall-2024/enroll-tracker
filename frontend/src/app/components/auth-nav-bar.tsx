@@ -1,6 +1,6 @@
 "use client";
 
-import { headerLinks, footerLinks } from "../lib/data";
+import { headerLinks, footerLinks } from "../lib/definitions";
 import styles from "./styles.module.css";
 import Link from "next/link";
 import { useAuth } from "@/app/providers/auth-provider";

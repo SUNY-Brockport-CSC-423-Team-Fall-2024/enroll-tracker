@@ -8,7 +8,8 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding-left: 50px;
+  padding: 50px 80px;
+  gap: 60px;
 }
 
 .auth_navbar {

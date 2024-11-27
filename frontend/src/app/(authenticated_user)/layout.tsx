@@ -1,12 +1,15 @@
 import AuthNavbar from "../components/auth-nav-bar";
 import styles from "./styles.module.css";
 import { cookies } from "next/headers";
-import { JWTCLOCKTOLERANCE, JWTSIGNINGALGORITHM, getJWTPublicTokenPEMFormatted } from "../lib/data";
+import { getJWTPublicTokenPEMFormatted } from "../lib/server/actions";
+import { JWTCLOCKTOLERANCE, JWTSIGNINGALGORITHM } from "@/app/lib/definitions";
 import * as jose from "jose";
+import AuthHeader from "../components/auth-header";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   let accessToken = cookies().get("access_token");
-  let userRole: string | undefined = undefined;
+  let userRole: string = '';
+  let username: string = '';
 
   if (accessToken !== undefined) {
     try {
@@ -19,8 +22,13 @@ export default async function Layout({ children }: { children: React.ReactNode }
       } else {
         throw new Error("no user role");
       }
+      if (typeof payload.sub === "string") {
+        username = payload.sub;
+      } else {
+        throw new Error("no username");
+      }
     } catch (err) {
-      console.error("can verify user role");
+      console.error("can verify user info");
     }
   }
 
@@ -29,7 +37,10 @@ export default async function Layout({ children }: { children: React.ReactNode }
       <div className={styles.auth_navbar}>
         <AuthNavbar userRole={userRole} />
       </div>
-      <div className={styles.auth_content}>{children}</div>
+      <div className={styles.auth_content}>
+            <AuthHeader username={username} userRole={userRole}/>
+            {children}
+      </div>
     </div>
   );
 }

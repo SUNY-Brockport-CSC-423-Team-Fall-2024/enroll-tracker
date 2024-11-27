@@ -1,6 +1,18 @@
 .dashboard_root {
-  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 40px;
+  height: 100%;
+}
+
+.dashboard_student_major {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.dashboard_student_courses_section {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }

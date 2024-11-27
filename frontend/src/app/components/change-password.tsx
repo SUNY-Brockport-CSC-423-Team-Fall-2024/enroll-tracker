@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { clsx } from "clsx";
 import styles from "./styles.module.css";
-import { passwordRegex } from "../lib/data";
+import { passwordRegex } from "../lib/client/data";
 
 export default function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("");

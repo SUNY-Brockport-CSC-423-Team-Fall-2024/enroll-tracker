@@ -72,6 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setUserRole(data?.role);
             setUsername(data?.username);
             setUserID(data?.user_id);
+            console.log(data)
           }
         } else {
           // Token refresh failed, mark the user as logged out

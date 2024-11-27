@@ -4,10 +4,12 @@ import * as jose from "jose";
 import {
   getJWTPublicTokenPEMFormatted,
   getSigningKeyFromEnv,
+} from "./app/lib/server/actions";
+import {
   JWTCLOCKTOLERANCE,
   JWTSIGNINGALGORITHM,
   RouteRoles,
-} from "./app/lib/data";
+} from "./app/lib/definitions";
 
 async function handleTokenVerification(
   request: NextRequest,
