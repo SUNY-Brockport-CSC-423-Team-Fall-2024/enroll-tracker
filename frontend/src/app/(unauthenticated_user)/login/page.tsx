@@ -8,7 +8,8 @@ import { useAuth } from "@/app/providers/auth-provider";
 export default function Login() {
   const router = useRouter();
 
-  const { setIsLoggedIn, getUserStuff, setUserRole, setUserID, setUsername, userRole, userID } = useAuth();
+  const { setIsLoggedIn, getUserStuff, setUserRole, setUserID, setUsername, userRole, userID } =
+    useAuth();
 
   let [username, setFormUsername] = useState("");
   let [password, setPassword] = useState("");
@@ -63,8 +64,8 @@ export default function Login() {
   };
 
   useEffect(() => {
-    console.log(userRole)
-  }, [userRole])
+    console.log(userRole);
+  }, [userRole]);
 
   return (
     <div className={styles.main_content}>

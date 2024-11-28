@@ -28,9 +28,9 @@ const AuthNavbar: React.FC = () => {
       });
       router.push("/");
       setIsLoggedIn(false);
-      setUsername(undefined)
-      setUserID(undefined)
-      setUserRole(undefined)
+      setUsername(undefined);
+      setUserID(undefined);
+      setUserRole(undefined);
     }
   };
 

@@ -138,9 +138,9 @@
 }
 
 .auth_header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .profile_button {
@@ -187,4 +187,3 @@
   transform: translateY(-2px);
   box-shadow: 0px 5px 5px var(--shadow-color);
 }
-

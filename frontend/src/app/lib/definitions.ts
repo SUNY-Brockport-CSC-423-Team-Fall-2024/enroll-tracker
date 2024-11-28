@@ -63,94 +63,94 @@ export const JWTCLOCKTOLERANCE = 10; //in seconds
 export const JWTSIGNINGALGORITHM = "RS256";
 
 export interface User {
-    username: string,
-    id: number,
-    first_name: string,
-    last_name: string,
-    auth_id: number,
-    phone_number: string,
-    email: string,
-    created_at: Date,
-    updated_at: Date,
+  username: string;
+  id: number;
+  first_name: string;
+  last_name: string;
+  auth_id: number;
+  phone_number: string;
+  email: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface Student extends User {
-    major_id?: number,
+  major_id?: number;
 }
 export interface Teacher extends User {
-    office: string,
+  office: string;
 }
 export interface Administrator extends User {
-    office: string,
+  office: string;
 }
 
 export type Major = {
-    id: number,
-    name: string,
-    description: string,
-    status: string,
-    last_updated: Date,
-    created_at: Date,
-}
+  id: number;
+  name: string;
+  description: string;
+  status: string;
+  last_updated: Date;
+  created_at: Date;
+};
 
 export type Course = {
-    id: number,
-    name: string,
-    description: string,
-    teacher_id: number,
-    max_enrollment: number,
-    num_credits: number,
-    status: string,
-    last_updated: Date,
-    created_at: Date,
-}
+  id: number;
+  name: string;
+  description: string;
+  teacher_id: number;
+  max_enrollment: number;
+  num_credits: number;
+  status: string;
+  last_updated: Date;
+  created_at: Date;
+};
 
 export type StudentCourse = {
-    course_id: number,
-    course_name: string,
-    course_description: string,
-    teacher_id: number,
-    max_enrollment: number,
-    num_credits: number,
-    status: string,
-    last_updated: Date,
-    created_at: Date,
-    is_enrolled: boolean,
-    enrolled_date: Date,
-    unenrolled_date: Date | null,
-}
+  course_id: number;
+  course_name: string;
+  course_description: string;
+  teacher_id: number;
+  max_enrollment: number;
+  num_credits: number;
+  status: string;
+  last_updated: Date;
+  created_at: Date;
+  is_enrolled: boolean;
+  enrolled_date: Date;
+  unenrolled_date: Date | null;
+};
 
 export type TeacherCourse = {
-    course_id: number,
-    course_name: string,
-    course_description: string,
-    teacher_id: number,
-    current_enrollment: number,
-    max_enrollment: number,
-    num_credits: number,
-    status: string,
-    last_updated: Date,
-    created_at: Date,
-}
+  course_id: number;
+  course_name: string;
+  course_description: string;
+  teacher_id: number;
+  current_enrollment: number;
+  max_enrollment: number;
+  num_credits: number;
+  status: string;
+  last_updated: Date;
+  created_at: Date;
+};
 
 export interface ITable {
-    headers: ITableHeader[],
-    rows: ITableRow[]
+  headers: ITableHeader[];
+  rows: ITableRow[];
 }
 
 export interface ITableHeader {
-    title: string,
+  title: string;
 }
 
 export interface ITableRow {
-    content: TableRowContent[],
-    clickable: boolean,
-    href?: string
+  content: TableRowContent[];
+  clickable: boolean;
+  href?: string;
 }
 
 export type TableRowContent = string | number;
 
 export enum ButtonType {
-    PRIMARY = "primary",
-    SECONDARY = "secondary"
+  PRIMARY = "primary",
+  SECONDARY = "secondary",
 }
