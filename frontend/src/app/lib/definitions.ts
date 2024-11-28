@@ -120,6 +120,19 @@ export type StudentCourse = {
     unenrolled_date: Date | null,
 }
 
+export type TeacherCourse = {
+    course_id: number,
+    course_name: string,
+    course_description: string,
+    teacher_id: number,
+    current_enrollment: number,
+    max_enrollment: number,
+    num_credits: number,
+    status: string,
+    last_updated: Date,
+    created_at: Date,
+}
+
 export interface ITable {
     headers: ITableHeader[],
     rows: ITableRow[]
@@ -136,3 +149,8 @@ export interface ITableRow {
 }
 
 export type TableRowContent = string | number;
+
+export enum ButtonType {
+    PRIMARY = "primary",
+    SECONDARY = "secondary"
+}

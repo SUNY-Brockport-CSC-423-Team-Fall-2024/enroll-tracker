@@ -42,8 +42,8 @@ async function currentUser(): Promise<{[key: string]: any} | null> {
     console.log(user)
     if (user) {
         //Sub is username and user_id is user's id
-        const { sub, user_id } = user;
-        return { username: sub, user_id: user_id }
+        const { sub, user_id, role } = user;
+        return { username: sub, user_id: user_id, role: role}
     }
     return null
 } 

@@ -4,14 +4,16 @@ import { useState, useEffect } from "react";
 import styles from "./styles.module.css"
 import { getUser } from "../lib/client/data";
 import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "../providers/auth-provider";
 
-export default function AuthHeader({ username, userRole}: {username: string, userRole: string}) {
+export default function AuthHeader() {
     const [pageTitle, setPageTitle] = useState<string | null>(null)
     const [userFirstName, setUserFirstName] = useState<string | null>(null)
     const [userLastName, setUserLastName] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(true);
     const pathname = usePathname();
     const router = useRouter();
+    const { username, userRole } = useAuth();
 
     const determinePath = async() => {
         try {
@@ -29,11 +31,14 @@ export default function AuthHeader({ username, userRole}: {username: string, use
                     setPageTitle("Settings")
                     break;
                 default:
-                    console.log(username + " " + userRole)
-                    const { first_name, last_name } = await getUser(username, userRole)
-                    setPageTitle(`Hi, ${first_name}`)
-                    setUserFirstName(first_name)
-                    setUserLastName(last_name)
+                    if (username === undefined || userRole === undefined) {
+                        setPageTitle(`Welcome`)
+                    } else {
+                        const { first_name, last_name } = await getUser(username, userRole)
+                        setPageTitle(`Hi, ${first_name}`)
+                        setUserFirstName(first_name)
+                        setUserLastName(last_name)
+                    }
                 }
             } catch(err) {
                 console.error(err)
@@ -45,7 +50,7 @@ export default function AuthHeader({ username, userRole}: {username: string, use
 
     useEffect(() => {
         determinePath()
-    }, [pathname])
+    }, [pathname, username])
     return (
       <header className={styles.auth_header}>
         <h1>{loading ? "Loading..." : pageTitle}</h1>

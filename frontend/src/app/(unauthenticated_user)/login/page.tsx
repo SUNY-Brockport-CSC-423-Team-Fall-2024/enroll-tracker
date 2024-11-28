@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styles from "../styles.module.css";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/providers/auth-provider";
@@ -8,7 +8,7 @@ import { useAuth } from "@/app/providers/auth-provider";
 export default function Login() {
   const router = useRouter();
 
-  const { setIsLoggedIn, getUserStuff, setUserRole, setUserID, setUsername } = useAuth();
+  const { setIsLoggedIn, getUserStuff, setUserRole, setUserID, setUsername, userRole, userID } = useAuth();
 
   let [username, setFormUsername] = useState("");
   let [password, setPassword] = useState("");
@@ -61,6 +61,10 @@ export default function Login() {
   ) => {
     reactHook(e.currentTarget.value);
   };
+
+  useEffect(() => {
+    console.log(userRole)
+  }, [userRole])
 
   return (
     <div className={styles.main_content}>

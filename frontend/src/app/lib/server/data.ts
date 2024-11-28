@@ -1,5 +1,5 @@
 import { currentUser } from "./actions";
-import { Course, Student, Major, StudentCourse } from "../definitions";
+import { Course, Student, Teacher, Major, StudentCourse, TeacherCourse } from "../definitions";
 
 export async function getStudentCourses(studentID: number, isEnrolled?: boolean): Promise<StudentCourse[]> {
     try {
@@ -8,6 +8,24 @@ export async function getStudentCourses(studentID: number, isEnrolled?: boolean)
             method: "GET"
         });
         const data: StudentCourse[] = await resp.json();
+        if (resp.ok) {
+            return data
+        } else {
+            return []
+        }
+    } catch (err) {
+        console.error(err)
+        return []
+    }
+}
+
+export async function getTeachersCourses(studentID: number): Promise<TeacherCourse[]> {
+    try {
+        const url = `http://api:443/api/teachers/${studentID}/courses`
+        const resp = await fetch(url, {
+            method: "GET"
+        });
+        const data: TeacherCourse[] = await resp.json();
         if (resp.ok) {
             return data
         } else {
@@ -101,6 +119,25 @@ export async function getStudent(username: string): Promise<Student> {
     } catch(err) {
        console.error("Error retrieving student information")
        throw new Error("Error retrieving student information")
+    }
+}
+
+export async function getTeacher(username: string): Promise<Teacher> {
+    try {
+        const url = `http://api:443/api/teachers/${username}`
+        const resp = await fetch(url, {
+            method: "GET"
+        })
+
+        if (resp.ok) {
+            const teacher: Teacher = await resp.json();
+            return teacher;
+        } else {
+            throw new Error("Request to get teacher information was not successful")
+        }
+    } catch(err) {
+       console.error("Error retrieving teacher information")
+       throw new Error("Error retrieving teacher information")
     }
 }
 

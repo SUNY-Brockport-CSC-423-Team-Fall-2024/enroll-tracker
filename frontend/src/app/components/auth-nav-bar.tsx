@@ -6,14 +6,10 @@ import Link from "next/link";
 import { useAuth } from "@/app/providers/auth-provider";
 import { useRouter } from "next/navigation";
 
-interface IAuthNavbar {
-  userRole: string | undefined;
-}
-
-const AuthNavbar: React.FC<IAuthNavbar> = ({ userRole }) => {
+const AuthNavbar: React.FC = () => {
   const router = useRouter();
 
-  const { setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn, setUsername, setUserID, setUserRole, userRole } = useAuth();
 
   const handleLogout = async () => {
     const resp = await fetch("/api/logout", {
@@ -30,8 +26,11 @@ const AuthNavbar: React.FC<IAuthNavbar> = ({ userRole }) => {
           isLoggedIn: false,
         }),
       });
-      setIsLoggedIn(false);
       router.push("/");
+      setIsLoggedIn(false);
+      setUsername(undefined)
+      setUserID(undefined)
+      setUserRole(undefined)
     }
   };
 
