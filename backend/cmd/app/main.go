@@ -127,6 +127,7 @@ func main() {
 			http.Error(w, "Method not allowed", http.StatusBadRequest)
 		}
 	})
+	stdMux.HandleFunc("/api/teachers/{teacherID}/courses", handlers.GetTeachersCoursesHandler(enrollmentsService))
 
 	//Administrator routes
 	stdMux.HandleFunc("/api/administrators", func(w http.ResponseWriter, r *http.Request) {

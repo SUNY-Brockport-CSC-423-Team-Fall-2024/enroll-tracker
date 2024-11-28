@@ -205,6 +205,19 @@ type StudentsCourse struct {
 	UnenrolledDate    *time.Time `json:"unenrolled_date"`
 }
 
+type TeachersCourse struct {
+	CourseID          int        `json:"course_id"`
+	CourseName        string     `json:"course_name"`
+	CourseDescription string     `json:"course_description"`
+	TeacherID         int        `json:"teacher_id"`
+    CurrentEnrollment int   `json:"current_enrollment"`
+    MaxEnrollment     int        `json:"max_enrollment"`
+	NumCredits        int        `json:"num_credits"`
+	Status            string     `json:"status"`
+	LastUpdated       time.Time  `json:"last_updated"`
+	CreatedAt         time.Time  `json:"created_at"`
+}
+
 type CustomClaims struct {
 	jwt.RegisteredClaims
 	Role   string `json:"role"`

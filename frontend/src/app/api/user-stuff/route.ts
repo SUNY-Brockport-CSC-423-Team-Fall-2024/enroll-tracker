@@ -1,10 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import {
-  getJWTPublicTokenPEMFormatted,
-  JWTSIGNINGALGORITHM,
-  JWTCLOCKTOLERANCE,
-} from "@/app/lib/data";
+import { getJWTPublicTokenPEMFormatted } from "@/app/lib/server/actions";
+import { JWTSIGNINGALGORITHM, JWTCLOCKTOLERANCE } from "@/app/lib/definitions";
 import * as jose from "jose";
 
 export async function GET() {

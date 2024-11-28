@@ -192,3 +192,44 @@ func GetStudentsCoursesHandler(s *services.EnrollmentsService) http.HandlerFunc 
 		}
 	}
 }
+
+func GetTeachersCoursesHandler(s *services.EnrollmentsService) http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+		//Set CORS
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(200)
+			return
+		}
+
+		teacherIDParam := r.PathValue("teacherID")
+
+		if teacherIDParam == "" {
+			http.Error(w, "Missing teacher id", http.StatusBadRequest)
+			return
+		}
+
+		teacherID, err := strconv.Atoi(teacherIDParam)
+		if err != nil {
+			http.Error(w, "Teacher id invalid format", http.StatusBadRequest)
+			return
+		}
+
+		courses, err := s.GetTeachersCourses(teacherID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		if err := json.NewEncoder(w).Encode(courses); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+    }
+}
+

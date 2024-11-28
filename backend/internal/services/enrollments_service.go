@@ -59,6 +59,14 @@ func (s *EnrollmentsService) GetStudentsCourses(studentID int, isEnrolled *bool)
 	return courses, nil
 }
 
+func (s *EnrollmentsService) GetTeachersCourses(teacherID int) ([]models.TeachersCourse, error) {
+	courses, err := s.repository.GetTeachersCourses(teacherID)
+	if err != nil {
+		return []models.TeachersCourse{}, err
+	}
+	return courses, nil
+}
+
 func (s *EnrollmentsService) GetCoursesStudents(courseID int, isEnrolled *bool) ([]models.CoursesStudent, error) {
 	students, err := s.repository.GetCoursesStudents(courseID, isEnrolled)
 	if err != nil {

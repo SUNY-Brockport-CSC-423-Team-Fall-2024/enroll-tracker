@@ -1,14 +1,30 @@
-interface ButtonWithCallbackProps {
+"use client";
+import { useRouter } from "next/navigation";
+import clsx from "clsx";
+import { ButtonType } from "../lib/definitions";
+import styles from "./styles.module.css";
+
+interface IButton {
   btnTitle: string;
-  onClick: (...args: any[]) => any;
+  href?: string;
+  btnType: ButtonType;
 }
 
-const Button: React.FC<ButtonWithCallbackProps> = ({ onClick, btnTitle }) => {
+export default function Button({ btnTitle, href, btnType }: IButton) {
+  const router = useRouter();
   return (
-    <div onClick={onClick}>
-      <p>{btnTitle}</p>
-    </div>
+    <button
+      className={clsx(
+        btnType === ButtonType.PRIMARY && styles.profile_button,
+        btnType === ButtonType.SECONDARY && styles.secondary_profile_button,
+      )}
+      onClick={() => {
+        if (href) {
+          router.push(href);
+        }
+      }}
+    >
+      {btnTitle}
+    </button>
   );
-};
-
-export default Button;
+}
