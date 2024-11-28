@@ -228,3 +228,4 @@ func DeleteTeacherHandler(teacherService *services.TeacherService, userSessionSe
 	//Write 204 back to indicate successful deletion
 	w.WriteHeader(http.StatusNoContent)
 }
+
