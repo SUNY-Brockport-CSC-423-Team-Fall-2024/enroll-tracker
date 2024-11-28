@@ -2,7 +2,7 @@
 import Button from "@/app/components/button";
 import styles from "./styles.module.css";
 import { MajorName } from "@/app/components/dashboard/major-name";
-import { StudentCoursesTable } from "@/app/components/dashboard/student-courses";
+import StudentCoursesTable from "@/app/components/dashboard/student-courses";
 import TeacherCoursesTable from "@/app/components/dashboard/teacher-courses";
 import { ButtonType, Roles } from "@/app/lib/definitions";
 import { useAuth } from "@/app/providers/auth-provider";

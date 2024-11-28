@@ -6,7 +6,7 @@ import { ITableRow } from "@/app/lib/definitions";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/app/providers/auth-provider";
 
-export async function StudentCoursesTable() {
+export default function StudentCoursesTable() {
   const [courses, setCourses] = useState<ITableRow[]>([]);
   const { username } = useAuth();
 
