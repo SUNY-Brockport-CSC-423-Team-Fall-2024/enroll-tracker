@@ -37,7 +37,7 @@ function resolveRouteFromRole(role: string) {
 
 export async function getTeacher(username: string): Promise<Teacher> {
   try {
-    const url = `http://losthost:8002/api/teachers/${username}`;
+    const url = `http://localhost:8002/api/teachers/${username}`;
     const resp = await fetch(url, {
       method: "GET",
     });
