@@ -16,6 +16,9 @@
   --table-header-text: rgb(68, 68, 68);
   font-size: 25px;
 }
+* {
+    box-sizing: border-box;
+}
 
 /* Reset margins and padding for body */
 html,
@@ -62,6 +65,24 @@ i {
 }
 
 input[type="text"] {
+  font-family: var(--font-kode);
+  font-size: 20px;
+  background-color: var(--white1);
+  border: 0px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 3px 3px inset var(--shadow-color);
+}
+input[type="number"] {
+  font-family: var(--font-kode);
+  font-size: 20px;
+  background-color: var(--white1);
+  border: 0px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 3px 3px inset var(--shadow-color);
+}
+textarea {
   font-family: var(--font-kode);
   font-size: 20px;
   background-color: var(--white1);

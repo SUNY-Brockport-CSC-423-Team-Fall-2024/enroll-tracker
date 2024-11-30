@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/app/providers/auth-provider";
 import styles from "../styles.module.css";
+import { useAuthHeader } from "@/app/providers/auth-header-provider";
+import { Roles } from "@/app/lib/definitions";
+import TeacherCoursesTable from "@/app/components/dashboard/teacher-courses";
 
 interface Course {
   id: number;
@@ -22,21 +25,22 @@ interface Student {
 }
 
 export default function CourseDetail() {
+  const { setPageTitle } = useAuthHeader();
   const [course, setCourse] = useState<Course | null>(null);
   const [isEnrolled, setIsEnrolled] = useState<boolean | "dropped" | null>(null);
-  const { userID } = useAuth();
+  const { userRole, userID } = useAuth();
   const router = useRouter();
   const params = useParams();
   const courseID = params.courseID;
 
-  useEffect(() => {
     const fetchCourse = async () => {
       try {
         const response = await fetch(`http://localhost:8002/api/courses/${courseID}`);
         if (!response.ok) throw new Error("Failed to fetch course details");
 
-        const data = await response.json();
+        const data: Course = await response.json();
         setCourse(data);
+        setPageTitle(data.name);
       } catch (error) {
         console.error(error);
       }
@@ -60,9 +64,12 @@ export default function CourseDetail() {
       }
     };
 
+  useEffect(() => {
     if (courseID && userID) {
       fetchCourse();
-      checkEnrollment();
+      if (userRole === Roles.STUDENT) {
+        checkEnrollment();
+      }
     }
   }, [courseID, userID]);
 
@@ -84,34 +91,50 @@ export default function CourseDetail() {
   return (
     <div className={styles.courses_root}>
       <header className={styles.header}>
-        <h1>{course.name}</h1>
-        <button onClick={() => router.push("/courses")} className={styles.right_button}>
+        <button onClick={() => router.push("/courses")} className={styles.left_button}>
           Back
         </button>
+        {userRole === Roles.TEACHER && (
+          <>
+            <button onClick={() => router.push(`/courses/${course.id}/edit`)} className={styles.right_button}>
+              Edit
+            </button>
+          </>
+        )}
       </header>
       <div>
         <hr />
       </div>
-      <div>
-        <p>
-          <b>Description:</b> {course.description}
-        </p>
-        <p>
-          <b>Credits:</b> {course.num_credits}
-        </p>
-        <p>
-          <b>Max Enrollment:</b> {course.max_enrollment}
-        </p>
-      </div>
-      {isEnrolled === null ? (
-        <p>Loading...</p>
-      ) : isEnrolled === "dropped" ? (
-        <p className={styles.red_center_text}>Dropped</p>
-      ) : (
-        <button onClick={handleEnrollment} className={styles.centered_button}>
-          {isEnrolled ? "Drop" : "Enroll"}
-        </button>
-      )}
+        <div>
+          <p>
+            <b>Description:</b> {course.description}
+          </p>
+          <p>
+            <b>Credits:</b> {course.num_credits}
+          </p>
+          <p>
+            <b>Current Enrollment:</b> {course.current_enrollment}
+          </p>
+          <p>
+            <b>Max Enrollment:</b> {course.max_enrollment}
+          </p>
+          <p>
+            <b>Max Enrollment:</b> {course.max_enrollment}
+          </p>
+        </div>
+        { userRole === Roles.STUDENT && (
+          <>
+            {isEnrolled === null ? (
+              <p>Loading...</p>
+            ) : isEnrolled === "dropped" ? (
+              <p className={styles.red_center_text}>Dropped</p>
+            ) : (
+            <button onClick={handleEnrollment} className={styles.centered_button}>
+              {isEnrolled ? "Drop" : "Enroll"}
+            </button>
+          )}
+        </>
+        )}
     </div>
   );
 }

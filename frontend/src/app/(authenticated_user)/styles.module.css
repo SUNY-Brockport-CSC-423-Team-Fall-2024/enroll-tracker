@@ -9,10 +9,10 @@
   flex-direction: column;
   flex: 1;
   padding: 50px 80px;
-  gap: 60px;
+  gap: 40px;
 }
 
 .auth_navbar {
-  width: 250px;
+  max-width: 350px;
   height: 100%;
 }

@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 const AuthNavbar: React.FC = () => {
   const router = useRouter();
 
-  const { setIsLoggedIn, setUsername, setUserID, setUserRole, userRole } = useAuth();
+  const { setIsLoggedIn, setUsername, setUserID, setAuthID, setUserRole, userRole } = useAuth();
 
   const handleLogout = async () => {
     const resp = await fetch("/api/logout", {
@@ -30,6 +30,7 @@ const AuthNavbar: React.FC = () => {
       setIsLoggedIn(false);
       setUsername(undefined);
       setUserID(undefined);
+      setAuthID(undefined);
       setUserRole(undefined);
     }
   };

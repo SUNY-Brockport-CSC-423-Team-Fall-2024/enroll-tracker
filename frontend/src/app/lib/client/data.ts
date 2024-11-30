@@ -35,6 +35,44 @@ function resolveRouteFromRole(role: string) {
   }
 }
 
+export async function getMajors(): Promise<Major[]> {
+  try {
+    const url = `http://localhost:8002/api/majors?limit=50`;
+    const resp = await fetch(url, {
+      method: "GET",
+    });
+
+    if (resp.ok) {
+      const majors: Major[] = await resp.json();
+      return majors;
+    } else {
+      throw new Error("Request to get major information was not successful");
+    }
+  } catch (err) {
+    console.error("Error retrieving major information");
+    throw new Error("Error retrieving major information");
+  }
+}
+
+export async function getTeachers(query: string): Promise<Teacher[]> {
+  try {
+    const url = `http://localhost:8002/api/teachers?first_name=${query}`;
+    const resp = await fetch(url, {
+      method: "GET",
+    });
+
+    if (resp.ok) {
+      const teacher: Teacher[] = await resp.json();
+      return teacher;
+    } else {
+      throw new Error("Request to get teacher information was not successful");
+    }
+  } catch (err) {
+    console.error("Error retrieving teacher information");
+    throw new Error("Error retrieving teacher information");
+  }
+}
+
 export async function getTeacher(username: string): Promise<Teacher> {
   try {
     const url = `http://localhost:8002/api/teachers/${username}`;
@@ -152,5 +190,64 @@ export async function getStudent(username: string): Promise<Student> {
   } catch (err) {
     console.error("Error retrieving student information");
     throw new Error("Error retrieving student information");
+  }
+}
+
+export interface AsyncResponse {
+  success: boolean,
+  errMessage?: string
+}
+
+export async function addCourseToMajors(courseID: number, majorIDs: number[]): Promise<AsyncResponse> {
+  try {
+      const url = `http://localhost:8002/api/courses/${courseID}/majors`
+      const resp = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          majorIDs: majorIDs,
+        })
+      });
+
+    if (resp.status === 201) {
+        return { success: true }
+    } else {
+        return { success: false, errMessage: (await resp.text())}
+    }
+  } catch(err) {
+    console.error(err)
+    return { success: false, errMessage: err instanceof Error ? err.message : "Unknown error occurred" }
+  }
+}
+
+export async function getCourseMajors(courseID: number)
+
+export async function createCourse(courseName: string, courseDescription: string, courseTeacherID: number, maxEnrollment: number, numCredits: number, majorIDs: number[]): Promise<AsyncResponse> {
+  try {
+    const url = `http://localhost:8002/api/courses`;
+    const resp = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        name: courseName,
+        description: courseDescription,
+        teacher_id: courseTeacherID,
+        max_enrollment: maxEnrollment,
+        num_credits: numCredits,
+      })
+    });
+    if (resp.status === 200 || resp.status === 201) {
+      const { id } = await resp.json();
+      
+      const majorResp = await addCourseToMajors(id, majorIDs)
+      if (majorResp.success) {
+        return { success: true }
+      } else {
+        return { success: false, errMessage: majorResp?.errMessage ?? "Error occured while adding course to majors" }
+      }
+    } else {
+      return { success: false, errMessage: (await resp.text())}
+    }
+  } catch(err) {
+    console.error(err)
+    return { success: false, errMessage: err instanceof Error ? err.message : "Unknown error occurred" }
   }
 }
