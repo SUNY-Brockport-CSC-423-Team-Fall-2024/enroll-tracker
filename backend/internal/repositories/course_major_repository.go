@@ -3,11 +3,14 @@ package repositories
 import (
 	"database/sql"
 	"enroll-tracker/internal/models"
+
+	"github.com/lib/pq"
 )
 
 type CourseMajorRepository interface {
-	AddCourseToMajor(majorID int, courseID int) (bool, error)
+	AddCourseToMajor(majorIDs []int, courseID int) (bool, error)
 	GetCoursesAssoicatedWithMajor(majorID int, queryParams models.CourseQueryParams) ([]models.Course, error)
+	GetMajorsAssoicatedWithCourse(courseID int, queryParams models.MajorQueryParams) ([]models.Major, error)
 	RemoveCourseFromMajor(majorID int, courseID int) (bool, error)
 }
 
@@ -19,10 +22,10 @@ func CreateCourseMajorRepository(db *sql.DB) *PostgresCourseMajorRepository {
 	return &PostgresCourseMajorRepository{db: db}
 }
 
-func (r *PostgresCourseMajorRepository) AddCourseToMajor(majorID int, courseID int) (bool, error) {
+func (r *PostgresCourseMajorRepository) AddCourseToMajor(majorIDs []int, courseID int) (bool, error) {
 	query := `SELECT * FROM public.add_course_to_major($1,$2)`
 
-	if _, err := r.db.Exec(query, majorID, courseID); err != nil {
+	if _, err := r.db.Exec(query, pq.Array(majorIDs), courseID); err != nil {
 		return false, err
 	}
 	return true, nil
@@ -48,6 +51,28 @@ func (r *PostgresCourseMajorRepository) GetCoursesAssoicatedWithMajor(majorID in
 		courses = append(courses, course)
 	}
 	return courses, nil
+}
+
+func (r *PostgresCourseMajorRepository) GetMajorsAssoicatedWithCourse(courseID int, queryParams models.MajorQueryParams) ([]models.Major, error) {
+	majors := make([]models.Major, 0)
+
+	query := `SELECT * FROM public.get_majors_associated_with_course($1,$2,$3,$4,$5,$6)`
+
+	rows, err := r.db.Query(query, courseID, queryParams.Limit, queryParams.Offset, queryParams.Name, queryParams.Description, queryParams.Status)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var major models.Major
+		if err := rows.Scan(&major.ID, &major.Name, &major.Description, &major.Status, &major.LastUpdated, &major.CreatedAt); err != nil {
+			return majors, err
+		}
+
+		majors = append(majors, major)
+	}
+	return majors, nil
 }
 
 func (r *PostgresCourseMajorRepository) RemoveCourseFromMajor(majorID int, courseID int) (bool, error) {
