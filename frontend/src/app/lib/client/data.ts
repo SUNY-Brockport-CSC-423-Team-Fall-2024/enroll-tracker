@@ -498,7 +498,7 @@ export async function updateMajor(
   if (status !== originalMajor.status) {
     bodyObject = Object.assign(bodyObject, { status: status });
   }
-  
+
   try {
     const url = `http://localhost:8002/api/majors/${majorID}`;
     const resp = await fetch(url, {
@@ -506,7 +506,7 @@ export async function updateMajor(
       body: JSON.stringify(bodyObject),
     });
     if (resp.ok) {
-        return { success: true };
+      return { success: true };
     } else {
       return { success: false, errMessage: await resp.text() };
     }
@@ -521,24 +521,23 @@ export async function updateMajor(
 
 export async function declareMajor(studentID: number, majorID: number): Promise<AsyncResponse> {
   try {
-    const url = `http://localhost:8002/api/students/${studentID}/majors`
+    const url = `http://localhost:8002/api/students/${studentID}/majors`;
     const resp = await fetch(url, {
       method: "POST",
       body: JSON.stringify({
-        majorID: majorID
-      })
+        majorID: majorID,
+      }),
     });
 
     if (resp.status === 201) {
-        return { success: true };
+      return { success: true };
     } else {
-        return {
-          success: false,
-          errMessage:
-            "Error occured while declaring major",
-        };
+      return {
+        success: false,
+        errMessage: "Error occured while declaring major",
+      };
     }
-  } catch(err) {
+  } catch (err) {
     console.error(err);
     return {
       success: false,

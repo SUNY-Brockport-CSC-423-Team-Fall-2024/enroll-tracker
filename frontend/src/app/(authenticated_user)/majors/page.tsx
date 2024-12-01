@@ -26,20 +26,20 @@ export default function Majors() {
 
   const getStudentsMajorID = async () => {
     try {
-      if(username !== undefined) {
+      if (username !== undefined) {
         const student = await getStudent(username);
         setStudentsMajorID(student.major_id);
       } else {
         setStudentsMajorID(undefined);
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
       setStudentsMajorID(undefined);
     }
-  }
+  };
 
   useEffect(() => {
-    if(userRole === Roles.STUDENT) {
+    if (userRole === Roles.STUDENT) {
       getStudentsMajorID();
     }
     fetchMajors();
@@ -62,14 +62,14 @@ export default function Majors() {
       {userRole === Roles.STUDENT && (
         <div className={styles.majors_list}>
           {majors.map((major, i) => (
-            <MajorListItem key={i} major={major} studentsMajorID={studentsMajorID}/>
+            <MajorListItem key={i} major={major} studentsMajorID={studentsMajorID} />
           ))}
         </div>
       )}
       {userRole === Roles.ADMIN && (
         <div className={styles.majors_list}>
           {majors.map((major, i) => (
-            <MajorListItem key={i} major={major} studentsMajorID={undefined}/>
+            <MajorListItem key={i} major={major} studentsMajorID={undefined} />
           ))}
         </div>
       )}

@@ -72,7 +72,7 @@ export default function EditMajor() {
       return;
     }
 
-    const resp: AsyncResponse = await updateMajor (
+    const resp: AsyncResponse = await updateMajor(
       major,
       major.id,
       majorName,
@@ -164,10 +164,10 @@ export default function EditMajor() {
                 id="major_cancel_edit"
                 name="major_cancel_edit"
                 onClick={() => {
-                  if(major) {
-                    router.push(`/majors/${major.id}`)
+                  if (major) {
+                    router.push(`/majors/${major.id}`);
                   } else {
-                    router.push(`/majors`)
+                    router.push(`/majors`);
                   }
                 }}
                 value="Cancel"

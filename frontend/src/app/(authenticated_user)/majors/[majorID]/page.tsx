@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import { Major, Roles } from "@/app/lib/definitions";
-import { useAuthHeader } from "@/app/providers/auth-header-provider"
+import { useAuthHeader } from "@/app/providers/auth-header-provider";
 import { declareMajor, getMajor, getStudent } from "@/app/lib/client/data";
 import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/app/providers/auth-provider";
@@ -23,59 +23,59 @@ export default function MajorPage() {
 
   const getStudentsMajorID = async () => {
     try {
-      if(username !== undefined) {
+      if (username !== undefined) {
         const student = await getStudent(username);
         setStudentsMajorID(student.major_id !== null ? student.major_id : undefined);
       } else {
         setStudentsMajorID(undefined);
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
       setStudentsMajorID(undefined);
     }
-  }
+  };
 
   const declareStudentMajor = async () => {
     try {
-      if(major?.id === undefined || userID === undefined) {
-        setResultMessage("Error occured while declaring for major.")
-        setResultSuccess(false)
+      if (major?.id === undefined || userID === undefined) {
+        setResultMessage("Error occured while declaring for major.");
+        setResultSuccess(false);
         return;
       }
       const resp = await declareMajor(userID, major.id);
 
-      if(resp.success) {
+      if (resp.success) {
         setStudentsMajorID(major.id);
       } else {
-        setResultMessage("Error occured while declaring for major.")
-        setResultSuccess(false)
+        setResultMessage("Error occured while declaring for major.");
+        setResultSuccess(false);
       }
-    } catch(err) {
-      setResultMessage("Error occured while declaring for major.")
-      setResultSuccess(false)
+    } catch (err) {
+      setResultMessage("Error occured while declaring for major.");
+      setResultSuccess(false);
     }
-  }
+  };
 
   const fetchMajor = async () => {
     try {
-      if(majorID instanceof Array) {
+      if (majorID instanceof Array) {
         setMajor(undefined);
-        return
+        return;
       }
       const m = await getMajor(parseInt(majorID));
       setMajor(m);
       setPageTitle(m.name);
-    } catch(err) {
+    } catch (err) {
       setMajor(undefined);
-    } 
-  }
+    }
+  };
 
   useEffect(() => {
-    fetchMajor()
-    if(userRole === Roles.STUDENT) {
-      getStudentsMajorID()
+    fetchMajor();
+    if (userRole === Roles.STUDENT) {
+      getStudentsMajorID();
     }
-  }, [])
+  }, []);
 
   return (
     <div className={styles.majors_root}>
@@ -84,8 +84,8 @@ export default function MajorPage() {
           <div
             className={styles.edit_major_button_container}
             onClick={() => {
-              if(major) {
-                router.push(`/majors/${major.id}/edit`)
+              if (major) {
+                router.push(`/majors/${major.id}/edit`);
               }
             }}
           >
@@ -107,9 +107,11 @@ export default function MajorPage() {
           </div>
         </>
       )}
-      <p><strong>Description:</strong> {major?.description}</p>
+      <p>
+        <strong>Description:</strong> {major?.description}
+      </p>
       {userRole === Roles.STUDENT && (
-          <>
+        <>
           {studentsMajorID === undefined && (
             <button className={styles.centered_button} onClick={() => declareStudentMajor()}>
               Declare Major
@@ -123,9 +125,9 @@ export default function MajorPage() {
       <div className={styles.majors_courses_container}>
         <h2>Courses</h2>
         <div className={styles.majors_courses_table}>
-          <MajorCourses majorID={major?.id}/>
+          <MajorCourses majorID={major?.id} />
         </div>
       </div>
     </div>
-  )
+  );
 }

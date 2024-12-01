@@ -36,7 +36,7 @@ export default function AuthHeader() {
           break;
         case "majors":
           if (path.length > 2) {
-            switch(path[2]) {
+            switch (path[2]) {
               case "add-major":
                 setPageTitle("Add Major");
                 break;

@@ -7,22 +7,21 @@ interface MajorCoursesProps {
   majorID: number | undefined;
 }
 
-export default function MajorCourses({majorID}: MajorCoursesProps) {
+export default function MajorCourses({ majorID }: MajorCoursesProps) {
   const [courses, setCourses] = useState<ITableRow[]>([]);
-  
+
   const tableHeaders: ITableHeader[] = [
     {
-      title: "Course Title"
+      title: "Course Title",
     },
     {
-      title: "Description"
+      title: "Description",
     },
   ];
 
   const getCourses = async () => {
     try {
-
-      if(majorID === undefined) {
+      if (majorID === undefined) {
         setCourses([]);
         return;
       }
@@ -33,10 +32,7 @@ export default function MajorCourses({majorID}: MajorCoursesProps) {
 
       majorCourses.map((course) =>
         courseRows.push({
-          content: [
-            course.name,
-            course.description,
-          ],
+          content: [course.name, course.description],
           clickable: true,
           href: `/courses/${course.id}`,
         }),
@@ -57,5 +53,5 @@ export default function MajorCourses({majorID}: MajorCoursesProps) {
       {courses.length > 0 && <Table headers={tableHeaders} rows={courses} />}
       {courses.length === 0 && <p>No courses.</p>}
     </>
-  )
+  );
 }

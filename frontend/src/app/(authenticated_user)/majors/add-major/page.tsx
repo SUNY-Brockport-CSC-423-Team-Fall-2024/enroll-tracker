@@ -21,10 +21,7 @@ export default function Page() {
     setResultMessage(undefined);
     setResultSuccess(undefined);
 
-    const resp: AsyncResponse = await createMajor (
-      majorName,
-      majorDescription,
-    );
+    const resp: AsyncResponse = await createMajor(majorName, majorDescription);
 
     if (resp.success) {
       setResultMessage("Successfully created the major!");
