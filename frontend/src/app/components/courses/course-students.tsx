@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { ITableHeader, ITableRow } from "@/app/lib/definitions";
 import Table from "../table/table";
@@ -10,9 +10,9 @@ interface CourseStudentsProps {
   courseID: number;
 }
 
-export default function CourseStudents({isEnrolled, courseID}: CourseStudentsProps) {
+export default function CourseStudents({ isEnrolled, courseID }: CourseStudentsProps) {
   const [students, setStudents] = useState<ITableRow[]>([]);
-  
+
   const tableHeaders: ITableHeader[] = [
     {
       title: "First Name",
@@ -26,10 +26,10 @@ export default function CourseStudents({isEnrolled, courseID}: CourseStudentsPro
     {
       title: "Date Enrolled",
     },
-  ]
+  ];
 
-  if(isEnrolled === false) {
-    tableHeaders.push({title: "Date Unenrolled"})
+  if (isEnrolled === false) {
+    tableHeaders.push({ title: "Date Unenrolled" });
   }
 
   const getStudents = async () => {
@@ -37,33 +37,43 @@ export default function CourseStudents({isEnrolled, courseID}: CourseStudentsPro
       const students = await getCoursesStudents(courseID, isEnrolled);
       let tableRows: ITableRow[] = [];
 
-      students.map(student => {
-        let tableRowContent = [student.first_name, student.last_name, student.email, new Date(student.enrolled_date).toLocaleDateString("en-US")];
+      students.map((student) => {
+        let tableRowContent = [
+          student.first_name,
+          student.last_name,
+          student.email,
+          new Date(student.enrolled_date).toLocaleDateString("en-US"),
+        ];
 
         if (!isEnrolled) {
-          tableRowContent.push(student.unenrolled_date !== null ? new Date(student.unenrolled_date).toLocaleDateString("en-US") : "n/a") 
+          tableRowContent.push(
+            student.unenrolled_date !== null
+              ? new Date(student.unenrolled_date).toLocaleDateString("en-US")
+              : "n/a",
+          );
         }
 
         tableRows.push({
           content: tableRowContent,
-          clickable: false})
+          clickable: false,
+        });
       });
 
       setStudents(tableRows);
-    } catch(err) {
-      console.error(err)
+    } catch (err) {
+      console.error(err);
       setStudents([]);
     }
-  }
+  };
 
   useEffect(() => {
-    getStudents()
-  }, [])
+    getStudents();
+  }, []);
 
   return (
     <>
       {students.length > 0 && <Table headers={tableHeaders} rows={students} />}
       {students.length === 0 && <p>No students.</p>}
     </>
-  )
+  );
 }

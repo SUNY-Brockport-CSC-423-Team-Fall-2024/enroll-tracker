@@ -1,39 +1,39 @@
 .edit_course_container {
-    background: #FBF7F4;
-    border-radius: 20px;
+  background: #fbf7f4;
+  border-radius: 20px;
 }
 
 .edit_course_form_container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
 }
 
 .edit_course_form_upper_fields {
-    width: 100%;
-    display: grid;
-    grid-template-columns: min-content 1fr;
-    grid-gap:10px;
-    align-items: top;
+  width: 100%;
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-gap: 10px;
+  align-items: top;
 }
 
 .edit_course_form_lower_fields_container {
-    width: 100%;
-    display: flex;
-    justify-content: end;
+  width: 100%;
+  display: flex;
+  justify-content: end;
 }
 
 .edit_course_form_lower_fields {
-    width: 50%;
-    display: flex;
-    gap: 10px;
+  width: 50%;
+  display: flex;
+  gap: 10px;
 }
 
 .edit_course_form input {
-    width: 100%;
-    grid-column: 2;
-    font-size: 0.75rem;
+  width: 100%;
+  grid-column: 2;
+  font-size: 0.75rem;
 }
 
 .edit_course_form_majors {
@@ -45,27 +45,27 @@
   box-shadow: 0px 3px 3px inset var(--shadow-color);
 }
 
-.edit_course_form label { 
-    text-align:right; 
+.edit_course_form label {
+  text-align: right;
 }
 
 .edit_course_form textarea {
-    resize: none;
-    font-size: 0.75rem;
+  resize: none;
+  font-size: 0.75rem;
 }
 
 .result_successful {
-    color: green;
+  color: green;
 }
 
 .result_unsuccessful {
-    color: red;
+  color: red;
 }
 
 .result_message_container {
-    min-height: 25px;
+  min-height: 25px;
 }
 
 .result_message_container p {
-    margin: 0;
+  margin: 0;
 }

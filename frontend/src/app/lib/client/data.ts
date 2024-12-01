@@ -1,4 +1,14 @@
-import { TeacherCourse, Teacher, Student, User, Roles, Major, StudentCourse, Course, CoursesStudent} from "../definitions";
+import {
+  TeacherCourse,
+  Teacher,
+  Student,
+  User,
+  Roles,
+  Major,
+  StudentCourse,
+  Course,
+  CoursesStudent,
+} from "../definitions";
 
 export const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?~-]{8,30}$/;
 
@@ -215,89 +225,111 @@ export async function getStudent(username: string): Promise<Student> {
 }
 
 export interface AsyncResponse {
-  success: boolean,
-  errMessage?: string
+  success: boolean;
+  errMessage?: string;
 }
 
-export async function addCourseToMajors(courseID: number, majorIDs: number[]): Promise<AsyncResponse> {
+export async function addCourseToMajors(
+  courseID: number,
+  majorIDs: number[],
+): Promise<AsyncResponse> {
   try {
-      const url = `http://localhost:8002/api/courses/${courseID}/majors`
-      const resp = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          majorIDs: majorIDs,
-        })
-      });
+    const url = `http://localhost:8002/api/courses/${courseID}/majors`;
+    const resp = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        majorIDs: majorIDs,
+      }),
+    });
 
     if (resp.status === 201) {
-        return { success: true }
+      return { success: true };
     } else {
-        return { success: false, errMessage: (await resp.text())}
+      return { success: false, errMessage: await resp.text() };
     }
-  } catch(err) {
-    console.error(err)
-    return { success: false, errMessage: err instanceof Error ? err.message : "Unknown error occurred" }
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      errMessage: err instanceof Error ? err.message : "Unknown error occurred",
+    };
   }
 }
 
-export async function removeCourseFromMajors(courseID: number, majorIDs: number[]): Promise<AsyncResponse> {
+export async function removeCourseFromMajors(
+  courseID: number,
+  majorIDs: number[],
+): Promise<AsyncResponse> {
   try {
-      const url = `http://localhost:8002/api/courses/${courseID}/majors`
-      const resp = await fetch(url, {
-        method: "DELETE",
-        body: JSON.stringify({
-          majorIDs: majorIDs,
-        })
-      });
+    const url = `http://localhost:8002/api/courses/${courseID}/majors`;
+    const resp = await fetch(url, {
+      method: "DELETE",
+      body: JSON.stringify({
+        majorIDs: majorIDs,
+      }),
+    });
 
     if (resp.status === 204) {
-        return { success: true }
+      return { success: true };
     } else {
-        return { success: false, errMessage: (await resp.text())}
+      return { success: false, errMessage: await resp.text() };
     }
-  } catch(err) {
-    console.error(err)
-    return { success: false, errMessage: err instanceof Error ? err.message : "Unknown error occurred" }
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      errMessage: err instanceof Error ? err.message : "Unknown error occurred",
+    };
   }
 }
 
 export async function deleteCourse(courseID: number): Promise<AsyncResponse> {
   try {
-      const url = `http://localhost:8002/api/courses/${courseID}`
-      const resp = await fetch(url, {
-        method: "DELETE",
-      });
+    const url = `http://localhost:8002/api/courses/${courseID}`;
+    const resp = await fetch(url, {
+      method: "DELETE",
+    });
 
     if (resp.status === 204) {
-        return { success: true }
+      return { success: true };
     } else {
-        return { success: false, errMessage: (await resp.text())}
+      return { success: false, errMessage: await resp.text() };
     }
-  } catch(err) {
-    console.error(err)
-    return { success: false, errMessage: err instanceof Error ? err.message : "Unknown error occurred" }
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      errMessage: err instanceof Error ? err.message : "Unknown error occurred",
+    };
   }
 }
 
 export async function getCourseMajors(courseID: number): Promise<Major[]> {
   try {
-    const url = `http://localhost:8002/api/courses/${courseID}/majors?limit=50`
+    const url = `http://localhost:8002/api/courses/${courseID}/majors?limit=50`;
     const resp = await fetch(url, {
       method: "GET",
     });
-    if(resp.ok) {
+    if (resp.ok) {
       const majors: Major[] = await resp.json();
-      return majors
+      return majors;
     } else {
-      return []
+      return [];
     }
-  } catch(err) {
-    console.error(err)
-    return []
+  } catch (err) {
+    console.error(err);
+    return [];
   }
 }
 
-export async function createCourse(courseName: string, courseDescription: string, courseTeacherID: number, maxEnrollment: number, numCredits: number, majorIDs: number[]): Promise<AsyncResponse> {
+export async function createCourse(
+  courseName: string,
+  courseDescription: string,
+  courseTeacherID: number,
+  maxEnrollment: number,
+  numCredits: number,
+  majorIDs: number[],
+): Promise<AsyncResponse> {
   try {
     const url = `http://localhost:8002/api/courses`;
     const resp = await fetch(url, {
@@ -308,77 +340,101 @@ export async function createCourse(courseName: string, courseDescription: string
         teacher_id: courseTeacherID,
         max_enrollment: maxEnrollment,
         num_credits: numCredits,
-      })
+      }),
     });
     if (resp.status === 200 || resp.status === 201) {
       const { id } = await resp.json();
-      
-      const majorResp = await addCourseToMajors(id, majorIDs)
+
+      const majorResp = await addCourseToMajors(id, majorIDs);
       if (majorResp.success) {
-        return { success: true }
+        return { success: true };
       } else {
-        return { success: false, errMessage: majorResp?.errMessage ?? "Error occured while adding course to majors" }
+        return {
+          success: false,
+          errMessage: majorResp?.errMessage ?? "Error occured while adding course to majors",
+        };
       }
     } else {
-      return { success: false, errMessage: (await resp.text())}
+      return { success: false, errMessage: await resp.text() };
     }
-  } catch(err) {
-    console.error(err)
-    return { success: false, errMessage: err instanceof Error ? err.message : "Unknown error occurred" }
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      errMessage: err instanceof Error ? err.message : "Unknown error occurred",
+    };
   }
 }
 
-export async function updateCourse(originalCourse: Course, originalMajorIDs: number[], newMajorIDs: number[], courseID: number, courseName: string, courseDescription: string, maxEnrollment: number, numCredits: number, status: string): Promise<AsyncResponse> {
+export async function updateCourse(
+  originalCourse: Course,
+  originalMajorIDs: number[],
+  newMajorIDs: number[],
+  courseID: number,
+  courseName: string,
+  courseDescription: string,
+  maxEnrollment: number,
+  numCredits: number,
+  status: string,
+): Promise<AsyncResponse> {
   //Validation
-  if(maxEnrollment !== undefined && originalCourse.current_enrollment > maxEnrollment) {
+  if (maxEnrollment !== undefined && originalCourse.current_enrollment > maxEnrollment) {
     throw new Error("New max enrollment greater than current enrollment");
   }
 
   //Create json body for update
-  let bodyObject = {}
-  if(courseName !== originalCourse.name) {
-    bodyObject = Object.assign(bodyObject, { name: courseName })
+  let bodyObject = {};
+  if (courseName !== originalCourse.name) {
+    bodyObject = Object.assign(bodyObject, { name: courseName });
   }
-  if(courseDescription !== originalCourse.description) {
-    bodyObject = Object.assign(bodyObject, { description: courseDescription })
+  if (courseDescription !== originalCourse.description) {
+    bodyObject = Object.assign(bodyObject, { description: courseDescription });
   }
-  if(maxEnrollment !== originalCourse.max_enrollment) {
-    bodyObject = Object.assign(bodyObject, { max_enrollment: maxEnrollment })
+  if (maxEnrollment !== originalCourse.max_enrollment) {
+    bodyObject = Object.assign(bodyObject, { max_enrollment: maxEnrollment });
   }
-  if(numCredits !== originalCourse.num_credits) {
-    bodyObject = Object.assign(bodyObject, { num_credits: numCredits })
+  if (numCredits !== originalCourse.num_credits) {
+    bodyObject = Object.assign(bodyObject, { num_credits: numCredits });
   }
-  if(status !== originalCourse.status) {
-    bodyObject = Object.assign(bodyObject, { status: status })
+  if (status !== originalCourse.status) {
+    bodyObject = Object.assign(bodyObject, { status: status });
   }
 
   try {
     const url = `http://localhost:8002/api/courses/${courseID}`;
     const resp = await fetch(url, {
       method: "PUT",
-      body: JSON.stringify(bodyObject)
+      body: JSON.stringify(bodyObject),
     });
     if (resp.ok) {
-      //Find which majors need to have course removed 
-      let majorIDsToRemove = originalMajorIDs.filter(id => !newMajorIDs.includes(id))
-      let majorIDsToAdd = newMajorIDs.filter(id => !originalMajorIDs.includes(id))
+      //Find which majors need to have course removed
+      let majorIDsToRemove = originalMajorIDs.filter((id) => !newMajorIDs.includes(id));
+      let majorIDsToAdd = newMajorIDs.filter((id) => !originalMajorIDs.includes(id));
 
-      console.log(majorIDsToRemove + "remove")
-      console.log(majorIDsToAdd + "add")
-      
-      const majorRemoveResp = await removeCourseFromMajors(courseID, majorIDsToRemove)
+      console.log(majorIDsToRemove + "remove");
+      console.log(majorIDsToAdd + "add");
+
+      const majorRemoveResp = await removeCourseFromMajors(courseID, majorIDsToRemove);
       const majorAddResp = await addCourseToMajors(courseID, majorIDsToAdd);
 
       if (majorAddResp.success && majorRemoveResp.success) {
-        return { success: true }
+        return { success: true };
       } else {
-        return { success: false, errMessage: majorRemoveResp?.errMessage ?? "Error occured while deleting or adding course to majors" }
+        return {
+          success: false,
+          errMessage:
+            majorRemoveResp?.errMessage ??
+            "Error occured while deleting or adding course to majors",
+        };
       }
     } else {
-      return { success: false, errMessage: (await resp.text())}
+      return { success: false, errMessage: await resp.text() };
     }
-  } catch(err) {
-    console.error(err)
-    return { success: false, errMessage: err instanceof Error ? err.message : "Unknown error occurred" }
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      errMessage: err instanceof Error ? err.message : "Unknown error occurred",
+    };
   }
 }

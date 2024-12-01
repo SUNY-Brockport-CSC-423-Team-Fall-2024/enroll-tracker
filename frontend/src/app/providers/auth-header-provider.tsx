@@ -9,24 +9,23 @@ const AuthHeaderContext = createContext<AuthHeaderContextProps | undefined>(unde
 
 export const useAuthHeader = () => {
   const context = useContext(AuthHeaderContext);
-  if(!context) {
+  if (!context) {
     throw new Error("useAuthHeader must be used with auth header provider");
   }
   return context;
 };
 
-export function AuthHeaderProvider({children}: { children: React.ReactNode }) {
+export function AuthHeaderProvider({ children }: { children: React.ReactNode }) {
   const [pageTitle, setPageTitle] = useState<string>("");
 
   return (
     <AuthHeaderContext.Provider
       value={{
         pageTitle,
-        setPageTitle
+        setPageTitle,
       }}
     >
       {children}
     </AuthHeaderContext.Provider>
-  )
+  );
 }
-

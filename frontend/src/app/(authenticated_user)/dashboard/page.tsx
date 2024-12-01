@@ -21,15 +21,15 @@ export default function Dashboard() {
       {(userRole === Roles.STUDENT || userRole === Roles.TEACHER) && (
         <div className={styles.dashboard_courses_section}>
           <h2>Your Courses</h2>
-          {userRole === Roles.STUDENT && 
+          {userRole === Roles.STUDENT && (
             <div className={styles.dashboard_student_courses_table}>
-              <StudentCoursesTable isEnrolled={true}/>
+              <StudentCoursesTable isEnrolled={true} />
             </div>
-          }
+          )}
           {userRole === Roles.TEACHER && (
             <>
               <div className={styles.dashboard_teacher_courses_table}>
-                <TeacherCoursesTable isActive={true}/>
+                <TeacherCoursesTable isActive={true} />
               </div>
               <div className={styles.dashboard_action_button_container}>
                 <div className={styles.dashboard_action_button}>

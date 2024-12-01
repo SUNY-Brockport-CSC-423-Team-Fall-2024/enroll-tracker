@@ -12,8 +12,8 @@
 }
 
 .dashboard_student_courses_table {
-    max-height: 250px;
-    overflow: auto;
+  max-height: 250px;
+  overflow: auto;
 }
 
 .dashboard_courses_section {
@@ -23,8 +23,8 @@
 }
 
 .dashboard_teacher_courses_table {
-    max-height: 350px;
-    overflow: auto;
+  max-height: 350px;
+  overflow: auto;
 }
 
 .dashboard_action_button_container {

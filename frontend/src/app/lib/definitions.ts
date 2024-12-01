@@ -163,7 +163,7 @@ export interface ITableRow {
   content: TableRowContent[];
   clickable: boolean;
   href?: string;
-  callback?: () => void
+  callback?: () => void;
 }
 
 export type TableRowContent = string | number;

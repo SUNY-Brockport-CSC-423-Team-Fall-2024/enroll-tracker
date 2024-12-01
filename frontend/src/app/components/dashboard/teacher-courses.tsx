@@ -6,7 +6,7 @@ import { ITableRow } from "@/app/lib/definitions";
 import { useAuth } from "@/app/providers/auth-provider";
 import { useEffect, useState } from "react";
 
-export default function TeacherCoursesTable({isActive}: {isActive?: boolean}) {
+export default function TeacherCoursesTable({ isActive }: { isActive?: boolean }) {
   const { username } = useAuth();
   const [courses, setCourses] = useState<ITableRow[]>([]);
 
@@ -28,24 +28,28 @@ export default function TeacherCoursesTable({isActive}: {isActive?: boolean}) {
       const teacher = await getTeacher(username);
       let teachersCourses = await getTeachersCourses(teacher.id);
 
-      let tableRows: ITableRow[] = []
-      
+      let tableRows: ITableRow[] = [];
+
       //Filter courses if prop passed
       if (isActive !== undefined) {
-        teachersCourses = teachersCourses.filter(course => isActive ? course.status === "active" : course.status === "inactive")
+        teachersCourses = teachersCourses.filter((course) =>
+          isActive ? course.status === "active" : course.status === "inactive",
+        );
       }
 
       //Create table rows
-      teachersCourses.map((course) => tableRows.push({
-            content: [
-              course.course_name,
-              `${course.current_enrollment}/${course.max_enrollment}`,
-              new Date(course.last_updated).toLocaleDateString("en-US"),
-            ],
-            clickable: true,
-            href: `/courses/${course.course_id}`,
-          }))
-        setCourses(tableRows)
+      teachersCourses.map((course) =>
+        tableRows.push({
+          content: [
+            course.course_name,
+            `${course.current_enrollment}/${course.max_enrollment}`,
+            new Date(course.last_updated).toLocaleDateString("en-US"),
+          ],
+          clickable: true,
+          href: `/courses/${course.course_id}`,
+        }),
+      );
+      setCourses(tableRows);
     } catch (err) {
       console.error(err);
     }

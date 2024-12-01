@@ -72,10 +72,10 @@
 }
 
 .nav_container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
 }
 
 .nav_button {
@@ -144,11 +144,11 @@
 }
 
 .add_course_button_container {
-    background: var(--cyan2);
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+  background: var(--cyan2);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .add_course_button_container:hover {
@@ -159,17 +159,17 @@
 }
 
 .add_course_button {
-    padding: 10px;
-    display: flex;
-    align-items: center;
+  padding: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .edit_course_button_container {
-    background: var(--cyan2);
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+  background: var(--cyan2);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .edit_course_button_container:hover {
@@ -180,30 +180,30 @@
 }
 
 .edit_course_button {
-    padding: 10px;
-    display: flex;
-    align-items: center;
+  padding: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .teacher_courses_table {
-    max-height: 450px;
-    overflow: auto;
+  max-height: 450px;
+  overflow: auto;
 }
 
 .course_majors_list {
-    display: flex;
-    margin: 0;
+  display: flex;
+  margin: 0;
 }
 
 .course_majors_list p {
-    margin: 0;
+  margin: 0;
 }
 
 .majors_list {
-    display: flex;
+  display: flex;
 }
 
 .courses_students_table {
-    max-height: 250px;
-    overflow: auto;
+  max-height: 250px;
+  overflow: auto;
 }

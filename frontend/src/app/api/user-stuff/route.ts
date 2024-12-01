@@ -15,7 +15,12 @@ export async function GET() {
       });
 
       return new NextResponse(
-        JSON.stringify({ role: payload.role, username: payload.sub, user_id: payload.user_id, auth_id: payload.auth_id }),
+        JSON.stringify({
+          role: payload.role,
+          username: payload.sub,
+          user_id: payload.user_id,
+          auth_id: payload.auth_id,
+        }),
         {
           status: 200,
         },

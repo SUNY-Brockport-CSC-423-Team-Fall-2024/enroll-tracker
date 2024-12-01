@@ -22,8 +22,8 @@ export default function AuthHeader() {
       switch (path[1]) {
         case "courses":
           if (path.length > 2) {
-            switch(path[2]) {
-              case 'add-course':
+            switch (path[2]) {
+              case "add-course":
                 setPageTitle("Add Course");
                 break;
             }
@@ -46,20 +46,20 @@ export default function AuthHeader() {
             setPageTitle(`Welcome`);
           } else {
             const { first_name } = await getUser(username, userRole);
-            setPageTitle(`Hi, ${first_name}`);  
+            setPageTitle(`Hi, ${first_name}`);
           }
       }
     } catch (err) {
       console.error(err);
       setPageTitle(`Welcome`);
     } finally {
-        if (username === undefined || userRole === undefined) {
-          setUserFirstName(`User`);
-        } else {
-          const { first_name, last_name } = await getUser(username, userRole);
-          setUserFirstName(first_name);
-          setUserLastName(last_name);
-        }
+      if (username === undefined || userRole === undefined) {
+        setUserFirstName(`User`);
+      } else {
+        const { first_name, last_name } = await getUser(username, userRole);
+        setUserFirstName(first_name);
+        setUserLastName(last_name);
+      }
       setLoading(false);
     }
   };

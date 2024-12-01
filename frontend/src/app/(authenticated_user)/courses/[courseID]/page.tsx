@@ -43,41 +43,41 @@ export default function CourseDetail() {
     setSelectedButton(button);
   };
 
-    const fetchCourse = async () => {
-      try {
-        const response = await fetch(`http://localhost:8002/api/courses/${courseID}`);
-        if (!response.ok) throw new Error("Failed to fetch course details");
+  const fetchCourse = async () => {
+    try {
+      const response = await fetch(`http://localhost:8002/api/courses/${courseID}`);
+      if (!response.ok) throw new Error("Failed to fetch course details");
 
-        const data: Course = await response.json();
-        const majors: Major[] = await getCourseMajors(data.id);
-        setCourse(data);
-        setPageTitle(data.name);
-        setMajors(majors);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+      const data: Course = await response.json();
+      const majors: Major[] = await getCourseMajors(data.id);
+      setCourse(data);
+      setPageTitle(data.name);
+      setMajors(majors);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    const checkEnrollment = async () => {
-      try {
-        const response = await fetch(`http://localhost:8002/api/enrollments/${courseID}/students`);
-        if (response.ok) {
-          const students: Student[] = await response.json();
-          const studentEnrollment = students.find((student) => student.student_id === userID);
+  const checkEnrollment = async () => {
+    try {
+      const response = await fetch(`http://localhost:8002/api/enrollments/${courseID}/students`);
+      if (response.ok) {
+        const students: Student[] = await response.json();
+        const studentEnrollment = students.find((student) => student.student_id === userID);
 
-          if (studentEnrollment) {
-            setIsEnrolled(studentEnrollment.is_enrolled ? true : "dropped");
-          } else {
-            setIsEnrolled(false); // User is not enrolled in the course
-          }
+        if (studentEnrollment) {
+          setIsEnrolled(studentEnrollment.is_enrolled ? true : "dropped");
+        } else {
+          setIsEnrolled(false); // User is not enrolled in the course
         }
-      } catch (error) {
-        console.error(error);
       }
-    };
-  
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const buttons = ["General", "Enrolled Students", "Unenrolled Students"];
-  
+
   useEffect(() => {
     if (courseID && userID) {
       fetchCourse();
@@ -116,7 +116,7 @@ export default function CourseDetail() {
           </div>
         </>
       )}
-      { userRole === Roles.TEACHER && (
+      {userRole === Roles.TEACHER && (
         <div className={styles.nav_container}>
           <nav className={styles.nav_bar}>
             {buttons.map((button) => (
@@ -129,14 +129,17 @@ export default function CourseDetail() {
               </button>
             ))}
           </nav>
-          <div className={styles.edit_course_button_container} onClick={() => router.push(`/courses/${course.id}/edit`)}>
+          <div
+            className={styles.edit_course_button_container}
+            onClick={() => router.push(`/courses/${course.id}/edit`)}
+          >
             <div className={styles.edit_course_button}>
               <PencilIcon fill="#FFFFFF" stroke="#FFFFFF" />
             </div>
           </div>
         </div>
-        )}
-      { (userRole === Roles.STUDENT || selectedButton === "General") && (
+      )}
+      {(userRole === Roles.STUDENT || selectedButton === "General") && (
         <div>
           <p>
             <b>Description:</b> {course.description}
@@ -155,42 +158,41 @@ export default function CourseDetail() {
               <b>Majors: </b>&nbsp;
             </p>
             <div className={styles.majors_list}>
-              {majors.length > 0 && (
+              {majors.length > 0 &&
                 majors.map((major, i) => {
-                  if(i === majors.length - 1) {
-                    return (<p key={i}>{major.name}</p>)
+                  if (i === majors.length - 1) {
+                    return <p key={i}>{major.name}</p>;
                   } else {
-                    return (<p key={i}>{major.name},&nbsp;</p>)
+                    return <p key={i}>{major.name},&nbsp;</p>;
                   }
-                })
-              )}
+                })}
             </div>
           </div>
         </div>
-        )}
-        {userRole === Roles.TEACHER && selectedButton === "Enrolled Students" && (
-          <div className={styles.courses_students_table}>
-            <CourseStudents isEnrolled={true} courseID={course.id} />
-          </div>
-        )}
-        {userRole === Roles.TEACHER && selectedButton === "Unenrolled Students" && (
-          <div className={styles.courses_students_table}>
-            <CourseStudents isEnrolled={false} courseID={course.id} />
-          </div>
-        )}
-        { userRole === Roles.STUDENT && (
-          <>
-            {isEnrolled === null ? (
-              <p>Loading...</p>
-            ) : isEnrolled === "dropped" ? (
-              <p className={styles.red_center_text}>Dropped</p>
-            ) : (
+      )}
+      {userRole === Roles.TEACHER && selectedButton === "Enrolled Students" && (
+        <div className={styles.courses_students_table}>
+          <CourseStudents isEnrolled={true} courseID={course.id} />
+        </div>
+      )}
+      {userRole === Roles.TEACHER && selectedButton === "Unenrolled Students" && (
+        <div className={styles.courses_students_table}>
+          <CourseStudents isEnrolled={false} courseID={course.id} />
+        </div>
+      )}
+      {userRole === Roles.STUDENT && (
+        <>
+          {isEnrolled === null ? (
+            <p>Loading...</p>
+          ) : isEnrolled === "dropped" ? (
+            <p className={styles.red_center_text}>Dropped</p>
+          ) : (
             <button onClick={handleEnrollment} className={styles.centered_button}>
               {isEnrolled ? "Drop" : "Enroll"}
             </button>
           )}
         </>
-        )}
+      )}
     </div>
   );
 }

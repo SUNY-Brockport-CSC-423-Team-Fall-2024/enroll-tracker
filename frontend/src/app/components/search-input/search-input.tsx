@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useRef, useState, useEffect } from "react";
 import styles from "./styles.module.css";
@@ -12,61 +12,71 @@ interface SearchInputProps<T extends ITableRow> {
   queryCallback: (query: string) => Promise<T[]>;
 }
 
-const SearchInput = <T extends ITableRow,>({id, name, queryCallback, resultTableHeaders }: SearchInputProps<T>) => {
+const SearchInput = <T extends ITableRow>({
+  id,
+  name,
+  queryCallback,
+  resultTableHeaders,
+}: SearchInputProps<T>) => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [results, setResults] = useState<T[]>([]);
-  const [query, setQuery] = useState<string>('');
+  const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
-      const focusIn = () => {
-          if (dropdownRef.current) {
-              setIsFocused(true);
-          }
-      };
-      const focusOut = () => {
-          if (dropdownRef.current) {
-              setIsFocused(false);
-          }
-      };
+    const focusIn = () => {
+      if (dropdownRef.current) {
+        setIsFocused(true);
+      }
+    };
+    const focusOut = () => {
+      if (dropdownRef.current) {
+        setIsFocused(false);
+      }
+    };
 
-      document.addEventListener("focusin", focusIn);
-      document.addEventListener("focusout", focusOut);
-      return () => {
-          document.removeEventListener("focusin", focusIn);
-          document.removeEventListener("focusout", focusOut);
-      };
+    document.addEventListener("focusin", focusIn);
+    document.addEventListener("focusout", focusOut);
+    return () => {
+      document.removeEventListener("focusin", focusIn);
+      document.removeEventListener("focusout", focusOut);
+    };
   }, []);
 
   useEffect(() => {
     let isLatest = true;
     const runQuery = setTimeout(async () => {
-      if(isLatest) {
-        console.log('hi')
+      if (isLatest) {
+        console.log("hi");
         const res = await queryCallback(query);
 
-        if(res.length > 0) {
-          setResults(res)
+        if (res.length > 0) {
+          setResults(res);
         }
       }
-    }, 1500)
+    }, 1500);
 
     return () => {
       clearTimeout(runQuery);
       isLatest = false;
-    }
-  }, [query, queryCallback])
+    };
+  }, [query, queryCallback]);
 
   return (
     <div className={styles.search_results_container}>
-      <input id={id} name={name} onChange={(e) => setQuery(e.target.value)} onFocus={() => setIsFocused(!isFocused)}/>
-      {isFocused && 
-        <div ref={dropdownRef} className={styles.search_results_dropdown }>
+      <input
+        id={id}
+        name={name}
+        onChange={(e) => setQuery(e.target.value)}
+        onFocus={() => setIsFocused(!isFocused)}
+      />
+      {isFocused && (
+        <div ref={dropdownRef} className={styles.search_results_dropdown}>
           <Table headers={resultTableHeaders} rows={results} />
         </div>
-      }
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default SearchInput;
