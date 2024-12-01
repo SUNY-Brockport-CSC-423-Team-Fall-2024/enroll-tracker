@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Roles } from "@/app/lib/definitions";
 import PlusIcon from "@/app/components/icons/plus";
 import TeacherCoursesTable from "@/app/components/dashboard/teacher-courses";
+import { getStudent } from "@/app/lib/client/data";
 
 interface Course {
   course_id: number;
@@ -30,7 +31,7 @@ interface Teacher {
 
 export default function Courses() {
   const router = useRouter();
-  const { userRole, userID } = useAuth();
+  const { username, userRole, userID } = useAuth();
   const [selectedButton, setSelectedButton] = useState<string>(
     userRole === "teacher" ? "Active" : "My Major",
   );
@@ -90,7 +91,16 @@ export default function Courses() {
               }
             } else if (selectedButton === "My Major") {
               // Fetch courses for the major
-              url = `http://localhost:8002/api/majors/${userID}/courses`;
+              if(username === undefined) {
+                setMajorCourses([]);
+                return;
+              }
+              const student = await getStudent(username)
+              if(student.major_id === undefined) {
+                setMajorCourses([]);
+                return;
+              }
+              url = `http://localhost:8002/api/majors/${student.major_id}/courses?status=active`;
               const response = await fetch(url);
               if (!response.ok) {
                 throw new Error("Error fetching major courses");

@@ -164,7 +164,46 @@
     align-items: center;
 }
 
+.edit_course_button_container {
+    background: var(--cyan2);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.edit_course_button_container:hover {
+  cursor: pointer;
+  transition: 0.25s;
+  transform: translateY(-2px);
+  box-shadow: 0px 5px 5px var(--shadow-color);
+}
+
+.edit_course_button {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
 .teacher_courses_table {
     max-height: 450px;
+    overflow: auto;
+}
+
+.course_majors_list {
+    display: flex;
+    margin: 0;
+}
+
+.course_majors_list p {
+    margin: 0;
+}
+
+.majors_list {
+    display: flex;
+}
+
+.courses_students_table {
+    max-height: 250px;
     overflow: auto;
 }

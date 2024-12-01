@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/providers/auth-provider";
 import Select from "react-select";
 
-interface MajorOptions {
+export interface MajorOptions {
   value: number;
   label: string;
 }

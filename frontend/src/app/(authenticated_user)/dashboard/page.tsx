@@ -29,7 +29,7 @@ export default function Dashboard() {
           {userRole === Roles.TEACHER && (
             <>
               <div className={styles.dashboard_teacher_courses_table}>
-                <TeacherCoursesTable />
+                <TeacherCoursesTable isActive={true}/>
               </div>
               <div className={styles.dashboard_action_button_container}>
                 <div className={styles.dashboard_action_button}>
