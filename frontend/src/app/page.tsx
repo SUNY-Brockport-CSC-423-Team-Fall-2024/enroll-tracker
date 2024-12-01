@@ -31,7 +31,7 @@ export default function Home() {
         </div>
         <div className={styles.card_container}>
           <Link href="/login" className={styles.card}>
-            <Button btnTitle="Login" btnType={ButtonType.PRIMARY}/>
+            <Button btnTitle="Login" btnType={ButtonType.PRIMARY} />
           </Link>
         </div>
       </main>

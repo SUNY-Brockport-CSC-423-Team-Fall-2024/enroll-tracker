@@ -13,8 +13,8 @@
 }
 
 .unauth_navbar a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
 
 .auth_navbar {
@@ -71,8 +71,8 @@
 }
 
 .auth_navlink_icon {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .auth_navlink a {

@@ -2,7 +2,14 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import * as jose from "jose";
 import { getJWTPublicTokenPEMFormatted, getSigningKeyFromEnv } from "./app/lib/server/actions";
-import { isRole, JWTCLOCKTOLERANCE, JWTSIGNINGALGORITHM, Roles, RouteRole, RouteRoles } from "./app/lib/definitions";
+import {
+  isRole,
+  JWTCLOCKTOLERANCE,
+  JWTSIGNINGALGORITHM,
+  Roles,
+  RouteRole,
+  RouteRoles,
+} from "./app/lib/definitions";
 
 async function handleTokenVerification(
   request: NextRequest,

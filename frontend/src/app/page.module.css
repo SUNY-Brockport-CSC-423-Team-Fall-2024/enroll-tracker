@@ -9,16 +9,16 @@
 }
 
 .header {
-    background: var(--cyan2);
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    padding: 10px 20px;
+  background: var(--cyan2);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding: 10px 20px;
 }
 
 .header a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .container {

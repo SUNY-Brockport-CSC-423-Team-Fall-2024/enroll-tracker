@@ -49,11 +49,17 @@ const AuthNavbar: React.FC = () => {
           if (link.allowedRoles.find((role) => role === userRole) === undefined) {
             return null;
           }
-          const IconComponent = link.icon
+          const IconComponent = link.icon;
           return (
-            <div className={clsx(styles.auth_navlink, pathname === link.href && styles.auth_navlink_selected)} key={link.name}>
+            <div
+              className={clsx(
+                styles.auth_navlink,
+                pathname === link.href && styles.auth_navlink_selected,
+              )}
+              key={link.name}
+            >
               <div className={styles.auth_navlink_icon}>
-                <IconComponent stroke={link.name ==="Dashboard" ? "#FFFFFF" : "none"}/>
+                <IconComponent stroke={link.name === "Dashboard" ? "#FFFFFF" : "none"} />
               </div>
               <Link key={link.name} href={link.href}>
                 {link.name}
@@ -69,9 +75,15 @@ const AuthNavbar: React.FC = () => {
           }
           const IconComponent = link.icon;
           return (
-            <div className={clsx(styles.auth_navlink, pathname === link.href && styles.auth_navlink_selected)} key={link.name}>
+            <div
+              className={clsx(
+                styles.auth_navlink,
+                pathname === link.href && styles.auth_navlink_selected,
+              )}
+              key={link.name}
+            >
               <div className={styles.auth_navlink_icon}>
-                <IconComponent fill="none" stroke="#FFFFFF"/>
+                <IconComponent fill="none" stroke="#FFFFFF" />
               </div>
               <Link key={link.name} href={link.href}>
                 {link.name}

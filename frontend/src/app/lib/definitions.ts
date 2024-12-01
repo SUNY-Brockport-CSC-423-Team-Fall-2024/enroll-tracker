@@ -75,25 +75,25 @@ export const headerLinks: IAuthNavLinks[] = [
     name: "Dashboard",
     href: "/dashboard",
     allowedRoles: [Roles.STUDENT, Roles.TEACHER, Roles.ADMIN],
-    icon: DashboardIcon
+    icon: DashboardIcon,
   },
   {
     name: "Courses",
     href: "/courses",
     allowedRoles: [Roles.STUDENT, Roles.TEACHER],
-    icon: BooksIcon
+    icon: BooksIcon,
   },
   {
     name: "Majors",
     href: "/majors",
     allowedRoles: [Roles.STUDENT, Roles.ADMIN],
-    icon: CapIcon
+    icon: CapIcon,
   },
   {
     name: "Users",
     href: "/users",
     allowedRoles: [Roles.ADMIN],
-    icon: PeopleIcon
+    icon: PeopleIcon,
   },
 ];
 
@@ -102,7 +102,7 @@ export const footerLinks: IAuthNavLinks[] = [
     name: "Settings",
     href: "/settings",
     allowedRoles: [Roles.STUDENT, Roles.TEACHER, Roles.ADMIN],
-    icon: GearIcon
+    icon: GearIcon,
   },
 ];
 
