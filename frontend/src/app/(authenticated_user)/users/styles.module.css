@@ -7,7 +7,6 @@
 }
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -22,8 +21,6 @@
   font-size: 1rem;
   transition: 0.25s;
   width: 200px;
-  align-self: flex-end;
-  margin-left: auto;
 }
 .right_button:hover {
   cursor: pointer;
@@ -108,7 +105,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 400px;
+  max-height: 600px;
   overflow-y: auto;
   padding-right: 10px;
   flex-grow: 1;
@@ -170,7 +167,6 @@
   padding: 25px;
   width: 100%;
   margin: 0 auto;
-  box-sizing: border-box;
 }
 
 .field_container {

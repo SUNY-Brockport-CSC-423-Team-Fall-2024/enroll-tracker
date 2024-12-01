@@ -95,7 +95,7 @@ export default function Courses() {
             return;
           }
           const student = await getStudent(username);
-          if (student.major_id === undefined) {
+          if (student.major_id === null) {
             setMajorCourses([]);
             return;
           }
