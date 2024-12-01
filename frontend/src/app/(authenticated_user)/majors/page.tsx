@@ -6,8 +6,11 @@ import { Major, Roles } from "@/app/lib/definitions";
 import { addCourseToMajors, getMajors, getStudent } from "@/app/lib/client/data";
 import { useAuth } from "@/app/providers/auth-provider";
 import MajorListItem from "@/app/components/majors/major-list-item";
+import PlusIcon from "@/app/components/icons/plus";
+import { useRouter } from "next/navigation";
 
 export default function Majors() {
+  const router = useRouter();
   const [majors, setMajors] = useState<Major[]>([]);
   const [studentsMajorID, setStudentsMajorID] = useState<number | undefined>(undefined);
   const { username, userRole } = useAuth();
@@ -36,16 +39,37 @@ export default function Majors() {
   }
 
   useEffect(() => {
-    getStudentsMajorID();
+    if(userRole === Roles.STUDENT) {
+      getStudentsMajorID();
+    }
     fetchMajors();
   }, [username]);
 
   return (
     <div className={styles.majors_root}>
+      {userRole === Roles.ADMIN && (
+        <div className={styles.nav_container}>
+          <div
+            className={styles.add_major_button_container}
+            onClick={() => router.push("/majors/add-major")}
+          >
+            <div className={styles.add_major_button}>
+              <PlusIcon />
+            </div>
+          </div>
+        </div>
+      )}
       {userRole === Roles.STUDENT && (
         <div className={styles.majors_list}>
-          {majors.map(major => (
-            <MajorListItem major={major} studentsMajorID={studentsMajorID}/>
+          {majors.map((major, i) => (
+            <MajorListItem key={i} major={major} studentsMajorID={studentsMajorID}/>
+          ))}
+        </div>
+      )}
+      {userRole === Roles.ADMIN && (
+        <div className={styles.majors_list}>
+          {majors.map((major, i) => (
+            <MajorListItem key={i} major={major} studentsMajorID={undefined}/>
           ))}
         </div>
       )}

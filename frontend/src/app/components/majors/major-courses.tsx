@@ -15,7 +15,7 @@ export default function MajorCourses({majorID}: MajorCoursesProps) {
       title: "Course Title"
     },
     {
-      title: "Course Description"
+      title: "Description"
     },
   ];
 

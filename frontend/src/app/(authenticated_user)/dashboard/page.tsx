@@ -52,7 +52,7 @@ export default function Dashboard() {
               <Button btnTitle="Manage Users" href="/users" btnType={ButtonType.SECONDARY} />
             </div>
           </div>
-          <h2>Courses</h2>
+          <h2>Majors</h2>
           <div className={styles.dashboard_action_button_container}>
             <div className={styles.dashboard_action_button}>
               <Button btnTitle="Manage Majors" href="/majors" btnType={ButtonType.SECONDARY} />

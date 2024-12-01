@@ -39,7 +39,6 @@ async function userStuff(): Promise<{ [key: string]: any } | null> {
 async function currentUser(): Promise<{ [key: string]: any } | null> {
   "use server";
   const user = await userStuff();
-  console.log(user);
   if (user) {
     //Sub is username and user_id is user's id
     const { sub, user_id, role } = user;

@@ -60,7 +60,6 @@ export default function Courses() {
           },
           {} as { [id: number]: string },
         );
-        console.log(teacherDict); // Check the teacherDict here
         setTeacherNames(teacherDict);
       } catch (err) {
         setError("Failed to fetch teacher last names");

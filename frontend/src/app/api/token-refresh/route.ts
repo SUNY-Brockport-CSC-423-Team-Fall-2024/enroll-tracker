@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  console.log("called");
   try {
     const oldRefreshToken = cookies().get("refresh_token");
     const oldRefreshTokenID = cookies().get("refresh_token_id");

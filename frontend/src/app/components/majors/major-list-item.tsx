@@ -24,7 +24,7 @@ export default function MajorListItem({major, studentsMajorID}: MajorItemItemPro
           <Button btnTitle="Learn More" btnType={ButtonType.SECONDARY} href={`/majors/${major.id}`} />
         )}
         {studentsMajorID === undefined && (
-          <Button btnTitle="Learn More" btnType={ButtonType.PRIMARY} href={`/majors/${major.id}`} />
+          <Button btnTitle="View Major" btnType={ButtonType.PRIMARY} href={`/majors/${major.id}`} />
         )}
       </div>
     </div>

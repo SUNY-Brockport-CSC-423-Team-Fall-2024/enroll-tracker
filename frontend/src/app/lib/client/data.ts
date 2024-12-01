@@ -128,7 +128,6 @@ export async function getStudentMajor(username: string): Promise<Major | null> {
     });
 
     const student: Student = await resp.json();
-    console.log(student);
 
     if (resp.ok) {
       if (student.major_id !== undefined) {
@@ -429,9 +428,6 @@ export async function updateCourse(
       let majorIDsToRemove = originalMajorIDs.filter((id) => !newMajorIDs.includes(id));
       let majorIDsToAdd = newMajorIDs.filter((id) => !originalMajorIDs.includes(id));
 
-      console.log(majorIDsToRemove + "remove");
-      console.log(majorIDsToAdd + "add");
-
       const majorRemoveResp = await removeCourseFromMajors(courseID, majorIDsToRemove);
       const majorAddResp = await addCourseToMajors(courseID, majorIDsToAdd);
 
@@ -449,6 +445,100 @@ export async function updateCourse(
       return { success: false, errMessage: await resp.text() };
     }
   } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      errMessage: err instanceof Error ? err.message : "Unknown error occurred",
+    };
+  }
+}
+
+export async function createMajor(
+  majorName: string,
+  majorDescription: string,
+): Promise<AsyncResponse> {
+  try {
+    const url = `http://localhost:8002/api/majors`;
+    const resp = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        name: majorName,
+        description: majorDescription,
+      }),
+    });
+    if (resp.status === 200 || resp.status === 201) {
+      return { success: true };
+    } else {
+      return { success: false, errMessage: await resp.text() };
+    }
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      errMessage: err instanceof Error ? err.message : "Unknown error occurred",
+    };
+  }
+}
+
+export async function updateMajor(
+  originalMajor: Major,
+  majorID: number,
+  majorName: string,
+  majorDescription: string,
+  status: string,
+): Promise<AsyncResponse> {
+  //Create json body for update
+  let bodyObject = {};
+  if (majorName !== originalMajor.name) {
+    bodyObject = Object.assign(bodyObject, { name: majorName });
+  }
+  if (majorDescription !== originalMajor.description) {
+    bodyObject = Object.assign(bodyObject, { description: majorDescription });
+  }
+  if (status !== originalMajor.status) {
+    bodyObject = Object.assign(bodyObject, { status: status });
+  }
+  
+  try {
+    const url = `http://localhost:8002/api/majors/${majorID}`;
+    const resp = await fetch(url, {
+      method: "PUT",
+      body: JSON.stringify(bodyObject),
+    });
+    if (resp.ok) {
+        return { success: true };
+    } else {
+      return { success: false, errMessage: await resp.text() };
+    }
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      errMessage: err instanceof Error ? err.message : "Unknown error occurred",
+    };
+  }
+}
+
+export async function declareMajor(studentID: number, majorID: number): Promise<AsyncResponse> {
+  try {
+    const url = `http://localhost:8002/api/students/${studentID}/majors`
+    const resp = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        majorID: majorID
+      })
+    });
+
+    if (resp.status === 201) {
+        return { success: true };
+    } else {
+        return {
+          success: false,
+          errMessage:
+            "Error occured while declaring major",
+        };
+    }
+  } catch(err) {
     console.error(err);
     return {
       success: false,

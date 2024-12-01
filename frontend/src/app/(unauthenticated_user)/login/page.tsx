@@ -58,10 +58,6 @@ export default function Login() {
     }
   };
 
-  useEffect(() => {
-    console.log(userRole);
-  }, [userRole]);
-
   return (
     <div className={styles.main_content}>
       <div className={styles.login_box}>
