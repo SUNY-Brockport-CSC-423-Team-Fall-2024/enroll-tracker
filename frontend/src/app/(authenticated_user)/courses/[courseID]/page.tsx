@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/app/providers/auth-provider";
 import styles from "../styles.module.css";
 import { useAuthHeader } from "@/app/providers/auth-header-provider";

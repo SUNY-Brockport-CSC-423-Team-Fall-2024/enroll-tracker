@@ -275,7 +275,13 @@ export default function EditCourse() {
                 type="button"
                 id="course_cancel_edit"
                 name="course_cancel_edit"
-                onClick={() => router.push("/courses")}
+                onClick={() => {
+                  if (course !== null) {
+                    router.push(`/courses/${course.id}`);
+                  } else {
+                    router.push("/courses");
+                  }
+                }}
                 value="Cancel"
               />
               <input
