@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import styles from "../styles.module.css";
+import { useAuthHeader } from "@/app/providers/auth-header-provider";
 
 interface User {
   username: string;
@@ -21,6 +22,7 @@ export default function UserProfile() {
   const router = useRouter();
   const params = useParams();
   const username = params.username as string;
+  const { setPageTitle } = useAuthHeader();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -35,6 +37,7 @@ export default function UserProfile() {
         const data: User = await response.json();
         setUserData(data);
         setFormData(data); // Initialize form data with user data
+        setPageTitle(data.first_name + " " + data.last_name);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An unknown error occurred");
       }
@@ -47,6 +50,8 @@ export default function UserProfile() {
     if (studentResponse.ok) return "students";
     const teacherResponse = await fetch(`http://localhost:8002/api/teachers/${username}`);
     if (teacherResponse.ok) return "teachers";
+    const adminResponse = await fetch(`http://localhost:8002/api/administrators/${username}`);
+    if (adminResponse.ok) return "administrators";
     throw new Error("User not found");
   };
 
@@ -56,7 +61,7 @@ export default function UserProfile() {
 
   const handleSave = async () => {
     if (!username || !userData) return;
-    const userType = userData.office ? "teachers" : "students";
+    const userType = await getUserType(username);
     const url = `http://localhost:8002/api/${userType}/${username}`;
 
     try {
@@ -79,7 +84,6 @@ export default function UserProfile() {
   return (
     <div className={styles.users_root}>
       <header className={styles.header}>
-        <h1>Modify User</h1>
         <button onClick={() => router.push("/users")} className={styles.right_button}>
           Back
         </button>

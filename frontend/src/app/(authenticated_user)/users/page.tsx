@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 import { useAuth } from "@/app/providers/auth-provider";
 import { useRouter } from "next/navigation";
+import { Roles } from "@/app/lib/definitions";
 
 interface User {
   username: string;
@@ -18,8 +19,9 @@ export default function Users() {
   const [selectedButton, setSelectedButton] = useState<string>("Students");
   const [students, setStudents] = useState<User[]>([]);
   const [teachers, setTeachers] = useState<User[]>([]);
+  const [admins, setAdmins] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [userType, setUserType] = useState<"student" | "teacher">("student");
+  const [userType, setUserType] = useState<string>(Roles.STUDENT);
   const [formData, setFormData] = useState<any>({}); // Form data for adding a user
 
   const handleButtonClick = (button: string) => {
@@ -34,7 +36,7 @@ export default function Users() {
 
         if (selectedButton === "Students") {
           // Fetch students data
-          url = `http://localhost:8002/api/students`;
+          url = `http://localhost:8002/api/students?limit=100`;
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error("Error fetching students");
@@ -43,13 +45,22 @@ export default function Users() {
           setStudents(data);
         } else if (selectedButton === "Teachers") {
           // Fetch teachers data
-          url = `http://localhost:8002/api/teachers`;
+          url = `http://localhost:8002/api/teachers?limit=100`;
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error("Error fetching teachers");
           }
           data = await response.json();
           setTeachers(data);
+        } else if (selectedButton === "Admins") {
+          // Fetch teachers data
+          url = `http://localhost:8002/api/administrators?limit=100`;
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("Error fetching admins");
+          }
+          data = await response.json();
+          setAdmins(data);
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "An unknown error occurred");
@@ -65,7 +76,7 @@ export default function Users() {
   };
 
   const handleUserTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setUserType(e.target.value as "student" | "teacher");
+    setUserType(e.target.value as string);
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,12 +86,24 @@ export default function Users() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const url =
-        userType === "student"
-          ? "http://localhost:8002/api/students"
-          : "http://localhost:8002/api/teachers";
+    const resolveURL = (userType: string): string | undefined => {
+      switch (userType) {
+        case Roles.STUDENT:
+          return "http://localhost:8002/api/students";
+        case Roles.TEACHER:
+          return "http://localhost:8002/api/teachers";
+        case Roles.ADMIN:
+          return "http://localhost:8002/api/administrators";
+        default:
+          return undefined;
+      }
+    };
 
+    try {
+      const url = resolveURL(userType);
+      if (url === undefined) {
+        return;
+      }
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -102,15 +125,10 @@ export default function Users() {
     }
   };
 
-  const buttons = ["Students", "Teachers", "Add User"];
+  const buttons = ["Students", "Teachers", "Admins", "Add User"];
 
   return (
     <div className={styles.users_root}>
-      <header className={styles.header}>
-        <h1>Users</h1>
-        <button className={styles.right_button}>{username}</button>
-      </header>
-
       <nav className={styles.nav_bar}>
         {buttons.map((button) => (
           <button
@@ -180,6 +198,34 @@ export default function Users() {
             )}
           </>
         )}
+        {selectedButton === "Admins" && (
+          <>
+            {error && <p className={styles.error}>Error: {error}</p>}
+
+            <div className={styles.header_bar}>
+              <span className={styles.column_header}>Admin ID</span>
+              <span className={styles.column_header}>First Name</span>
+              <span className={styles.column_header}>Last Name</span>
+            </div>
+
+            {admins.length > 0 ? (
+              admins.map((admin, index) => (
+                <div
+                  key={index}
+                  className={styles.list_item}
+                  onClick={() => goToUserProfile(admin.username)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <span className={styles.username}>{admin.id}</span>
+                  <span className={styles.first_name}>{admin.first_name}</span>
+                  <span className={styles.last_name}>{admin.last_name}</span>
+                </div>
+              ))
+            ) : (
+              <p>No admins found.</p>
+            )}
+          </>
+        )}
         {selectedButton === "Add User" && (
           <div className={styles.form_container}>
             <form onSubmit={handleSubmit}>
@@ -192,6 +238,7 @@ export default function Users() {
                 >
                   <option value="student">Student</option>
                   <option value="teacher">Teacher</option>
+                  <option value="admin">Admin</option>
                 </select>
               </div>
 
@@ -267,19 +314,20 @@ export default function Users() {
                 />
               </div>
 
-              {userType === "teacher" && (
-                <div className={styles.field_container}>
-                  <label>Office</label>
-                  <input
-                    type="text"
-                    name="office"
-                    value={formData.office || ""}
-                    onChange={handleFormChange}
-                    className={styles.input_field}
-                    required
-                  />
-                </div>
-              )}
+              {userType === "teacher" ||
+                (userType === "admin" && (
+                  <div className={styles.field_container}>
+                    <label>Office</label>
+                    <input
+                      type="text"
+                      name="office"
+                      value={formData.office || ""}
+                      onChange={handleFormChange}
+                      className={styles.input_field}
+                      required
+                    />
+                  </div>
+                ))}
 
               <button type="submit" className={styles.centered_button}>
                 Save User

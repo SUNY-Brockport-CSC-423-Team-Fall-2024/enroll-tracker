@@ -3,13 +3,18 @@
   padding: 20px 0px;
   background-color: var(--cyan2);
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   color: white;
-  height: 60px;
+  padding: 10px 20px;
   text-shadow: 5px 5px 0px var(--shadow-color);
   font-family: var(--font-kode);
   box-shadow: 0px 5px 5px var(--shadow-color);
+}
+
+.unauth_navbar a {
+    color: white;
+    text-decoration: none;
 }
 
 .auth_navbar {
@@ -44,8 +49,10 @@
 
 .auth_navlink {
   display: flex;
+  align-items: center;
   gap: 5px;
   width: 100%;
+  padding: 5px;
 }
 
 .auth_navlink:hover {
@@ -54,17 +61,23 @@
   transition: 0.25s;
 }
 
-.auth_navlink a {
-  color: white;
-  text-decoration: none;
+.auth_navlink_selected {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  background: var(--cyan1);
+  border-radius: 10px;
 }
 
 .auth_navlink_icon {
-  width: 10px;
-  height: 10px;
-  background: var(--red1);
-  margin-top: auto;
-  margin-bottom: auto;
+    display: flex;
+    align-items: center;
+}
+
+.auth_navlink a {
+  color: white;
+  text-decoration: none;
 }
 
 .auth_logout_button {
