@@ -322,6 +322,24 @@ export async function getCourseMajors(courseID: number): Promise<Major[]> {
   }
 }
 
+export async function getMajorsCourses(majorID: number): Promise<Course[]> {
+  try {
+    const url = `http://localhost:8002/api/majors/${majorID}/courses`;
+    const resp = await fetch(url, {
+      method: "GET",
+    });
+    if (resp.ok) {
+      const courses: Course[] = await resp.json();
+      return courses;
+    } else {
+      return [];
+    }
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
 export async function createCourse(
   courseName: string,
   courseDescription: string,

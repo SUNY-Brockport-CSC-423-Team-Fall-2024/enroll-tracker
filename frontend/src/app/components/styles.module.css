@@ -236,3 +236,31 @@
 .teacher_search_result_item {
   display: flex;
 }
+
+.majors_list_item_container {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid;
+}
+
+.majors_list_item_title {
+    color: var(--red1);
+}
+
+.majors_list_item_content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 20px;
+}
+
+.majors_list_item_content p {
+    margin: 0;
+}
+
+.majors_list_item_action_button {
+    
+}

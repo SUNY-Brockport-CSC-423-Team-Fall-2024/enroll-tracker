@@ -35,7 +35,15 @@ export default function AuthHeader() {
           setPageTitle("Manage Users");
           break;
         case "majors":
-          setPageTitle("Majors");
+          if (path.length > 2) {
+            switch(path[2]) {
+              case "add-major":
+                setPageTitle("Add Major");
+                break;
+            }
+          } else {
+            setPageTitle("Majors");
+          }
           break;
         case "settings":
           setPageTitle("Settings");
