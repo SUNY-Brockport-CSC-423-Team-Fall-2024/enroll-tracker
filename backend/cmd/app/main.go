@@ -208,9 +208,11 @@ func main() {
 			handlers.AddCourseToMajorHandler(majorService, w, r)
 		case http.MethodGet:
 			handlers.GetMajorsAssoicatedWithCourseHandler(courseService, w, r)
+		case http.MethodDelete:
+			handlers.DeleteCourseFromMajorsHandler(majorService, w, r)
 		case http.MethodOptions:
 			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
 			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 			w.WriteHeader(200)
 		default:
@@ -265,7 +267,6 @@ func main() {
 			http.Error(w, "Method not allowed", http.StatusBadRequest)
 		}
 	})
-	stdMux.HandleFunc("/api/majors/{majorID}/courses/{courseID}", handlers.DeleteCourseFromMajorHandler(majorService))
 
 	//Enrollment routes
 	stdMux.HandleFunc("/api/enrollments/{courseID}/students", handlers.GetCoursesStudentsHandler(enrollmentsService))

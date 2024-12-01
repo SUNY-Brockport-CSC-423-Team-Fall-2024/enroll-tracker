@@ -75,8 +75,8 @@ func (s *MajorService) GetCoursesAssociatedWithMajor(majorID int, queryParams mo
 	return courses, nil
 }
 
-func (s *MajorService) RemoveCourseFromMajor(majorID int, courseID int) (bool, error) {
-	success, err := s.courseMajorRepository.RemoveCourseFromMajor(majorID, courseID)
+func (s *MajorService) DeleteCourseFromMajors(majorIDs []int, courseID int) (bool, error) {
+	success, err := s.courseMajorRepository.DeleteCourseFromMajors(majorIDs, courseID)
 	if err != nil {
 		return false, err
 	}

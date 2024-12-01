@@ -11,7 +11,7 @@ type CourseMajorRepository interface {
 	AddCourseToMajor(majorIDs []int, courseID int) (bool, error)
 	GetCoursesAssoicatedWithMajor(majorID int, queryParams models.CourseQueryParams) ([]models.Course, error)
 	GetMajorsAssoicatedWithCourse(courseID int, queryParams models.MajorQueryParams) ([]models.Major, error)
-	RemoveCourseFromMajor(majorID int, courseID int) (bool, error)
+	DeleteCourseFromMajors(majorIDs []int, courseID int) (bool, error)
 }
 
 type PostgresCourseMajorRepository struct {
@@ -75,10 +75,10 @@ func (r *PostgresCourseMajorRepository) GetMajorsAssoicatedWithCourse(courseID i
 	return majors, nil
 }
 
-func (r *PostgresCourseMajorRepository) RemoveCourseFromMajor(majorID int, courseID int) (bool, error) {
-	query := `SELECT * FROM public.remove_course_from_major($1,$2)`
+func (r *PostgresCourseMajorRepository) DeleteCourseFromMajors(majorIDs []int, courseID int) (bool, error) {
+	query := `SELECT * FROM public.delete_course_from_majors($1,$2)`
 
-	if _, err := r.db.Exec(query, majorID, courseID); err != nil {
+	if _, err := r.db.Exec(query, pq.Array(majorIDs), courseID); err != nil {
 		return false, err
 	}
 	return true, nil

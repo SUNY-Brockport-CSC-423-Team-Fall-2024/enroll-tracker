@@ -439,50 +439,65 @@ func GetCoursesAssoicatedWithMajorHandler(s *services.MajorService, w http.Respo
 
 	w.WriteHeader(http.StatusOK)
 }
-func DeleteCourseFromMajorHandler(s *services.MajorService) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		//Set CORS
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+func DeleteCourseFromMajorsHandler(s *services.MajorService, w http.ResponseWriter, r *http.Request) {
+	//Set CORS
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-		if r.Method == http.MethodOptions {
-			w.WriteHeader(200)
-			return
-		}
-		majorIDParam := r.PathValue("majorID")
-		courseIDParam := r.PathValue("courseID")
+	courseIDParam := r.PathValue("courseID")
 
-		if majorIDParam == "" {
-			http.Error(w, "Major ID not provided", http.StatusBadRequest)
-			return
-		}
-		if courseIDParam == "" {
-			http.Error(w, "Course ID not provided", http.StatusBadRequest)
-			return
-		}
+	if courseIDParam == "" {
+		http.Error(w, "Course ID not provided", http.StatusBadRequest)
+		return
+	}
 
-		majorID, err := strconv.Atoi(majorIDParam)
-		if err != nil {
+	courseID, err := strconv.Atoi(courseIDParam)
+	if err != nil {
+		http.Error(w, "Course ID not in valid format", http.StatusBadRequest)
+		return
+	}
+
+	//Get course id
+	var kv map[string]interface{}
+	if err := json.NewDecoder(r.Body).Decode(&kv); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	majorIDsParam, ok := kv["majorIDs"]
+	if !ok {
+		http.Error(w, "Course IDs not provided in body", http.StatusBadRequest)
+		return
+	}
+
+	mIDs, ok := majorIDsParam.([]interface{}) // by default numbers are decoded as float64 when interface{} is the value type
+	if !ok {
+		http.Error(w, "Major IDs not in array", http.StatusBadRequest)
+		return
+	}
+
+	//Cast ids to ints
+	majorIDs := make([]int, 0)
+
+	for _, id := range mIDs {
+		mID, ok := id.(float64)
+		if !ok {
 			http.Error(w, "Major ID not in valid format", http.StatusBadRequest)
 			return
 		}
-		courseID, err := strconv.Atoi(courseIDParam)
-		if err != nil {
-			http.Error(w, "Course ID not in valid format", http.StatusBadRequest)
-			return
-		}
-
-		success, err := s.RemoveCourseFromMajor(majorID, courseID)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-		if !success {
-			http.Error(w, "Unable to remove course from major", http.StatusBadRequest)
-			return
-		}
-
-		w.WriteHeader(http.StatusNoContent)
+		majorIDs = append(majorIDs, int(mID))
 	}
+
+	success, err := s.DeleteCourseFromMajors(majorIDs, courseID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if !success {
+		http.Error(w, "Unable to remove course from major", http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }

@@ -233,15 +233,16 @@ type TokenResponse struct {
 }
 
 type Course struct {
-	ID            int       `json:"id"`
-	Name          string    `json:"name"`
-	Description   string    `json:"description"`
-	TeacherID     int       `json:"teacher_id"`
-	MaxEnrollment int       `json:"max_enrollment"`
-	NumCredits    int       `json:"num_credits"`
-	Status        string    `json:"status"`
-	LastUpdated   time.Time `json:"last_updated"`
-	CreatedAt     time.Time `json:"created_at"`
+	ID                int       `json:"id"`
+	Name              string    `json:"name"`
+	Description       string    `json:"description"`
+	TeacherID         int       `json:"teacher_id"`
+	CurrentEnrollment int       `json:"current_enrollment"`
+	MaxEnrollment     int       `json:"max_enrollment"`
+	NumCredits        int       `json:"num_credits"`
+	Status            string    `json:"status"`
+	LastUpdated       time.Time `json:"last_updated"`
+	CreatedAt         time.Time `json:"created_at"`
 }
 
 type CourseCreation struct {
