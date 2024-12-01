@@ -11,6 +11,7 @@ type UserSessionRepository interface {
 	CreateUserSession(userID int, username string, refreshToken string, refreshTokenID string, issuedAt time.Time, expiresAt time.Time) (models.UserSession, error)
 	GetUserSession(refreshTokenID string) (models.UserSession, error)
 	GetUserRole(username string) (string, error)
+	GetUserID(username string) (int, error)
 	RevokeUserSessionWithID(refreshTokenID string) error
 	RevokeUserSessionWithUsername(username string) error
 }
@@ -57,6 +58,18 @@ func (r *PostgresUserSessionRepository) GetUserRole(username string) (string, er
 	err := row.Scan(&role)
 
 	return role, err
+}
+
+func (r *PostgresUserSessionRepository) GetUserID(username string) (int, error) {
+	var userID int
+
+	query := `SELECT * FROM public.get_user_id($1)`
+
+	row := r.db.QueryRow(query, username)
+
+	err := row.Scan(&userID)
+
+	return userID, err
 }
 
 func (r *PostgresUserSessionRepository) RevokeUserSessionWithID(refreshTokenID string) error {

@@ -45,7 +45,7 @@ func (r *PostgresCourseRepository) GetCourses(queryParams models.CourseQueryPara
 
 	for rows.Next() {
 		var course models.Course
-		if err := rows.Scan(&course.ID, &course.Name, &course.Description, &course.TeacherID, &course.MaxEnrollment, &course.NumCredits, &course.Status, &course.LastUpdated, &course.CreatedAt); err != nil {
+		if err := rows.Scan(&course.ID, &course.Name, &course.Description, &course.TeacherID, &course.CurrentEnrollment, &course.MaxEnrollment, &course.NumCredits, &course.Status, &course.LastUpdated, &course.CreatedAt); err != nil {
 			return courses, err
 		}
 
@@ -59,7 +59,7 @@ func (r *PostgresCourseRepository) GetCourse(courseID int) (models.Course, error
 
 	query := `SELECT * FROM public.get_course($1)`
 
-	err := r.db.QueryRow(query, courseID).Scan(&course.ID, &course.Name, &course.Description, &course.TeacherID, &course.MaxEnrollment, &course.NumCredits, &course.Status, &course.LastUpdated, &course.CreatedAt)
+	err := r.db.QueryRow(query, courseID).Scan(&course.ID, &course.Name, &course.Description, &course.TeacherID, &course.CurrentEnrollment, &course.MaxEnrollment, &course.NumCredits, &course.Status, &course.LastUpdated, &course.CreatedAt)
 	if err != nil {
 		return models.Course{}, err
 	}

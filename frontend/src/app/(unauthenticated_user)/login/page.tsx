@@ -1,14 +1,15 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles.module.css";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/providers/auth-provider";
+import { handleTextInputChange } from "@/app/lib/client/utils";
 
 export default function Login() {
   const router = useRouter();
 
-  const { setIsLoggedIn, getUserStuff, setUserRole, setUserID, setUsername, userRole, userID } =
+  const { setIsLoggedIn, getUserStuff, setUserRole, setUserID, setUsername, userRole, setAuthID } =
     useAuth();
 
   let [username, setFormUsername] = useState("");
@@ -45,6 +46,7 @@ export default function Login() {
         setUserRole(data?.role);
         setUsername(data?.username);
         setUserID(data?.user_id);
+        setAuthID(data?.auth_id);
         router.push("/dashboard");
       }
       // display error message for failed login
@@ -54,13 +56,6 @@ export default function Login() {
     } catch (err) {
       console.error(err);
     }
-  };
-
-  const handleTextInputChange = (
-    reactHook: Dispatch<SetStateAction<string>>,
-    e: React.FormEvent<HTMLInputElement>,
-  ) => {
-    reactHook(e.currentTarget.value);
   };
 
   useEffect(() => {

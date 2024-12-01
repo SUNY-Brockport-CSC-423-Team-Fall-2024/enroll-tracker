@@ -7,11 +7,12 @@ import (
 )
 
 type CourseService struct {
-	repository repositories.CourseRepository
+	repository            repositories.CourseRepository
+	courseMajorRepository repositories.CourseMajorRepository
 }
 
-func CreateCourseService(repo repositories.CourseRepository) *CourseService {
-	return &CourseService{repository: repo}
+func CreateCourseService(repo repositories.CourseRepository, cmRepo repositories.CourseMajorRepository) *CourseService {
+	return &CourseService{repository: repo, courseMajorRepository: cmRepo}
 }
 
 func (s *CourseService) CreateCourse(courseCreation models.CourseCreation) (models.Course, error) {
@@ -70,4 +71,12 @@ func (s *CourseService) DeleteCourse(courseID int) (bool, error) {
 		return false, nil
 	}
 	return true, nil
+}
+
+func (s *CourseService) GetMajorsAssociatedWithCourse(courseID int, queryParams models.MajorQueryParams) ([]models.Major, error) {
+	majors, err := s.courseMajorRepository.GetMajorsAssoicatedWithCourse(courseID, queryParams)
+	if err != nil {
+		return []models.Major{}, err
+	}
+	return majors, nil
 }

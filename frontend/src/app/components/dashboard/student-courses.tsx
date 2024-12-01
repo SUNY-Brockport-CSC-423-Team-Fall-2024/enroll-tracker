@@ -6,7 +6,7 @@ import { ITableRow } from "@/app/lib/definitions";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/app/providers/auth-provider";
 
-export default function StudentCoursesTable() {
+export default function StudentCoursesTable({ isEnrolled }: { isEnrolled?: boolean }) {
   const [courses, setCourses] = useState<ITableRow[]>([]);
   const { username } = useAuth();
 
@@ -28,22 +28,29 @@ export default function StudentCoursesTable() {
 
       const student = await getStudent(username);
 
-      const studentCourses = await getStudentCourses(student.id);
+      let studentCourses = await getStudentCourses(student.id);
+
+      let courseRows: ITableRow[] = [];
+
+      if (isEnrolled !== undefined) {
+        studentCourses = studentCourses.filter((course) =>
+          isEnrolled ? course.is_enrolled : !course.is_enrolled,
+        );
+      }
 
       studentCourses.map((course) =>
-        setCourses([
-          ...courses,
-          {
-            content: [
-              course.course_name,
-              course.num_credits,
-              new Date(course.enrolled_date).toLocaleDateString("en-US"),
-            ],
-            clickable: true,
-            href: `/courses/${course.course_id}`,
-          },
-        ]),
+        courseRows.push({
+          content: [
+            course.course_name,
+            course.num_credits,
+            new Date(course.enrolled_date).toLocaleDateString("en-US"),
+          ],
+          clickable: true,
+          href: `/courses/${course.course_id}`,
+        }),
       );
+
+      setCourses(courseRows);
     } catch (err) {
       console.error(err);
     }

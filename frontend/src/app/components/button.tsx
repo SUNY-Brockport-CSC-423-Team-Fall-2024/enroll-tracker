@@ -15,8 +15,8 @@ export default function Button({ btnTitle, href, btnType }: IButton) {
   return (
     <button
       className={clsx(
-        btnType === ButtonType.PRIMARY && styles.profile_button,
-        btnType === ButtonType.SECONDARY && styles.secondary_profile_button,
+        btnType === ButtonType.PRIMARY && styles.primary_button,
+        btnType === ButtonType.SECONDARY && styles.secondary_button,
       )}
       onClick={() => {
         if (href) {

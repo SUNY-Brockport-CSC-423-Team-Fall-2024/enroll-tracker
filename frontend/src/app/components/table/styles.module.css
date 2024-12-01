@@ -17,11 +17,8 @@
 }
 
 .table_body {
-  overflow-y: auto;
-  max-height: 300px;
-}
-
-.table_row {
+  overflow: auto;
+  max-height: 200px;
 }
 
 .table_body_cell {

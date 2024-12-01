@@ -47,7 +47,7 @@ func main() {
 	administratorService := services.CreateAdministratorService(administratorRepo, userAuthService)
 	userSessionService := services.CreateUserSessionService(userSessionRepo)
 	redisSession := services.CreateRedisService(redisRepo)
-	courseService := services.CreateCourseService(courseRepo)
+	courseService := services.CreateCourseService(courseRepo, courseMajorRepo)
 	majorService := services.CreateMajorService(majorRepo, courseMajorRepo)
 	enrollmentsService := services.CreateEnrollmentsService(enrollmentsRepo)
 
@@ -202,6 +202,23 @@ func main() {
 			http.Error(w, "Method not allowed", http.StatusBadRequest)
 		}
 	})
+	stdMux.HandleFunc("/api/courses/{courseID}/majors", func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case http.MethodPost:
+			handlers.AddCourseToMajorHandler(majorService, w, r)
+		case http.MethodGet:
+			handlers.GetMajorsAssoicatedWithCourseHandler(courseService, w, r)
+		case http.MethodDelete:
+			handlers.DeleteCourseFromMajorsHandler(majorService, w, r)
+		case http.MethodOptions:
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+			w.WriteHeader(200)
+		default:
+			http.Error(w, "Method not allowed", http.StatusBadRequest)
+		}
+	})
 
 	//Majors routes
 	stdMux.HandleFunc("/api/majors", func(w http.ResponseWriter, r *http.Request) {
@@ -239,19 +256,17 @@ func main() {
 	stdMux.HandleFunc("/api/majors/{majorID}/courses", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodPost:
-			handlers.AddCourseToMajorHandler(majorService, w, r)
 		case http.MethodGet:
 			handlers.GetCoursesAssoicatedWithMajorHandler(majorService, w, r)
 		case http.MethodOptions:
 			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 			w.WriteHeader(200)
 		default:
 			http.Error(w, "Method not allowed", http.StatusBadRequest)
 		}
 	})
-	stdMux.HandleFunc("/api/majors/{majorID}/courses/{courseID}", handlers.DeleteCourseFromMajorHandler(majorService))
 
 	//Enrollment routes
 	stdMux.HandleFunc("/api/enrollments/{courseID}/students", handlers.GetCoursesStudentsHandler(enrollmentsService))

@@ -12,7 +12,7 @@ export const RouteRoles = {
     roles: [Roles.STUDENT, Roles.TEACHER],
   },
   majors: {
-    roles: [Roles.STUDENT, Roles.TEACHER, Roles.ADMIN],
+    roles: [Roles.STUDENT, Roles.ADMIN],
   },
   settings: {
     roles: [Roles.STUDENT, Roles.TEACHER, Roles.ADMIN],
@@ -42,7 +42,7 @@ export const headerLinks: IAuthNavLinks[] = [
   {
     name: "Majors",
     href: "/majors",
-    allowedRoles: [Roles.STUDENT, Roles.TEACHER, Roles.ADMIN],
+    allowedRoles: [Roles.STUDENT, Roles.ADMIN],
   },
   {
     name: "Users",
@@ -98,6 +98,7 @@ export type Course = {
   name: string;
   description: string;
   teacher_id: number;
+  current_enrollment: number;
   max_enrollment: number;
   num_credits: number;
   status: string;
@@ -115,6 +116,22 @@ export type StudentCourse = {
   status: string;
   last_updated: Date;
   created_at: Date;
+  is_enrolled: boolean;
+  enrolled_date: Date;
+  unenrolled_date: Date | null;
+};
+
+export type CoursesStudent = {
+  student_username: string;
+  student_id: number;
+  first_name: string;
+  last_name: string;
+  auth_id: number;
+  major_id: number;
+  phone_number: string;
+  email: string;
+  created_at: Date;
+  updated_at: Date;
   is_enrolled: boolean;
   enrolled_date: Date;
   unenrolled_date: Date | null;
@@ -146,6 +163,7 @@ export interface ITableRow {
   content: TableRowContent[];
   clickable: boolean;
   href?: string;
+  callback?: () => void;
 }
 
 export type TableRowContent = string | number;

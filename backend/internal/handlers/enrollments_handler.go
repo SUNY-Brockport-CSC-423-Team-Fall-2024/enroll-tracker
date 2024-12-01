@@ -194,7 +194,7 @@ func GetStudentsCoursesHandler(s *services.EnrollmentsService) http.HandlerFunc 
 }
 
 func GetTeachersCoursesHandler(s *services.EnrollmentsService) http.HandlerFunc {
-    return func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		//Set CORS
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
@@ -230,6 +230,5 @@ func GetTeachersCoursesHandler(s *services.EnrollmentsService) http.HandlerFunc 
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-    }
+	}
 }
-
