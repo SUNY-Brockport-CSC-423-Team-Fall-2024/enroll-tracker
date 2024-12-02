@@ -3,6 +3,7 @@ CREATE OR REPLACE FUNCTION get_courses_students (
     i_enrolled boolean DEFAULT NULL
 )
 RETURNS TABLE (
+    student_username varchar(50),
     student_id int,
     first_name varchar(50),
     last_name varchar(50),
@@ -19,7 +20,8 @@ RETURNS TABLE (
 AS $$
 BEGIN
     RETURN QUERY
-    SELECT 
+    SELECT
+        UA.username,
         S.id AS student_id,
         S.first_name,
         S.last_name,
@@ -34,6 +36,7 @@ BEGIN
         E.unenrolled_date
     FROM Enrollments AS E
     JOIN Student AS S ON S.id = E.student_id
+    JOIN UserAuthentication AS UA ON S.auth_id = UA.id
     WHERE 
         E.course_id = i_course_id
         AND (i_enrolled IS NULL OR E.is_enrolled = i_enrolled);

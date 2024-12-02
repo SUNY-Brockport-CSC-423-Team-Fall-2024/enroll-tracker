@@ -9,6 +9,7 @@ type EnrollmentsRepository interface {
 	EnrollStudent(courseID int, studentID int) (bool, error)
 	UnenrollStudent(courseID int, studentID int) (bool, error)
 	GetStudentsCourses(studentID int, isEnrolled *bool) ([]models.StudentsCourse, error)
+	GetTeachersCourses(teacherID int) ([]models.TeachersCourse, error)
 	GetCoursesStudents(courseID int, isEnrolled *bool) ([]models.CoursesStudent, error)
 	GetEnrollmentNumbers(courseID int, studentID int) (int, int, int, int, error)
 }
@@ -61,6 +62,28 @@ func (r *PostgresEnrollmentsRepository) GetStudentsCourses(studentID int, isEnro
 	return courses, nil
 }
 
+func (r *PostgresEnrollmentsRepository) GetTeachersCourses(teacherID int) ([]models.TeachersCourse, error) {
+	courses := make([]models.TeachersCourse, 0)
+
+	query := `SELECT * FROM public.get_teachers_courses($1)`
+
+	rows, err := r.db.Query(query, teacherID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		course := models.TeachersCourse{}
+		if err := rows.Scan(&course.CourseID, &course.CourseName, &course.CourseDescription, &course.TeacherID, &course.CurrentEnrollment, &course.MaxEnrollment, &course.NumCredits, &course.Status, &course.LastUpdated, &course.CreatedAt); err != nil {
+			return courses, err
+		}
+
+		courses = append(courses, course)
+	}
+	return courses, nil
+}
+
 func (r *PostgresEnrollmentsRepository) GetCoursesStudents(courseID int, isEnrolled *bool) ([]models.CoursesStudent, error) {
 	students := make([]models.CoursesStudent, 0)
 
@@ -74,7 +97,7 @@ func (r *PostgresEnrollmentsRepository) GetCoursesStudents(courseID int, isEnrol
 
 	for rows.Next() {
 		var student models.CoursesStudent
-		if err := rows.Scan(&student.StudentID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt, &student.IsEnrolled, &student.EnrolledDate, &student.UnenrolledDate); err != nil {
+		if err := rows.Scan(&student.StudentUsername, &student.StudentID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt, &student.IsEnrolled, &student.EnrolledDate, &student.UnenrolledDate); err != nil {
 			return students, err
 		}
 

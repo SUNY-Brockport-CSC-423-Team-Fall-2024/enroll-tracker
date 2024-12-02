@@ -3,13 +3,18 @@
   padding: 20px 0px;
   background-color: var(--cyan2);
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   color: white;
-  height: 60px;
+  padding: 10px 20px;
   text-shadow: 5px 5px 0px var(--shadow-color);
   font-family: var(--font-kode);
   box-shadow: 0px 5px 5px var(--shadow-color);
+}
+
+.unauth_navbar a {
+  color: white;
+  text-decoration: none;
 }
 
 .auth_navbar {
@@ -39,13 +44,15 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
 }
 
 .auth_navlink {
   display: flex;
+  align-items: center;
   gap: 5px;
   width: 100%;
+  padding: 5px;
 }
 
 .auth_navlink:hover {
@@ -54,17 +61,23 @@
   transition: 0.25s;
 }
 
-.auth_navlink a {
-  color: white;
-  text-decoration: none;
+.auth_navlink_selected {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  background: var(--cyan1);
+  border-radius: 10px;
 }
 
 .auth_navlink_icon {
-  width: 10px;
-  height: 10px;
-  background: var(--red1);
-  margin-top: auto;
-  margin-bottom: auto;
+  display: flex;
+  align-items: center;
+}
+
+.auth_navlink a {
+  color: white;
+  text-decoration: none;
 }
 
 .auth_logout_button {
@@ -214,4 +227,131 @@
   transition: 0.25s;
   transform: translateY(-2px);
   box-shadow: 0px 5px 2px var(--shadow-color);
+}
+
+.auth_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile_button {
+  font-family: var(--font-josefin);
+  background: var(--red1);
+  color: white;
+  border: 0px;
+  border-radius: 50px;
+  padding: 10px;
+  margin-top: 15px;
+  font-size: 1rem;
+  transition: 0.25s;
+  width: 200px;
+  align-self: flex-end;
+  margin-left: auto;
+  text-align: center;
+}
+.profile_button:hover {
+  cursor: pointer;
+  transition: 0.25s;
+  transform: translateY(-2px);
+  box-shadow: 0px 5px 5px var(--shadow-color);
+}
+
+.primary_button {
+  font-family: var(--font-josefin);
+  background: var(--red1);
+  color: white;
+  border: 0px;
+  border-radius: 50px;
+  padding: 10px;
+  margin-top: 15px;
+  font-size: 1rem;
+  transition: 0.25s;
+  width: 100%;
+  align-self: flex-end;
+  margin-left: auto;
+  text-align: center;
+}
+
+.primary_button:hover {
+  cursor: pointer;
+  transition: 0.25s;
+  transform: translateY(-2px);
+  box-shadow: 0px 5px 5px var(--shadow-color);
+}
+.secondary_button {
+  font-family: var(--font-josefin);
+  background: var(--cyan2);
+  color: white;
+  border: 0px;
+  border-radius: 50px;
+  padding: 10px;
+  margin-top: 15px;
+  font-size: 1rem;
+  transition: 0.25s;
+  width: 100%;
+  align-self: flex-end;
+  margin-left: auto;
+  text-align: center;
+}
+
+.secondary_button:hover {
+  cursor: pointer;
+  transition: 0.25s;
+  transform: translateY(-2px);
+  box-shadow: 0px 5px 5px var(--shadow-color);
+}
+
+.cancel_button {
+  font-family: var(--font-josefin);
+  background: red;
+  color: white;
+  border: 0px;
+  border-radius: 50px;
+  padding: 10px;
+  margin-top: 15px;
+  font-size: 1rem;
+  transition: 0.25s;
+  width: 100%;
+  align-self: flex-end;
+  margin-left: auto;
+  text-align: center;
+}
+
+.cancel_button:hover {
+  cursor: pointer;
+  transition: 0.25s;
+  transform: translateY(-2px);
+  box-shadow: 0px 5px 5px var(--shadow-color);
+}
+
+.teacher_search_result_item {
+  display: flex;
+}
+
+.majors_list_item_container {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid;
+}
+
+.majors_list_item_title {
+  color: var(--red1);
+}
+
+.majors_list_item_content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 20px;
+}
+
+.majors_list_item_content p {
+  margin: 0;
+}
+
+.majors_list_item_action_button {
 }

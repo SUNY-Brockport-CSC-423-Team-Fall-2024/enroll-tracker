@@ -1,78 +1,86 @@
 "use client";
 
-import { headerLinks, footerLinks } from "../lib/data";
+import { useState, useEffect } from "react";
 import styles from "./styles.module.css";
-import Link from "next/link";
-import { useAuth } from "@/app/providers/auth-provider";
-import { useRouter } from "next/navigation";
+import { getUser } from "../lib/client/data";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "../providers/auth-provider";
+import { useAuthHeader } from "../providers/auth-header-provider";
 
-interface IAuthHeader {
-    pageTitle: string;
-    userRole: string | undefined;
-    userName: string;
-    userInits: string;
-}
+export default function AuthHeader() {
+  const { pageTitle, setPageTitle } = useAuthHeader();
+  const [userFirstName, setUserFirstName] = useState<string | null>(null);
+  const [userLastName, setUserLastName] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const pathname = usePathname();
+  const router = useRouter();
+  const { username, userRole } = useAuth();
 
-// This is checking that the user is logged in?
-const AuthHeader: React.FC<IAuthHeader> = ({ userRole, pageTitle, userName, userInits }) => {
-    const router = useRouter();
-    
-
-    const { setIsLoggedIn } = useAuth();
-  
-    const handleLogout = async () => {
-      const resp = await fetch("/api/logout", {
-        method: "POST",
-      });
-  
-      if (resp.ok) {
-        await fetch("/api/login-status", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            isLoggedIn: false,
-          }),
-        });
-        setIsLoggedIn(false);
-        router.push("/");
+  const determinePath = async () => {
+    try {
+      const path = pathname.split("/");
+      switch (path[1]) {
+        case "courses":
+          if (path.length > 2) {
+            switch (path[2]) {
+              case "add-course":
+                setPageTitle("Add Course");
+                break;
+            }
+          } else {
+            setPageTitle("Courses");
+          }
+          break;
+        case "users":
+          setPageTitle("Manage Users");
+          break;
+        case "majors":
+          if (path.length > 2) {
+            switch (path[2]) {
+              case "add-major":
+                setPageTitle("Add Major");
+                break;
+            }
+          } else {
+            setPageTitle("Majors");
+          }
+          break;
+        case "settings":
+          setPageTitle("Settings");
+          break;
+        default:
+          if (username === undefined || userRole === undefined) {
+            setUserFirstName(`User`);
+            setPageTitle(`Welcome`);
+          } else {
+            const { first_name } = await getUser(username, userRole);
+            setPageTitle(`Hi, ${first_name}`);
+          }
       }
-    };
-  
-    // Generate User initials
-    userInits = generateInitials(userName);
-
-    return (
-      // Start building component html here
-      // Page Title, Profile Box, User Name (And initials)
-      <div className={styles.auth_header}>
-            <div className={styles.auth_title}>
-              <h1>{pageTitle}</h1>
-            </div>
-        <div className={styles.auth_userBox}>
-            <div className={styles.auth_userInit}>
-                <p>{userInits}</p>
-            </div>
-            <div className={styles.auth_userName}>
-                <p>{userName}</p>
-            </div>
-        </div>
-      </div>
-    );
+    } catch (err) {
+      console.error(err);
+      setPageTitle(`Welcome`);
+    } finally {
+      if (username === undefined || userRole === undefined) {
+        setUserFirstName(`User`);
+      } else {
+        const { first_name, last_name } = await getUser(username, userRole);
+        setUserFirstName(first_name);
+        setUserLastName(last_name);
+      }
+      setLoading(false);
+    }
   };
 
-  // Function to generate initials from username
-export const generateInitials = (name: string | undefined): string => {
-  if (!name || typeof name !== 'string') {
-    return 'NA'; // or return a default value like 'NA' for Not Available
-  }
-
-  const nameParts = name.trim().split(" ");
-  const initials = nameParts.length >= 2
-    ? nameParts[0][0] + nameParts[1][0]
-    : nameParts[0][0];
-  return initials.toUpperCase();
-};
-
-export default AuthHeader;
+  useEffect(() => {
+    determinePath();
+  }, [pathname, username]);
+  return (
+    <header className={styles.auth_header}>
+      <h1>{loading ? "Loading..." : pageTitle}</h1>
+      <div className={styles.profile_button} onClick={() => router.push("/settings")}>
+        {userFirstName} {userLastName}
+      </div>
+    </header>
+  );
+}

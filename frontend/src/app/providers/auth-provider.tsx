@@ -9,6 +9,8 @@ interface AuthContextProps {
   setUsername: (username: string | undefined) => void;
   userID: number | undefined;
   setUserID: (userID: number | undefined) => void;
+  authID: number | undefined;
+  setAuthID: (authID: number | undefined) => void;
   getUserStuff: () => Promise<{ [key: string]: any } | undefined>;
   checkLoginStatus: () => Promise<boolean>;
 }
@@ -17,6 +19,7 @@ type UserStuff = {
   role: string | undefined;
   username: string | undefined;
   user_id: number | undefined;
+  auth_id: number | undefined;
 };
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -34,6 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userRole, setUserRole] = useState<string | undefined>(undefined);
   const [username, setUsername] = useState<string | undefined>(undefined);
   const [userID, setUserID] = useState<number | undefined>(undefined);
+  const [authID, setAuthID] = useState<number | undefined>(undefined);
 
   const refreshToken = async () => {
     const resp = await fetch("/api/token-refresh", {
@@ -72,6 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setUserRole(data?.role);
             setUsername(data?.username);
             setUserID(data?.user_id);
+            setAuthID(data?.auth_id);
           }
         } else {
           // Token refresh failed, mark the user as logged out
@@ -97,6 +102,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUsername,
         userID,
         setUserID,
+        authID,
+        setAuthID,
         getUserStuff,
         checkLoginStatus,
       }}

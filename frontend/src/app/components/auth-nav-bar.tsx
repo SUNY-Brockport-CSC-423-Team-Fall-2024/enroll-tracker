@@ -1,19 +1,17 @@
 "use client";
 
-import { headerLinks, footerLinks } from "../lib/data";
+import { headerLinks, footerLinks } from "../lib/definitions";
 import styles from "./styles.module.css";
 import Link from "next/link";
 import { useAuth } from "@/app/providers/auth-provider";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import clsx from "clsx";
 
-interface IAuthNavbar {
-  userRole: string | undefined;
-}
-
-const AuthNavbar: React.FC<IAuthNavbar> = ({ userRole }) => {
+const AuthNavbar: React.FC = () => {
   const router = useRouter();
+  const pathname = usePathname();
 
-  const { setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn, setUsername, setUserID, setAuthID, setUserRole, userRole } = useAuth();
 
   const handleLogout = async () => {
     const resp = await fetch("/api/logout", {
@@ -30,8 +28,12 @@ const AuthNavbar: React.FC<IAuthNavbar> = ({ userRole }) => {
           isLoggedIn: false,
         }),
       });
-      setIsLoggedIn(false);
       router.push("/");
+      setIsLoggedIn(false);
+      setUsername(undefined);
+      setUserID(undefined);
+      setAuthID(undefined);
+      setUserRole(undefined);
     }
   };
 
@@ -47,9 +49,18 @@ const AuthNavbar: React.FC<IAuthNavbar> = ({ userRole }) => {
           if (link.allowedRoles.find((role) => role === userRole) === undefined) {
             return null;
           }
+          const IconComponent = link.icon;
           return (
-            <div className={styles.auth_navlink} key={link.name}>
-              <div className={styles.auth_navlink_icon}></div>
+            <div
+              className={clsx(
+                styles.auth_navlink,
+                pathname === link.href && styles.auth_navlink_selected,
+              )}
+              key={link.name}
+            >
+              <div className={styles.auth_navlink_icon}>
+                <IconComponent stroke={link.name === "Dashboard" ? "#FFFFFF" : "none"} />
+              </div>
               <Link key={link.name} href={link.href}>
                 {link.name}
               </Link>
@@ -62,9 +73,18 @@ const AuthNavbar: React.FC<IAuthNavbar> = ({ userRole }) => {
           if (link.allowedRoles.find((role) => role === userRole) === undefined) {
             return null;
           }
+          const IconComponent = link.icon;
           return (
-            <div className={styles.auth_navlink} key={link.name}>
-              <div className={styles.auth_navlink_icon}></div>
+            <div
+              className={clsx(
+                styles.auth_navlink,
+                pathname === link.href && styles.auth_navlink_selected,
+              )}
+              key={link.name}
+            >
+              <div className={styles.auth_navlink_icon}>
+                <IconComponent fill="none" stroke="#FFFFFF" />
+              </div>
               <Link key={link.name} href={link.href}>
                 {link.name}
               </Link>

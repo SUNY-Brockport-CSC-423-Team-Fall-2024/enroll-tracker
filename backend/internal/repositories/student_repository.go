@@ -32,7 +32,7 @@ func (r *PostgresStudentRepository) CreateStudent(firstName string, lastName str
 	query := `SELECT * FROM public.create_student($1, $2, $3, $4, $5)`
 
 	//execute function, instantiate student, close connection
-	err := r.db.QueryRow(query, firstName, lastName, authId, phoneNumber, email).Scan(&student.ID, &student.FirstName, &student.LastName, &student.AuthID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt)
+	err := r.db.QueryRow(query, firstName, lastName, authId, phoneNumber, email).Scan(&student.Username, &student.ID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt)
 
 	return student, err
 }
@@ -53,7 +53,7 @@ func (r *PostgresStudentRepository) GetStudents(queryParams models.StudentQueryP
 	//Loop through returned rows
 	for rows.Next() {
 		student := models.Student{}
-		if err := rows.Scan(&student.ID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt); err != nil {
+		if err := rows.Scan(&student.Username, &student.ID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt); err != nil {
 			return students, err
 		}
 		students = append(students, student)
@@ -71,7 +71,7 @@ func (r *PostgresStudentRepository) GetStudent(username string) (models.Student,
 	//execute function
 	row := r.db.QueryRow(query, username)
 
-	err := row.Scan(&student.ID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt)
+	err := row.Scan(&student.Username, &student.ID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt)
 
 	return student, err
 }
@@ -84,7 +84,7 @@ func (r *PostgresStudentRepository) UpdateStudent(username string, studentUpdate
 
 	row := r.db.QueryRow(query, username, studentUpdates.FirstName, studentUpdates.LastName, studentUpdates.PhoneNumber, studentUpdates.Email)
 
-	err := row.Scan(&student.ID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt)
+	err := row.Scan(&student.Username, &student.ID, &student.FirstName, &student.LastName, &student.AuthID, &student.MajorID, &student.PhoneNumber, &student.Email, &student.CreatedAt, &student.UpdatedAt)
 
 	return student, err
 }

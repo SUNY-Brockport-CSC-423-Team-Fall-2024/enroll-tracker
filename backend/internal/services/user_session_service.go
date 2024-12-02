@@ -19,7 +19,7 @@ func CreateUserSessionService(repo repositories.UserSessionRepository) *UserSess
 // Returns a UserSession object, access token, and an error
 // The UserSession object contains the plaintext version of the refresh token
 // Needs UserAuth table ID and the appropriate username
-func (s *UserSessionService) CreateUserSession(userID int, username string) (*models.UserSession, string, error) {
+func (s *UserSessionService) CreateUserSession(authID int, username string) (*models.UserSession, string, error) {
 	//Create refresh token
 	refreshToken, err := utils.CreateRefreshToken(utils.RefreshTokenLength)
 	if err != nil {
@@ -37,10 +37,15 @@ func (s *UserSessionService) CreateUserSession(userID int, username string) (*mo
 		return nil, "", err
 	}
 
+	userID, err := s.repository.GetUserID(username)
+	if err != nil {
+		return nil, "", err
+	}
+
 	accessTokenExpiresAt := time.Now().Add(time.Minute * 15)
 	issuedAt := time.Now()
 	notBefore := time.Now()
-	accessToken, err := utils.CreateJWT(username, userID, role, accessTokenExpiresAt, issuedAt, notBefore)
+	accessToken, err := utils.CreateJWT(username, userID, authID, role, accessTokenExpiresAt, issuedAt, notBefore)
 	if err != nil {
 		return nil, "", err
 	}

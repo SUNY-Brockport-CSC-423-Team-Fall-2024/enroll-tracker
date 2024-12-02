@@ -115,6 +115,7 @@ type AdministratorUpdate struct {
 }
 
 type Student struct {
+	Username    string    `json:"username"`
 	ID          int       `json:"id"`
 	FirstName   string    `json:"first_name"`
 	LastName    string    `json:"last_name"`
@@ -127,6 +128,7 @@ type Student struct {
 }
 
 type Teacher struct {
+	Username    string    `json:"username"`
 	ID          int       `json:"id"`
 	FirstName   string    `json:"first_name"`
 	LastName    string    `json:"last_name"`
@@ -139,6 +141,7 @@ type Teacher struct {
 }
 
 type Administrator struct {
+	Username    string    `json:"username"`
 	ID          int       `json:"id"`
 	FirstName   string    `json:"first_name"`
 	LastName    string    `json:"last_name"`
@@ -172,18 +175,19 @@ type UserSession struct {
 }
 
 type CoursesStudent struct {
-	StudentID      int        `json:"student_id"`
-	FirstName      string     `json:"first_name"`
-	LastName       string     `json:"last_name"`
-	AuthID         int        `json:"auth_id"`
-	MajorID        *int       `json:"major_id"`
-	PhoneNumber    string     `json:"phone_number"`
-	Email          string     `json:"email"`
-	CreatedAt      time.Time  `json:"created_at"`
-	UpdatedAt      time.Time  `json:"updated_at"`
-	IsEnrolled     bool       `json:"is_enrolled"`
-	EnrolledDate   time.Time  `json:"enrolled_date"`
-	UnenrolledDate *time.Time `json:"unenrolled_date"`
+	StudentUsername string     `json:"student_username"`
+	StudentID       int        `json:"student_id"`
+	FirstName       string     `json:"first_name"`
+	LastName        string     `json:"last_name"`
+	AuthID          int        `json:"auth_id"`
+	MajorID         *int       `json:"major_id"`
+	PhoneNumber     string     `json:"phone_number"`
+	Email           string     `json:"email"`
+	CreatedAt       time.Time  `json:"created_at"`
+	UpdatedAt       time.Time  `json:"updated_at"`
+	IsEnrolled      bool       `json:"is_enrolled"`
+	EnrolledDate    time.Time  `json:"enrolled_date"`
+	UnenrolledDate  *time.Time `json:"unenrolled_date"`
 }
 
 type StudentsCourse struct {
@@ -201,10 +205,24 @@ type StudentsCourse struct {
 	UnenrolledDate    *time.Time `json:"unenrolled_date"`
 }
 
+type TeachersCourse struct {
+	CourseID          int       `json:"course_id"`
+	CourseName        string    `json:"course_name"`
+	CourseDescription string    `json:"course_description"`
+	TeacherID         int       `json:"teacher_id"`
+	CurrentEnrollment int       `json:"current_enrollment"`
+	MaxEnrollment     int       `json:"max_enrollment"`
+	NumCredits        int       `json:"num_credits"`
+	Status            string    `json:"status"`
+	LastUpdated       time.Time `json:"last_updated"`
+	CreatedAt         time.Time `json:"created_at"`
+}
+
 type CustomClaims struct {
 	jwt.RegisteredClaims
 	Role   string `json:"role"`
 	UserID int    `json:"user_id"`
+	AuthID int    `json:"auth_id"`
 }
 
 type TokenResponse struct {
@@ -215,15 +233,16 @@ type TokenResponse struct {
 }
 
 type Course struct {
-	ID            int       `json:"id"`
-	Name          string    `json:"name"`
-	Description   string    `json:"description"`
-	TeacherID     int       `json:"teacher_id"`
-	MaxEnrollment int       `json:"max_enrollment"`
-	NumCredits    int       `json:"num_credits"`
-	Status        string    `json:"status"`
-	LastUpdated   time.Time `json:"last_updated"`
-	CreatedAt     time.Time `json:"created_at"`
+	ID                int       `json:"id"`
+	Name              string    `json:"name"`
+	Description       string    `json:"description"`
+	TeacherID         int       `json:"teacher_id"`
+	CurrentEnrollment int       `json:"current_enrollment"`
+	MaxEnrollment     int       `json:"max_enrollment"`
+	NumCredits        int       `json:"num_credits"`
+	Status            string    `json:"status"`
+	LastUpdated       time.Time `json:"last_updated"`
+	CreatedAt         time.Time `json:"created_at"`
 }
 
 type CourseCreation struct {

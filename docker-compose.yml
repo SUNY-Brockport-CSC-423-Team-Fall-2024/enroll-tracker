@@ -1,11 +1,16 @@
 services:
   frontend:
     container_name: frontend
-    build: ./frontend
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
       - ENROLL_TRACKER_RSA_PUBLIC_KEY=${ENROLL_TRACKER_RSA_PUBLIC_KEY}
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
   api:
     container_name: api
     build: ./backend

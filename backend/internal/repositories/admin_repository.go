@@ -25,7 +25,7 @@ func (r *PostgresAdministratorRepository) CreateAdministrator(firstName string, 
 
 	query := `SELECT * FROM public.create_administrator($1,$2,$3,$4,$5,$6)`
 
-	err := r.db.QueryRow(query, firstName, lastName, authId, phoneNumber, email, office).Scan(&administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt)
+	err := r.db.QueryRow(query, firstName, lastName, authId, phoneNumber, email, office).Scan(&administrator.Username, &administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt)
 
 	return administrator, err
 }
@@ -46,7 +46,7 @@ func (r *PostgresAdministratorRepository) GetAdministrators(queryParams models.A
 	//Loop through returned rows
 	for rows.Next() {
 		administrator := models.Administrator{}
-		if err := rows.Scan(&administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt); err != nil {
+		if err := rows.Scan(&administrator.Username, &administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt); err != nil {
 			return nil, err
 		}
 		administrators = append(administrators, administrator)
@@ -60,12 +60,12 @@ func (r *PostgresAdministratorRepository) GetAdministrator(username string) (mod
 	var administrator models.Administrator
 
 	//create query
-	query := `SELECT * FROM public.get_administrator($1)`
+	query := `SELECT * FROM public.get_admin($1)`
 
 	//execute function
 	row := r.db.QueryRow(query, username)
 
-	err := row.Scan(&administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt)
+	err := row.Scan(&administrator.Username, &administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt)
 
 	return administrator, err
 }
@@ -78,7 +78,7 @@ func (r *PostgresAdministratorRepository) UpdateAdministrator(username string, a
 
 	row := r.db.QueryRow(query, username, administratorUpdates.FirstName, administratorUpdates.LastName, administratorUpdates.PhoneNumber, administratorUpdates.Email, administratorUpdates.Office)
 
-	err := row.Scan(&administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt)
+	err := row.Scan(&administrator.Username, &administrator.ID, &administrator.FirstName, &administrator.LastName, &administrator.AuthID, &administrator.PhoneNumber, &administrator.Email, &administrator.Office, &administrator.CreatedAt, &administrator.UpdatedAt)
 
 	return administrator, err
 }
