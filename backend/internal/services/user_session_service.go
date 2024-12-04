@@ -42,7 +42,7 @@ func (s *UserSessionService) CreateUserSession(authID int, username string) (*mo
 		return nil, "", err
 	}
 
-	accessTokenExpiresAt := time.Now().Add(time.Minute * 15)
+	accessTokenExpiresAt := time.Now().Add(time.Minute * 45)
 	issuedAt := time.Now()
 	notBefore := time.Now()
 	accessToken, err := utils.CreateJWT(username, userID, authID, role, accessTokenExpiresAt, issuedAt, notBefore)
