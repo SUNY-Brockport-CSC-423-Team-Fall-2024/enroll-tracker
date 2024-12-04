@@ -116,7 +116,6 @@ export default function Users() {
         throw new Error(`Error creating ${userType}`);
       }
 
-      const result = await response.json();
       alert(`${userType.charAt(0).toUpperCase() + userType.slice(1)} created successfully!`);
 
       setFormData({});

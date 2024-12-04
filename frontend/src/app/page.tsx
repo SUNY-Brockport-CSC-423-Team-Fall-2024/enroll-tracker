@@ -8,7 +8,7 @@ export default function Home() {
     <div className={styles.page}>
       <header className={styles.header}>
         <Link href="/">
-          <h1 className={styles.landing_page_title}>EnrollmentTracker</h1>
+          <h1 className={styles.landing_page_title}>EnrollTracker</h1>
         </Link>
       </header>
       <main className={styles.main}>
